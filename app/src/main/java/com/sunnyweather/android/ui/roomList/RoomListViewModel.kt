@@ -8,6 +8,7 @@ import com.sunnyweather.android.logic.model.RoomInfo
 
 class RoomListViewModel : ViewModel() {
     private val pageLiveData = MutableLiveData<Int>()
+    var pageNow = 1
 
     val roomList = ArrayList<RoomInfo>()
 
@@ -15,7 +16,7 @@ class RoomListViewModel : ViewModel() {
         page -> Repository.getRecommend(page, 20)
     }
 
-    fun getRecommend(page: Int) {
-        pageLiveData.value = page
+    fun getRecommend() {
+        pageLiveData.value = pageNow++
     }
 }
