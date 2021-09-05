@@ -65,7 +65,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                 videoView?.setVideoController(controller) //设置控制器
                 videoView?.setUrl(urls["原画"]) //设置视频地址
                 videoView?.start() //开始播放，不调用则不自动播放
-
             }
         })
         pipBtn.setOnClickListener {
@@ -91,6 +90,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             mPIPManager.stopFloatWindow()
             controller?.setPlayerState(playerTemp.currentPlayerState)
             controller?.setPlayState(playerTemp.currentPlayState)
+            playerTemp.setVideoController(controller)
             player_container.addView(playerTemp)
         }
     }
@@ -146,7 +146,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             .onGranted {
                 mPIPManager!!.startFloatWindow()
                 mPIPManager!!.resume()
-//                finish()
+                finish()
             }
             .onDenied { }
             .start()
