@@ -3,6 +3,9 @@ package com.sunnyweather.android
 import android.app.Application
 import android.content.Context
 import com.nostra13.universalimageloader.core.ImageLoader
+import xyz.doikki.videoplayer.exo.ExoMediaPlayerFactory
+import xyz.doikki.videoplayer.player.VideoViewConfig
+import xyz.doikki.videoplayer.player.VideoViewManager
 
 class SunnyWeatherApplication : Application() {
     companion object {
@@ -15,5 +18,10 @@ class SunnyWeatherApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
+        VideoViewManager.setConfig(
+            VideoViewConfig.newBuilder()
+            //使用ExoPlayer解码
+            .setPlayerFactory(ExoMediaPlayerFactory.create())
+            .build());
     }
 }

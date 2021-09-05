@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">SunnyWeather</string>
+    <string name="app_name">MixLive</string>
+    <string name="search_hint">搜索主播</string>
+    <string name="dkplayer_replay">重新播放</string>
+    <string name="dkplayer_lock_tip">请先解锁屏幕！</string>
+    <string name="dkplayer_unlocked">已解锁</string>
+    <string name="dkplayer_locked">已锁定</string>
+    <string name="dkplayer_error_message">出了点小问题，请稍后重试</string>
+    <string name="dkplayer_retry"> 重    试 </string>
+    <string name="dkplayer_continue_play">继续播放</string>
+    <string name="dkplayer_wifi_tip">您正在使用移动网络，继续播放将消耗流量</string>
+    <string-array name="platforms">
+        <item>所有平台</item>
+        <item>斗鱼</item>
+        <item>虎牙</item>
+        <item>Bilibili</item>
+        <item>企鹅电竞</item>
+        <item>网易CC</item>
+    </string-array>
 </resources>

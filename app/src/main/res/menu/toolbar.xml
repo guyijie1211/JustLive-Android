@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/toolbar_login"
+        android:icon="@drawable/outline_favorite_border_black_24"
+        android:title="登录" />
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/baseline_search_black_24"
+        android:title="搜索"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/toolbar_setting"
+        android:icon="@drawable/outline_favorite_border_black_24"
+        android:title="设置" />
+    <item
+        android:id="@+id/toolbar_logout"
+        android:icon="@drawable/outline_home_black_24"
+        android:title="退出账号" />
+</menu>

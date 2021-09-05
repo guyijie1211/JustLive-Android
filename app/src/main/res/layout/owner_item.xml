@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/roomListCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="3dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ownerPic_search"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:id="@+id/liveState_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ownerPic_search"
+            android:layout_marginLeft="10dp"
+            android:padding="3dp"
+            android:background="#E44141"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:text="直播中"/>
+        <TextView
+            android:id="@+id/platform_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/liveState_search"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:text="斗鱼·"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/ownerName_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/platform_search"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:text="我是标题"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/follows_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/platform_search"
+            android:layout_toRightOf="@+id/ownerPic_search"
+            android:layout_marginLeft="10dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="10sp"
+            android:text="关注人数：100万"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

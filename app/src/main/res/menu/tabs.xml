@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/outline_home_black_24"
+        android:title="推荐" />
+    <item
+        android:id="@+id/navigation_follow"
+        android:icon="@drawable/outline_favorite_border_black_24"
+        android:title="关注" />
+</menu>
