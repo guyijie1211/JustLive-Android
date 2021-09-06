@@ -38,30 +38,22 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+        if(destination.id == R.id.navigation_home) {
+            main_toolBar_title.text = "全部推荐"
+            val drawable = resources.getDrawable(R.drawable.baseline_arrow_drop_down_black_24)
+            main_toolBar_title.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+        } else {
+            main_toolBar_title.text = "关注"
+            main_toolBar_title.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+        }}
         findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
         //标题栏的标题click事件
         main_toolBar_title.setOnClickListener {
 //            val dialog: CustomBottomDialog = CustomBottomDialog(this)
 //            dialog.show()
         }
-        //搜索栏
-//        search_home.setIconifiedByDefault(false)
-//        search_home.isSubmitButtonEnabled = true
-//        search_home.queryHint = "搜索主播"
-//        search_home.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
-//            .setTextSize(TypedValue.COMPLEX_UNIT_SP, 14F)
-//        search_home.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String): Boolean {
-//                val intent = Intent(context, SearchActivity::class.java).apply {
-//                    putExtra("query", query)
-//                }
-//                startActivity(intent)
-//                return true
-//            }
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                return false
-//            }
-//        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -78,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         }
         return true
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

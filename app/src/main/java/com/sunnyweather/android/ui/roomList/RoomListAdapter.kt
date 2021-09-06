@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.sunnyweather.android.R
-import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
 

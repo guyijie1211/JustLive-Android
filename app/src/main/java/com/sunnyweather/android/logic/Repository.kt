@@ -22,6 +22,20 @@ object Repository {
         }
         emit(result)
     }
+    fun getRecommendByPlatform(platform: String, page: Int, size: Int) = liveData(Dispatchers.IO){
+        val result = try {
+            val liveResponse = LiveNetwork.getRecommendByPlatform(platform, page, size)
+            if (liveResponse.code == "200") {
+                val rooms = liveResponse.data
+                Result.success(rooms)
+            } else {
+                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            }
+        } catch (e: Exception) {
+            Result.failure<List<RoomInfo>>(e)
+        }
+        emit(result)
+    }
     fun getRealUrl(platform: String, roomId: String) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.getRealUrl(platform, roomId)
@@ -88,6 +102,20 @@ object Repository {
                 Result.success(rooms)
             } else {
                 Result.failure(RuntimeException("response status is ${searchResponse.message}"))
+            }
+        } catch (e: Exception) {
+            Result.failure<List<RoomInfo>>(e)
+        }
+        emit(result)
+    }
+    fun getAllAreas() = liveData(Dispatchers.IO){
+        val result = try {
+            val liveResponse = LiveNetwork.getAllAreas()
+            if (liveResponse.code == "200") {
+                val rooms = liveResponse.data
+                Result.success(rooms)
+            } else {
+                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)

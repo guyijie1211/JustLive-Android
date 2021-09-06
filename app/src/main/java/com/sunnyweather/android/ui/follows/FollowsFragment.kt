@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
@@ -42,8 +43,8 @@ class FollowsFragment : Fragment() {
         override fun getItemCount(): Int = NUM_PAGES
         override fun createFragment(position: Int): Fragment =
             when (position) {
-                0 -> OnLiveFragment()
-                1 -> OffLiveFragment()
+                0 -> OnLiveFragment(true)
+                1 -> OnLiveFragment(false)
                 else -> Fragment()
             }
     }

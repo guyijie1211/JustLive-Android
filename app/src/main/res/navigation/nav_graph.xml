@@ -8,7 +8,7 @@
         android:id="@+id/navigation_home"
         android:name="com.sunnyweather.android.ui.home.HomeFragment"
         android:label="首页推荐"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home"/>
 
     <fragment
         android:id="@+id/navigation_follow"

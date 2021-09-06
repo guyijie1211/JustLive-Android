@@ -59,6 +59,8 @@ dependencies {
     implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    implementation 'com.github.angcyo.DslTablayout:TabLayout:3.0.0'
+    implementation 'com.github.angcyo.DslTablayout:ViewPager2Delegate:1.4.2'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

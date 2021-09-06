@@ -8,6 +8,8 @@ import retrofit2.http.Query
 interface LiveService {
     @GET("/api/live/getRecommend")
     fun getRecommend(@Query("page") page: Int, @Query("size") size: Int): Call<LiveRoomResponse>
+    @GET("/api/live/getRecommendByPlatform")
+    fun getRecommendByPlatform(@Query("platform") platform: String, @Query("page") page: Int, @Query("size") size: Int): Call<LiveRoomResponse>
     @GET("/api/live/getRealUrl")
     fun getRealUrl(@Query("platform") platform: String, @Query("roomId") roomId: String): Call<UrlsResponse>
     @GET("/api/live/getRoomInfo")
@@ -16,4 +18,6 @@ interface LiveService {
     fun getRoomsOn(@Query("uid") uid: String): Call<LiveRoomResponse>
     @GET("/api/live/search")
     fun search(@Query("platform") platform: String, @Query("keyWords") keyWords: String, @Query("isLive") isLive: String): Call<SearchResponse>
+    @GET("/api/live/getAllAreas")
+    fun getAllAreas(): Call<AreaAllResponse>
 }

@@ -8,16 +8,17 @@ import com.sunnyweather.android.logic.model.RoomInfo
 
 class FollowViewModel : ViewModel(){
     private val uidLiveData = MutableLiveData<String>()
-    val roomListOn = ArrayList<RoomInfo>()
-    val roomListOff = ArrayList<RoomInfo>()
+    var roomList = ArrayList<RoomInfo>()
+
     val userRoomListLiveDate = Transformations.switchMap(uidLiveData) {
             uid -> Repository.getRoomsOn(uid)
     }
+
     fun getRoomsOn(uid: String) {
         uidLiveData.value = uid
     }
+
     fun clearRoomList() {
-        roomListOn.clear()
-        roomListOff.clear()
+        roomList.clear()
     }
 }

@@ -18,10 +18,4 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tab_follows" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/roomListFragment_follows"-->
-<!--        android:name="com.sunnyweather.android.ui.roomList.RoomListFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"/>-->
-
 </RelativeLayout>

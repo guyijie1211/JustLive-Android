@@ -1,22 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/motion_home"
+<RelativeLayout android:id="@+id/motion_home"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <Spinner
-        android:id="@+id/platform_spinner"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-    <fragment
-        android:id="@+id/roomListFragment"
-        android:name="com.sunnyweather.android.ui.roomList.RoomListFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.angcyo.tablayout.DslTabLayout
+        android:id="@+id/tab_home"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/platform_spinner"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:tab_item_default_height="50dp"
+        app:tab_indicator_drawable="@drawable/indicator_background"
+        app:tab_indicator_color="@color/purple_200"
+        app:tab_indicator_width="WRAP_CONTENT"
+        app:tab_indicator_enable_flow="true"
+        app:tab_indicator_width_offset="-20dp"
+        app:tab_indicator_style="STYLE_BOTTOM"
+        app:tab_item_is_equ_width="true"
+        app:tab_item_width="100dp"
+        app:tab_enable_gradient_color="true"
+        app:tab_enable_text_bold="true"
+        app:tab_select_color="@color/purple_200"
+        tools:tab_default_index="0">
+        <TextView
+            android:text="所有平台"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="斗鱼直播"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="虎牙直播"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="哔哩哔哩"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="企鹅电竞"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="网易CC"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </com.angcyo.tablayout.DslTabLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpage_home"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_home" />
+
+</RelativeLayout>

@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13854166666666667" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/drawable/corner_background.xml" value="0.18125" />
+        <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/drawable/indicator_background.xml" value="0.28615384615384615" />
+        <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/drawable/indicator_round_background.xml" value="0.28615384615384615" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/drawable/room_pic_bg.xml" value="0.28615384615384615" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/drawable/search_style.xml" value="0.290625" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/activity_home.xml" value="0.1" />
@@ -15,6 +17,7 @@
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/activity_setting.xml" value="0.21458333333333332" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/activity_test.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/activity_weather.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/arae_item.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/controller.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/dkplayer_layout_complete_view.xml" value="0.20833333333333334" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/dkplayer_layout_standard_controller.xml" value="0.1921875" />
@@ -22,6 +25,8 @@
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/exo_player_control_view.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/forecast.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/forecast_item.xml" value="0.27447916666666666" />
+        <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/fragment_area.xml" value="0.1" />
+        <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/fragment_arealist.xml" value="0.1" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/fragment_follows.xml" value="0.27447916666666666" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Android/workplace/SunnyWeather/app/src/main/res/layout/fragment_place.xml" value="0.1" />

@@ -4,6 +4,15 @@ data class LiveRoomResponse(val code: String, val message: String, val data: Lis
 data class UrlsResponse(val code: String, val message: String, val data: Map<String, String>)
 data class RoomInfoResponse(val code: String, val message: String, val data: RoomInfo)
 data class SearchResponse(val code: String, val message: String, val data: List<Owner>)
+data class AreaAllResponse(val code: String, val message: String, val data: List<List<AreaInfo>>)
+
+data class AreaInfo(val platform: String,
+                    val areaType: String,
+                    val typeName: String,
+                    val areaId: String,
+                    val areaName: String,
+                    val areaPic: String,
+                    val shortName: String)
 
 data class RoomInfo(val roomId: String,
                     val platForm: String,
