@@ -1,11 +1,13 @@
 package com.sunnyweather.android.ui.area
 
+import android.app.Dialog
+import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -14,8 +16,11 @@ import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.AreaInfo
 import kotlinx.android.synthetic.main.fragment_area.*
+import top.limuyang2.customldialog.BottomTextListDialog
+import top.limuyang2.ldialog.base.BaseLDialog
+import xyz.doikki.videoplayer.util.PlayerUtils
 
-class AreaFragment : Fragment() {
+class AreaFragment : DialogFragment() {
     private var areaMap = HashMap<String, ArrayList<AreaInfo>>()
     private var areaTypeList = ArrayList<String>()
     private lateinit var viewPager: ViewPager2
@@ -32,6 +37,7 @@ class AreaFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         //ViewPager2
         viewPager = viewpage_area
+
         if (viewModel.areaList.size < 1) {
             viewModel.areaListLiveDate?.observe(viewLifecycleOwner, { result ->
                 Log.i("test","observe")
@@ -39,8 +45,12 @@ class AreaFragment : Fragment() {
                 if (areas != null) {
                     sortArea(areas)
                     val pagerAdapter = ScreenSlidePagerAdapter(this)
-                    val map = areaMap
-                    val list = areaTypeList
+                    for (areaType in areaTypeList) {
+                        val textView = TextView(context)
+                        textView.text = areaType
+                        textView.gravity = Gravity.CENTER
+                        tab_area.addView(textView)
+                    }
                     viewPager.adapter = pagerAdapter
                     //tabLayout
                     ViewPager2Delegate.install(viewPager, tab_area)
@@ -72,5 +82,26 @@ class AreaFragment : Fragment() {
             areaInfoListTemp.addAll(areaInfoList)
             areaMap[areaType] = areaInfoListTemp
         }
+    }
+
+    //设置打开dialog的样式
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = Dialog(requireContext(), R.style.CustomBottomDialog)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.fragment_area)
+        dialog.setCanceledOnTouchOutside(true)
+
+        val window = dialog.window
+        val lp = window?.attributes
+        lp?.gravity = Gravity.BOTTOM
+        lp?.width = WindowManager.LayoutParams.MATCH_PARENT
+        val point = Point()
+        PlayerUtils.getWindowManager(context?.applicationContext).getDefaultDisplay().getRealSize(point)
+        val with =  point.y
+        lp?.height = with / 5 * 4
+        lp?.windowAnimations = R.style.BottomDialogAnimation;
+        window?.attributes = lp
+
+        return dialog
     }
 }

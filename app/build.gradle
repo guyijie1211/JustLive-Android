@@ -59,8 +59,22 @@ dependencies {
     implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-    implementation 'com.github.angcyo.DslTablayout:TabLayout:3.0.0'
-    implementation 'com.github.angcyo.DslTablayout:ViewPager2Delegate:1.4.2'
+    implementation 'com.github.angcyo.DslTablayout:TabLayout:3.0.0'     //tabLayout动画
+    implementation 'com.github.angcyo.DslTablayout:ViewPager2Delegate:1.4.2'    //tabLayout绑定viewPage
+    implementation 'com.github.limuyang2.LDialog:ldialog:1.0.2_androidx'    //分区dialog
+    implementation 'com.github.limuyang2.LDialog:custom_ldialog:1.0.2_androidx' //分区dialog
+    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'      //核心必须依赖
+    implementation  'com.scwang.smart:refresh-header-classics:2.0.3'    //经典刷新头
+    implementation  'com.scwang.smart:refresh-header-radar:2.0.3'       //雷达刷新头
+    implementation  'com.scwang.smart:refresh-header-falsify:2.0.3'     //虚拟刷新头
+    implementation  'com.scwang.smart:refresh-header-material:2.0.3'    //谷歌刷新头
+    implementation  'com.scwang.smart:refresh-header-two-level:2.0.3'   //二级刷新头
+    implementation  'com.scwang.smart:refresh-footer-ball:2.0.3'        //球脉冲加载
+    implementation  'com.scwang.smart:refresh-footer-classics:2.0.3'    //经典加载
+
+    implementation 'com.github.Zhao-Yan-Yan:MultiStatePage:2.0.2'       //加载动画
+    implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:1.1.3"         //搜索组件
+    implementation "com.arthurivanets.adapster:adapster:1.0.13"
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

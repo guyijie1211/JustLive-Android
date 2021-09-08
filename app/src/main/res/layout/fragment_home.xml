@@ -8,7 +8,7 @@
     <com.angcyo.tablayout.DslTabLayout
         android:id="@+id/tab_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_gravity="center"
         app:tab_item_default_height="50dp"
         app:tab_indicator_drawable="@drawable/indicator_background"

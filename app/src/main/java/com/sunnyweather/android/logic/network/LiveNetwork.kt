@@ -13,6 +13,8 @@ object LiveNetwork {
 
     suspend fun getRecommend(page: Int, size: Int) = liveService.getRecommend(page, size).await()
     suspend fun getRecommendByPlatform(platform: String, page: Int, size: Int) = liveService.getRecommendByPlatform(platform, page, size).await()
+    suspend fun getRecommendByPlatformArea(platform: String, area: String, page: Int, size: Int) = liveService.getRecommendByPlatformArea(platform, area, page, size).await()
+    suspend fun getRecommendByAreaAll(areaType: String, area: String, page: Int) = liveService.getRecommendByAreaAll(areaType, area, page).await()
     suspend fun getRealUrl(platform: String, roomId: String) = liveService.getRealUrl(platform, roomId).await()
     suspend fun getRoomInfo(uid: String, platform: String, roomId: String) = liveService.getRoomInfo(uid, platform, roomId).await()
     suspend fun getRoomsOn(uid: String) = liveService.getRoomsOn(uid).await()

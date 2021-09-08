@@ -31,6 +31,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:textStyle="bold"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:textSize="28dp"
                         android:text="标题"/>
                 </androidx.appcompat.widget.Toolbar>
@@ -66,7 +68,7 @@
 <!--            android:layout_height="match_parent"/>-->
         <fragment
             android:id="@+id/area_fragment"
-            android:name="com.sunnyweather.android.ui.area.AreaFragment"
+            android:name="com.sunnyweather.android.ui.setting.SettingFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />

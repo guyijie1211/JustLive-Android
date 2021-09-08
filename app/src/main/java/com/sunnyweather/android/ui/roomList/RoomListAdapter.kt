@@ -15,7 +15,7 @@ import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
 
-class RoomListAdapter(private val fragment: Fragment, private val roomList: List<RoomInfo>) :
+class RoomListAdapter(private val fragment: Fragment, private val roomList: ArrayList<RoomInfo>) :
     RecyclerView.Adapter<RoomListAdapter.ViewHolder>(), LoadMoreModule{
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,7 +27,7 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: List
         val liveNum: TextView = view.findViewById(R.id.liveNum)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolder{
         val view = LayoutInflater.from(parent.context).inflate(R.layout.room_item, parent, false)
         val holder = ViewHolder(view)
         holder.itemView.setOnClickListener {

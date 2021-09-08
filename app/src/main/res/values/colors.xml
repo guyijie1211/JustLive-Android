@@ -7,4 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="blue">#529ecc</color>
+    <color name="blue_dark">#4986bc</color>
+
+    <color name="contentContainerColor">#eeeeee</color>
+    <color name="secondaryTextColor">#657786</color>
+    <color name="cardBackgroundColor">#ffffff</color>
+    <color name="primaryTextColor">#212121</color>
+    <color name="iconColor">#657786</color>
+    <color name="dividerColor">#657786</color>
+    <color name="suggestionIconColor">#657786</color>
+    <color name="suggestionTextColor">#657786</color>
+    <color name="suggestionSelectedTextColor">#212121</color>
 </resources>

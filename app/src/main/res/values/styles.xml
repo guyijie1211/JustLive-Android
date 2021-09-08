@@ -4,4 +4,13 @@
         <item name="android:windowEnterAnimation">@anim/anim_float_window_enter</item>
         <item name="android:windowExitAnimation">@anim/anim_float_window_exit</item>
     </style>
+    <style name="CustomBottomDialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+    <style name="BottomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_bottom_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_bottom_dialog_exit</item>
+    </style>
 </resources>

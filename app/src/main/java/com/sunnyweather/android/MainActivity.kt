@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SearchView
@@ -14,9 +15,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.sunnyweather.android.ui.area.AreaFragment
+import com.sunnyweather.android.ui.area.AreaSingleFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import top.limuyang2.customldialog.BottomTextListDialog
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
+    private lateinit var areaFragment: AreaFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,20 +46,28 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
         if(destination.id == R.id.navigation_home) {
-            main_toolBar_title.text = "全部推荐"
+            val title = SunnyWeatherApplication.areaName.value
+            if (title == "all" || title == null) {
+                main_toolBar_title.text = "全部推荐"
+            } else {
+                main_toolBar_title.text = title
+            }
             val drawable = resources.getDrawable(R.drawable.baseline_arrow_drop_down_black_24)
             main_toolBar_title.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
-        } else {
+        } else if(destination.id == R.id.navigation_follow) {
             main_toolBar_title.text = "关注"
+            main_toolBar_title.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+        } else {
+            main_toolBar_title.text = "分区"
             main_toolBar_title.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         }}
         findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
         //标题栏的标题click事件
         main_toolBar_title.setOnClickListener {
-//            val dialog: CustomBottomDialog = CustomBottomDialog(this)
-//            dialog.show()
+            val fragmentManager = supportFragmentManager
+            areaFragment = AreaFragment()
+            areaFragment.show(fragmentManager, "areaFragment")
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -76,5 +90,12 @@ class MainActivity : AppCompatActivity() {
             android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
         }
         return true
+    }
+
+    override fun onFragment(areaType: String, areaName:String) {
+        main_toolBar_title.text = areaName
+        SunnyWeatherApplication.areaType.value = areaType
+        SunnyWeatherApplication.areaName.value = areaName
+        areaFragment.dismiss()
     }
 }

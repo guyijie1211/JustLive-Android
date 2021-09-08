@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.google.android.material.tabs.TabLayoutMediator
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication
 import kotlinx.android.synthetic.main.fragment_home.*
 
 private const val NUM_PAGES = 6
@@ -28,6 +29,7 @@ class HomeFragment : Fragment() {
         viewPager = viewpage_home
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
+//        viewPager.offscreenPageLimit = 5
         //tabLayout
         ViewPager2Delegate.install(viewPager, tab_home)
     }

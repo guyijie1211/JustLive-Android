@@ -17,11 +17,10 @@ class SearchAdapter(private val activity: SearchActivity, private val ownerList:
     RecyclerView.Adapter<SearchAdapter.ViewHolder>(){
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val ownerPic: ImageView = view.findViewById(R.id.ownerPic_search)
-        val liveState: TextView = view.findViewById(R.id.liveState_search)
-        val platform: TextView = view.findViewById(R.id.platform_search)
-        val ownerName: TextView = view.findViewById(R.id.ownerName_search)
-        val follows: TextView = view.findViewById(R.id.follows_search)
+        val ownerPic: ImageView = view.findViewById(R.id.profileImageIv)
+        val liveState: ImageView = view.findViewById(R.id.firstButtonIv)
+        val ownerName: TextView = view.findViewById(R.id.usernameTv)
+        val follows: TextView = view.findViewById(R.id.fullNameTv)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,10 +41,10 @@ class SearchAdapter(private val activity: SearchActivity, private val ownerList:
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ownerInfo = ownerList[position]
         Glide.with(activity).load(ownerInfo.headPic).transition(DrawableTransitionOptions.withCrossFade()).into(holder.ownerPic)
-        holder.liveState.text = if(ownerInfo.isLive == "1")  "直播中" else "未开播"
+//        holder.liveState.text = if(ownerInfo.isLive == "1")  "直播中" else "未开播"
         val color = if(ownerInfo.isLive == "1") 0xf000000 else 0xfffffff
         holder.liveState.setBackgroundColor(color)
-        holder.platform.text = ownerInfo.platform + "·"
+//        holder.platform.text = ownerInfo.platform + "·"
         holder.ownerName.text = ownerInfo.nickName
         holder.follows.text = getWan(ownerInfo.followers)
     }

@@ -30,6 +30,7 @@ class FollowsFragment : Fragment() {
         viewPager = viewpage_follows
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
+        viewPager.offscreenPageLimit = 2
         //tabLayout
         TabLayoutMediator(tab_follows, viewpage_follows){tab, position ->
             when(position) {
