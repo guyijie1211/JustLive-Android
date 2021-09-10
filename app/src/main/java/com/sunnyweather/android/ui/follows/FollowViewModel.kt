@@ -14,8 +14,10 @@ class FollowViewModel : ViewModel(){
             uid -> Repository.getRoomsOn(uid)
     }
 
-    fun getRoomsOn(uid: String) {
-        uidLiveData.value = uid
+    fun getRoomsOn(uid: String?) {
+        if(uid != null) {
+            uidLiveData.value = uid!!
+        }
     }
 
     fun clearRoomList() {

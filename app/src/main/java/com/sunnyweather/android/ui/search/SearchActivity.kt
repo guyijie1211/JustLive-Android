@@ -1,13 +1,11 @@
 package com.sunnyweather.android.ui.search
 
-import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.SearchRecentSuggestions
 import android.view.Gravity
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +21,6 @@ import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
 import com.paulrybitskyi.persistentsearchview.utils.VoiceRecognitionDelegate
 import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.Owner
-import com.sunnyweather.android.logic.provider.MySuggestionProvider
 import com.sunnyweather.android.ui.customerUIs.AnimationUtils
 import com.sunnyweather.android.ui.customerUIs.HeaderedRecyclerViewListener
 import com.sunnyweather.android.ui.customerUIs.VerticalSpacingItemDecorator
@@ -50,12 +47,6 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         recyclerView_search.addItemDecoration(SpaceItemDecoration(10))
         searchAdapter = SearchAdapter(this, viewModel.ownersList as List<Owner>)
         recyclerView_search.adapter = searchAdapter
-        if (Intent.ACTION_SEARCH == intent.action) {
-            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                SearchRecentSuggestions(this, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE)
-                    .saveRecentQuery(query, null)
-            }
-        }
         viewModel.ownerListLiveData.observe(this, {result ->
             val rooms: ArrayList<Owner> = result.getOrNull() as ArrayList<Owner>
             if (rooms != null) {
@@ -67,8 +58,6 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
                     .setInterpolator(LinearInterpolator())
                     .setDuration(300L)
                     .start()
-                persistentSearchView.hideLeftButton(false)
-                persistentSearchView.showProgressBar()
             } else {
                 Toast.makeText(this, "没有更多直播间", Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
@@ -127,8 +116,6 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
     private fun initSearchView() = with(persistentSearchView) {
         setOnLeftBtnClickListener(this@SearchActivity)
         setOnClearInputBtnClickListener(this@SearchActivity)
-        setOnRightBtnClickListener(this@SearchActivity)
-        showRightButton()
         setVoiceRecognitionDelegate(VoiceRecognitionDelegate(this@SearchActivity))
         setOnSearchConfirmedListener(mOnSearchConfirmedListener) //提交搜索监听
         setOnSearchQueryChangeListener(mOnSearchQueryChangeListener)//输入监听
@@ -239,7 +226,44 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         return (this * context.resources.displayMetrics.density)
     }
 
-    override fun onClick(v: View?) {
-        TODO("Not yet implemented")
+    override fun onClick(view: View) {
+        when(view.id) {
+            R.id.leftBtnIv -> onLeftButtonClicked()
+            R.id.clearInputBtnIv -> onClearInputButtonClicked()
+        }
+    }
+
+    private fun onLeftButtonClicked() {
+        onBackPressed()
+    }
+
+    private fun onClearInputButtonClicked() {
+        //
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val searchQueries = if(persistentSearchView.isInputQueryEmpty) {
+            getInitialSearchQueries()
+        } else {
+            getSuggestionsForQuery(persistentSearchView.inputQuery)
+        }
+
+        setSuggestions(searchQueries, false)
+
+        if(shouldExpandSearchView()) {
+            persistentSearchView.expand(false)
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+        } else {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+        }
+    }
+
+    private fun shouldExpandSearchView(): Boolean {
+        return (
+            (persistentSearchView.isInputQueryEmpty && (viewModel.ownersList.isEmpty())) ||
+                    persistentSearchView.isExpanded
+        )
     }
 }

@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.sunnyweather.android.R;
+import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     protected ControlWrapper mControlWrapper;
 
     private TextView mDefinition;
+    private LiveRoomActivity liveRoomActivity;
 
     private PopupWindow mPopupWindow;
     private List<String> mRateStr;
@@ -64,6 +66,11 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
 
     public YJLiveControlView(@NonNull Context context) {
         super(context);
+    }
+
+    public YJLiveControlView(@NonNull Context context, LiveRoomActivity liveRoomActivity) {
+        super(context);
+        this.liveRoomActivity = liveRoomActivity;
     }
 
     public YJLiveControlView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -94,12 +101,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setClippingEnabled(false);
         mDefinition = findViewById(R.id.tv_definition);
-        mDefinition.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRateMenu();
-            }
-        });
+        mDefinition.setOnClickListener(v -> showRateMenu());
     }
 
     private void showRateMenu() {
@@ -110,13 +112,6 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
 
     protected int getLayoutId() {
         return R.layout.layout_definition_control_view;
-    }
-
-    /**
-     * 是否显示底部进度条，默认显示
-     */
-    public void showBottomProgress(boolean isShow) {
-        mIsShowBottomProgress = isShow;
     }
 
     @Override
@@ -134,6 +129,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     @Override
     public void onVisibilityChanged(boolean isVisible, Animation anim) {
         if (isVisible) {
+            liveRoomActivity.changeRoomInfoVisible(true);
             mBottomContainer.setVisibility(VISIBLE);
             if (anim != null) {
                 mBottomContainer.startAnimation(anim);
@@ -142,6 +138,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                 mBottomProgress.setVisibility(GONE);
             }
         } else {
+            liveRoomActivity.changeRoomInfoVisible(false);
             mPopupWindow.dismiss();
             mBottomContainer.setVisibility(GONE);
             if (anim != null) {

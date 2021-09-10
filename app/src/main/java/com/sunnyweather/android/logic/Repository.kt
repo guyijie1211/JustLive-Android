@@ -150,4 +150,18 @@ object Repository {
         }
         emit(result)
     }
+    fun login(username: String, password: String) = liveData(Dispatchers.IO){
+        val result = try {
+            val liveResponse = LiveNetwork.login(username, password)
+            if (liveResponse.code == "200") {
+                val rooms = liveResponse.data
+                Result.success(rooms)
+            } else {
+                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            }
+        } catch (e: Exception) {
+            Result.failure<List<RoomInfo>>(e)
+        }
+        emit(result)
+    }
 }

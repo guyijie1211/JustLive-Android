@@ -17,4 +17,7 @@
         <item>企鹅电竞</item>
         <item>网易CC</item>
     </string-array>
+
+    <string name="load_button">加载</string>
+    <string name="succeed">登录成功</string>
 </resources>

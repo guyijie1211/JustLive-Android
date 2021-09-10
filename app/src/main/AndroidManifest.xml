@@ -34,6 +34,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.setting.SettingActivity"
             android:label="设置"/>
+        <activity android:name=".ui.login.LoginActivity"
+            android:label="登录"/>
         <activity android:name=".ui.search.SearchActivity"
             android:exported="true">
             <intent-filter>

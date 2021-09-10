@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
 
@@ -44,7 +45,7 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val roomInfo = roomList[position]
-        holder.ownerName.text = roomInfo.platForm + "·" + roomInfo.ownerName
+        holder.ownerName.text = SunnyWeatherApplication.platformName(roomInfo.platForm) + "·" + roomInfo.ownerName
         Glide.with(fragment).load(roomInfo.ownerHeadPic).transition(withCrossFade()).into(holder.ownerPic)
         Glide.with(fragment).load(roomInfo.roomPic).transition(withCrossFade()).placeholder(R.drawable.takeplace).into(holder.roomPic)
         holder.roomCategory.text = roomInfo.categoryName

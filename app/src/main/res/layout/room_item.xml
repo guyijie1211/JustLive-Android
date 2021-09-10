@@ -56,13 +56,15 @@
         <TextView
             android:id="@+id/ownerName"
             android:layout_width="300dp"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/roomPic"
             android:layout_toRightOf="@+id/ownerPic"
+            android:layout_alignTop="@+id/ownerPic"
+            android:layout_marginTop="-2dp"
             android:layout_marginLeft="5dp"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/black"
             android:textStyle="bold"/>
 
@@ -71,12 +73,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ownerName"
-            android:layout_marginLeft="5dp"
-            android:singleLine="true"
+            android:layout_alignStart="@+id/ownerName"
             android:ellipsize="end"
-            android:layout_toRightOf="@+id/ownerPic"
-            android:textSize="10sp"
-            android:text="直播间标题测试直播间标题测试直播间标题测试直播间标题测试"/>
+            android:singleLine="true"
+            android:text="直播间标题测试直播间标题测试直播间标题测试直播间标题测试"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 

@@ -1,15 +1,18 @@
 package com.sunnyweather.android.ui.liveRoom
 
+import android.animation.ValueAnimator
 import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.gson.internal.LinkedTreeMap
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.util.dkplayer.YJLiveControlView
 import kotlinx.android.synthetic.main.activity_liveroom.*
@@ -21,6 +24,8 @@ import com.yanzhenjie.permission.AndPermission
 import xyz.doikki.videoplayer.exo.ExoMediaPlayer
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
+import xyz.doikki.videoplayer.util.PlayerUtils
+import java.security.AccessController.getContext
 
 class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
@@ -28,10 +33,10 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     private lateinit var mPIPManager: PIPManager
     private var controller: YJstandardController? = null
     private var videoView: VideoView<ExoMediaPlayer>? = null
+    private var show = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i("test","roomOnCreate")
         setContentView(R.layout.activity_liveroom)
         //设置16:9的高宽
         val lp = player_container.layoutParams
@@ -100,7 +105,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         val prepareView = PrepareView(this)
         prepareView.setClickStart()
         val titleView = TitleView(this)
-        mDefinitionControlView = YJLiveControlView(this)
+        mDefinitionControlView = YJLiveControlView(this, this)
         mDefinitionControlView!!.setOnRateSwitchListener(this)
         val gestureView = GestureView(this)
         controller.addControlComponent(
@@ -111,6 +116,22 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             mDefinitionControlView,
             gestureView
         )
+    }
+
+    fun changeRoomInfoVisible(isVisible: Boolean) {
+        val height = PlayerUtils.dp2px(context, 100f)
+        var va: ValueAnimator = if(isVisible){
+            ValueAnimator.ofInt(0,height)
+        }else{
+            ValueAnimator.ofInt(height,0)
+        }
+        va.addUpdateListener {
+            val h: Int = it.animatedValue as Int
+            roomInfo.layoutParams.height = h
+            roomInfo.requestLayout()
+        }
+        va.duration = 200
+        va.start()
     }
 
     override fun onPause() {

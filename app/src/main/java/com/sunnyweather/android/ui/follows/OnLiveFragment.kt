@@ -1,15 +1,14 @@
 package com.sunnyweather.android.ui.follows
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
@@ -35,6 +34,7 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val multiStateContainer = recyclerView.bindMultiState()
         multiStateContainer.isShown
+        progressBar_roomList.isVisible = true
         val layoutManager = GridLayoutManager(context, 2)
         recyclerView.addItemDecoration(SpaceItemDecoration(10))
         recyclerView.layoutManager = layoutManager
@@ -45,28 +45,31 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
         refresh_home_foot.visibility = View.GONE
         refresh_home.setOnRefreshListener {
             viewModel.clearRoomList()
-            viewModel.getRoomsOn(SunnyWeatherApplication.uid)
+            viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         }
 
         if (viewModel.roomList.size < 1) {
             viewModel.userRoomListLiveDate.observe(viewLifecycleOwner, { result ->
                 val rooms: ArrayList<RoomInfo> = result.getOrNull() as ArrayList<RoomInfo>
                 if (rooms != null) {
-                    sortRooms(rooms, isLive)
+                    sortRooms(rooms)
+                    val temp = viewModel.roomList
                     adapterOn.notifyDataSetChanged()
+                    progressBar_roomList.isGone = true
                     refresh_home.finishRefresh() //传入false表示刷新失败
                 } else {
                     refresh_home.finishLoadMoreWithNoMoreData()
                     result.exceptionOrNull()?.printStackTrace()
                 }
             })
-            viewModel.getRoomsOn(SunnyWeatherApplication.uid)
+            viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         }
     }
 
-    private fun sortRooms(roomList: List<RoomInfo>, isLive: Boolean) {
+    private fun sortRooms(roomList: List<RoomInfo>) {
         for (roomInfo in roomList) {
-            if (isLive == (roomInfo.isLive == 1)) {
+            if (this.isLive == (roomInfo.isLive == 1)) {
+                val test = roomInfo.isLive
                 viewModel.roomList.add(roomInfo)
             }
         }

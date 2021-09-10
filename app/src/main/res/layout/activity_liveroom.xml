@@ -10,17 +10,12 @@
         android:layout_alignParentTop="true">
     </FrameLayout>
 
-    <Button
-        android:id="@+id/pipBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="画中画"
-        android:layout_below="@+id/player_container"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+
     <RelativeLayout
         android:id="@+id/roomInfo"
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         android:background="@color/purple_200"
         android:layout_below="@+id/player_container">
 
@@ -72,7 +67,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/roomInfo"
         android:orientation="vertical">
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -83,10 +77,10 @@
             android:textSize="20dp"
             android:text="弹幕"/>
         <Button
-            android:id="@+id/showInfo"
+            android:id="@+id/pipBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="显示信息"/>
+            android:text="画中画"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/danMu_recyclerView"
             android:layout_width="match_parent"

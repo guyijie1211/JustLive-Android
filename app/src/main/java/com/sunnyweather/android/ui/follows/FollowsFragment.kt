@@ -1,15 +1,20 @@
 package com.sunnyweather.android.ui.follows
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
+import com.sunnyweather.android.MainActivity
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_follows.*
 
 private const val NUM_PAGES = 2
@@ -39,6 +44,29 @@ class FollowsFragment : Fragment() {
             }
         }.attach()
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (SunnyWeatherApplication.isLogin) return
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("启用关注")
+            .setMessage("登录后获取关注列表")
+            .setOnDismissListener {
+                val main: MainActivity = context as MainActivity
+                main.toFirst()
+            }
+            .setNegativeButton("返回") { _, _ ->
+                val main: MainActivity = context as MainActivity
+                main.toFirst()
+            }
+            .setPositiveButton("登录") { _, _ ->
+                val intent = Intent(context, LoginActivity::class.java)
+                startActivity(intent)
+            }
+            .show()
+    }
+
+
 
     private inner class ScreenSlidePagerAdapter(fa: Fragment) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = NUM_PAGES

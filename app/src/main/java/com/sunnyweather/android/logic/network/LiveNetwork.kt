@@ -20,6 +20,7 @@ object LiveNetwork {
     suspend fun getRoomsOn(uid: String) = liveService.getRoomsOn(uid).await()
     suspend fun Search(platform: String, keyWords: String, isLive: String) = liveService.search(platform, keyWords, isLive).await()
     suspend fun getAllAreas() = liveService.getAllAreas().await()
+    suspend fun login(username: String, password: String) = liveService.login(username, password).await()
 
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->

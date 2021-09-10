@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -32,14 +34,16 @@ class RecommendFragment(val platform: String) : Fragment()  {
         return inflater.inflate(R.layout.fragment_roomlist, container, false)
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.i("test", platform)
         val layoutManager = GridLayoutManager(context, 2)
         recyclerView.addItemDecoration(SpaceItemDecoration(10))
         recyclerView.layoutManager = layoutManager
         adapter = RoomListAdapter(this, viewModel.roomList)
         recyclerView.adapter = adapter
-
+        progressBar_roomList.isVisible = true
         //下拉刷新，加载更多
         refresh_home.setRefreshHeader(ClassicsHeader(context))
         refresh_home.setRefreshFooter(ClassicsFooter(context))
@@ -54,6 +58,8 @@ class RecommendFragment(val platform: String) : Fragment()  {
         if (viewModel.roomList.size < 1) {
             SunnyWeatherApplication.areaName.observe(viewLifecycleOwner, {
                 viewModel.clearPage()
+                progressBar_roomList.isVisible = true
+                recyclerView.isGone = true
                 viewModel.getRecommend(platform, SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
             })
             viewModel.roomListLiveDate.observe(viewLifecycleOwner, { result ->
@@ -64,6 +70,8 @@ class RecommendFragment(val platform: String) : Fragment()  {
                 if (rooms != null) {
                     viewModel.roomList.addAll(rooms)
                     adapter.notifyDataSetChanged()
+                    progressBar_roomList.isGone = true
+                    recyclerView.isVisible = true
                     refresh_home.finishRefresh() //传入false表示刷新失败
                     refresh_home.finishLoadMore() //传入false表示加载失败
                 } else {
