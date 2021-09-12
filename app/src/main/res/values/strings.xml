@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MixLive</string>
+    <string name="app_name">JustLive</string>
     <string name="search_hint">搜索主播</string>
     <string name="dkplayer_replay">重新播放</string>
     <string name="dkplayer_lock_tip">请先解锁屏幕！</string>

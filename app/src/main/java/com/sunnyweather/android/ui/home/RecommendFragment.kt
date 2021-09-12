@@ -24,6 +24,7 @@ import com.scwang.smart.refresh.header.ClassicsHeader
 
 
 class RecommendFragment(val platform: String) : Fragment()  {
+    constructor(): this("all")
     private val viewModel by lazy { ViewModelProvider(this).get(HomeViewModel::class.java) }
     private lateinit var adapter: RoomListAdapter
     override fun onCreateView(
