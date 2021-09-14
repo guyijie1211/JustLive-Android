@@ -4,10 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.sunnyweather.android.logic.Repository
+import com.sunnyweather.android.logic.danmu.DanmuService
 
 class LiveRoomViewModel : ViewModel() {
     class UrlRequest (val platform: String, val roomId: String)
     class RoomInfoRequest (val uid: String, val platform: String, val roomId: String)
+    class DanmuInfo(val userName: String, val content: String)
+    var danmuNum = MutableLiveData<Int>()
+    val danmuList = ArrayList<DanmuInfo>()
+    lateinit var danmuService: DanmuService
 
     private val urlsRequestData = MutableLiveData<UrlRequest>()
     private val roomInfoRequestData = MutableLiveData<RoomInfoRequest>()
@@ -26,5 +31,14 @@ class LiveRoomViewModel : ViewModel() {
 
     fun getRoomInfo(uid: String, platform: String, roomId: String) {
         roomInfoRequestData.value = RoomInfoRequest(uid, platform, roomId)
+    }
+
+    fun startDanmu(platform: String, roomId: String) {
+        danmuService = DanmuService(platform, roomId)
+        danmuService.connect(danmuList, danmuNum)
+    }
+
+    fun stopDanmu(){
+        danmuService.stop()
     }
 }
