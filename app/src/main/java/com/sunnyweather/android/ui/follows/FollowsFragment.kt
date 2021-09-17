@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -18,6 +17,7 @@ import com.sunnyweather.android.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_follows.*
 
 private const val NUM_PAGES = 2
+private var showLogin = false
 
 class FollowsFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
@@ -47,23 +47,24 @@ class FollowsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (SunnyWeatherApplication.isLogin) return
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("启用关注")
-            .setMessage("登录后获取关注列表")
-            .setOnDismissListener {
-                val main: MainActivity = context as MainActivity
-                main.toFirst()
-            }
-            .setNegativeButton("返回") { _, _ ->
-                val main: MainActivity = context as MainActivity
-                main.toFirst()
-            }
-            .setPositiveButton("登录") { _, _ ->
-                val intent = Intent(context, LoginActivity::class.java)
-                startActivity(intent)
-            }
-            .show()
+        if (!SunnyWeatherApplication.isLogin.value!! && !showLogin) {
+            showLogin = true
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("启用关注")
+                .setMessage("登录后获取关注列表")
+                .setCancelable(false)
+                .setNegativeButton("返回") { _, _ ->
+                    showLogin = false
+                    val main: MainActivity = context as MainActivity
+                    main.toFirst()
+                }
+                .setPositiveButton("登录") { _, _ ->
+                    showLogin = false
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
+                }
+                .show()
+        }
     }
 
 

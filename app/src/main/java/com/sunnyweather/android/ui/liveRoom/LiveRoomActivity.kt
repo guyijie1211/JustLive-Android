@@ -3,11 +3,9 @@ package com.sunnyweather.android.ui.liveRoom
 import android.animation.ValueAnimator
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -15,7 +13,6 @@ import com.google.gson.internal.LinkedTreeMap
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
 import com.sunnyweather.android.logic.model.RoomInfo
-import com.sunnyweather.android.ui.roomList.SpaceItemDecoration
 import com.sunnyweather.android.util.dkplayer.YJLiveControlView
 import kotlinx.android.synthetic.main.activity_liveroom.*
 import xyz.doikki.videocontroller.StandardVideoController
@@ -28,11 +25,8 @@ import xyz.doikki.videoplayer.exo.ExoMediaPlayer
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
 import xyz.doikki.videoplayer.util.PlayerUtils
-import android.R.string.no
 import android.util.DisplayMetrics
-
 import androidx.recyclerview.widget.LinearSmoothScroller
-
 import androidx.recyclerview.widget.RecyclerView
 import com.sunnyweather.android.util.dkplayer.MyDanmakuView
 
@@ -74,7 +68,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         val point = Point()
         this.windowManager.defaultDisplay.getRealSize(point)
         lp.height = point.x * 9 / 16
-        Log.i("test", lp.height.toString())
         player_container.layoutParams = lp
 
         mPIPManager = PIPManager.getInstance()
@@ -85,7 +78,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         controller!!.setDoubleTapTogglePlayEnabled(false)
         controller!!.setEnableInNormal(true)
 
-        Log.i("test", "正常变窗口")
         mPIPManager.actClass = LiveRoomActivity::class.java
         val platform = intent.getStringExtra("platform")?:""
         val roomId = intent.getStringExtra("roomId")?:""
@@ -95,9 +87,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
         videoView = VideoViewManager.instance().get("pip") as VideoView<ExoMediaPlayer>?
         player_container.addView(videoView)
-        viewModel.danmuNum.observe(this, {list ->
+        viewModel.danmuNum.observe(this, {
             adapter.notifyDataSetChanged()
-            mMyDanmakuView.addDanmaku(viewModel.danmuList[viewModel.danmuList.size-1].content, true)
+            mMyDanmakuView.addDanmaku(viewModel.danmuList[viewModel.danmuList.size-1].content, false)
             danMu_recyclerView.smoothScrollToPosition(viewModel.danmuList.size)
         })
         viewModel.urlResponseData.observe(this, {result ->
@@ -127,7 +119,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     override fun onStart() {
         super.onStart()
         if (mPIPManager.isStartFloatWindow) {
-            Log.i("test", "窗口变正常")
             val playerTemp = VideoViewManager.instance().get("pip")
             mPIPManager.stopFloatWindow()
             controller?.setPlayerState(playerTemp.currentPlayerState)

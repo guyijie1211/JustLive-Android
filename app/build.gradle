@@ -80,6 +80,8 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.1.72.android'                //fastJson
     implementation 'com.github.ctiao:DanmakuFlameMaster:0.9.25'         //烈焰弹幕
     implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'           //烈焰弹幕
+    implementation 'com.roger.gifloadinglibrary:gifloadinglibrary:1.1.1'//加载动画
+    implementation 'com.github.liangjingkanji:StateLayout:1.2.0'        //缺省页
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

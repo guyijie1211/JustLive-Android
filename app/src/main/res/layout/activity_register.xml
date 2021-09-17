@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="注册"
+        android:layout_marginTop="80dp"
+        android:textSize="50sp"
+        android:textStyle="normal" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_register"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="vertical">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username_text_register"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:helperTextEnabled="true"
+            app:errorEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            app:helperText="@string/registerUserNameHelp"
+            android:hint="登录用户名">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userName_content_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nickname_text_register"
+            android:layout_width="350dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:helperTextEnabled="true"
+            app:errorEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            app:helperText="@string/registerNickNameHelp"
+            android:hint="昵称">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nickName_content_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_text_register"
+            android:layout_width="350dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:errorEnabled="true"
+            android:hint="密码">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_content_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/repassword_text_register"
+            android:layout_width="350dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:errorEnabled="true"
+            android:hint="重复密码">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/repassword_content_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/registerBtn"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:text="注册"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="25sp"/>
+    </LinearLayout>
+</RelativeLayout>

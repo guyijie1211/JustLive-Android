@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.model.Owner
 
-
 class SearchViewModel : ViewModel(){
     class SearchRequest (val platform: String, val keyWords: String, val isLive: String)
 

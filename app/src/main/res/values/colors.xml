@@ -20,4 +20,6 @@
     <color name="suggestionIconColor">#657786</color>
     <color name="suggestionTextColor">#657786</color>
     <color name="suggestionSelectedTextColor">#212121</color>
+
+    <color name="textSecond">#bdbdbd</color>
 </resources>

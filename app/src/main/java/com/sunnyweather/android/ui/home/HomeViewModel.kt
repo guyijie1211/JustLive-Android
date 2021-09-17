@@ -1,6 +1,5 @@
 package com.sunnyweather.android.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -29,8 +28,7 @@ class HomeViewModel : ViewModel() {
         pageLiveData.value = RecommendInfo(platform, areaType, area, page, 20)
     }
 
-    private fun getRecommendSelect(platform: String, areaType: String, area: String, page: Int, size: Int): LiveData<Result<List<RoomInfo>>> {
-        Log.i("test", "获取房间：${platform},$areaType,$area,$page")
+    private fun getRecommendSelect(platform: String, areaType: String, area: String, page: Int, size: Int): LiveData<Result<Any>> {
         return if (area == "all") {
             if (platform == "all") {
                 Repository.getRecommend(page, size)

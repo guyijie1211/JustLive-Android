@@ -1,7 +1,12 @@
 package com.sunnyweather.android.logic
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.liveData
 import com.google.gson.internal.LinkedTreeMap
+import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.logic.network.LiveNetwork
 import kotlinx.coroutines.Dispatchers
@@ -11,11 +16,19 @@ object Repository {
     fun getRecommend(page: Int, size: Int) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.getRecommend(page, size)
-            if (liveResponse.code == "200") {
-                val rooms = liveResponse.data
-                Result.success(rooms)
-            } else {
-                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
@@ -25,11 +38,19 @@ object Repository {
     fun getRecommendByPlatform(platform: String, page: Int, size: Int) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.getRecommendByPlatform(platform, page, size)
-            if (liveResponse.code == "200") {
-                val rooms = liveResponse.data
-                Result.success(rooms)
-            } else {
-                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
@@ -39,11 +60,19 @@ object Repository {
     fun getRecommendByPlatformArea(platform: String, area: String, page: Int, size: Int) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.getRecommendByPlatformArea(platform, area, page, size)
-            if (liveResponse.code == "200") {
-                val rooms = liveResponse.data
-                Result.success(rooms)
-            } else {
-                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
@@ -53,11 +82,19 @@ object Repository {
     fun getRecommendByAreaAll(areaType: String, area: String, page: Int) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.getRecommendByAreaAll(areaType, area, page)
-            if (liveResponse.code == "200") {
-                val rooms = liveResponse.data
-                Result.success(rooms)
-            } else {
-                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
@@ -86,7 +123,11 @@ object Repository {
                     resultRooms["流畅"] = rooms["FD"]
                 }
                 Result.success(resultRooms)
+            } else if (liveResponse.code == "400") {
+                val rooms = liveResponse.message
+                Result.success(rooms)
             } else {
+                "请求异常，请联系作者".showToast(context)
                 Result.failure(RuntimeException("response status is ${liveResponse.message}"))
             }
         } catch (e: Exception) {
@@ -97,11 +138,19 @@ object Repository {
     fun getRoomInfo(uid: String, platform: String, roomId: String) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.getRoomInfo(uid, platform, roomId)
-            if (liveResponse.code == "200") {
-                val roomInfo = liveResponse.data
-                Result.success(roomInfo)
-            } else {
-                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
@@ -111,11 +160,19 @@ object Repository {
     fun getRoomsOn(uid: String) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.getRoomsOn(uid)
-            if (liveResponse.code == "200") {
-                val rooms = liveResponse.data
-                Result.success(rooms)
-            } else {
-                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
@@ -124,12 +181,20 @@ object Repository {
     }
     fun search(platform: String, keyWords: String, isLive: String) = liveData(Dispatchers.IO){
         val result = try {
-            val searchResponse = LiveNetwork.Search(platform, keyWords, isLive)
-            if (searchResponse.code == "200") {
-                val rooms = searchResponse.data
-                Result.success(rooms)
-            } else {
-                Result.failure(RuntimeException("response status is ${searchResponse.message}"))
+            val liveResponse = LiveNetwork.Search(platform, keyWords, isLive)
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
@@ -139,11 +204,19 @@ object Repository {
     fun getAllAreas() = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.getAllAreas()
-            if (liveResponse.code == "200") {
-                val rooms = liveResponse.data
-                Result.success(rooms)
-            } else {
-                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
@@ -153,15 +226,50 @@ object Repository {
     fun login(username: String, password: String) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.login(username, password)
-            if (liveResponse.code == "200") {
-                val rooms = liveResponse.data
-                Result.success(rooms)
-            } else {
-                Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+            when (liveResponse.code) {
+                "200" -> {
+                    Log.i("test","successLogin")
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
             }
         } catch (e: Exception) {
             Result.failure<List<RoomInfo>>(e)
         }
         emit(result)
+    }
+    fun register(username: String, nickname: String, password: String) = liveData(Dispatchers.IO){
+        val result = try {
+            val liveResponse = LiveNetwork.register(username, nickname, password)
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
+            }
+        } catch (e: Exception) {
+            Result.failure<List<RoomInfo>>(e)
+        }
+        emit(result)
+    }
+    //toast
+    private fun String.showToast(context: Context) {
+        Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
     }
 }

@@ -21,6 +21,7 @@ object LiveNetwork {
     suspend fun Search(platform: String, keyWords: String, isLive: String) = liveService.search(platform, keyWords, isLive).await()
     suspend fun getAllAreas() = liveService.getAllAreas().await()
     suspend fun login(username: String, password: String) = liveService.login(username, password).await()
+    suspend fun register(username: String, nickname: String, password: String) = liveService.register(username, nickname, password).await()
 
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->

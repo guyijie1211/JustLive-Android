@@ -18,6 +18,14 @@
         <item>网易CC</item>
     </string-array>
 
+
     <string name="load_button">加载</string>
     <string name="succeed">登录成功</string>
+    <string name="registerSucceed">注册成功</string>
+    <string name="registerUserNameHelp">6-20位非中文</string>
+    <string name="userNameError">不能包含中文</string>
+    <string name="userNameError6">至少6位</string>
+    <string name="userNameError20">最多20位</string>
+    <string name="registerNickNameHelp">1-20位</string>
+    <string name="registerRePasswordError">两次输入的密码不一致</string>
 </resources>

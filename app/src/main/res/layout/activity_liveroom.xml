@@ -80,7 +80,8 @@
             android:id="@+id/pipBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="画中画"/>
+            android:text="画中画"
+            android:visibility="gone"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/danMu_recyclerView"
             android:layout_width="match_parent"

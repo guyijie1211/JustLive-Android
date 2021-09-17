@@ -11,9 +11,7 @@ import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.AreaInfo
 import com.sunnyweather.android.ui.roomList.SpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_arealist.*
-import com.sunnyweather.android.ui.area.AreaSingleFragment.FragmentListener
 import java.lang.IllegalArgumentException
-
 
 class AreaSingleFragment(private val areaList: List<AreaInfo>) : Fragment() {
     constructor() : this(ArrayList<AreaInfo>())

@@ -1,26 +1,19 @@
 package com.sunnyweather.android.ui.search
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import co.ankurg.expressview.ExpressView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.google.common.io.Resources.getResource
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
-import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
 import com.sunnyweather.android.logic.model.Owner
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
-import kotlinx.android.synthetic.main.activity_liveroom.*
 
 class SearchAdapter(private val activity: SearchActivity, private val ownerList: List<Owner>) :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>(){
@@ -38,7 +31,6 @@ class SearchAdapter(private val activity: SearchActivity, private val ownerList:
         val view = LayoutInflater.from(parent.context).inflate(R.layout.owner_item, parent, false)
         val holder = ViewHolder(view)
         holder.ownerItem.setOnClickListener {
-            Log.i("test", "点击")
             val position = holder.layoutPosition
             val ownerInfo = ownerList[position]
             val intent = Intent(parent.context, LiveRoomActivity::class.java).apply {

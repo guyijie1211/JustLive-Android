@@ -28,4 +28,6 @@ interface LiveService {
 
     @POST("/api/login")
     fun login(@Query("username") username: String, @Query("password") password: String): Call<UserInfoResponse>
+    @POST("/api/register")
+    fun register(@Query("username") username: String, @Query("nickname") nickname: String,  @Query("password") password: String): Call<UserInfoResponse>
 }

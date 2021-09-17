@@ -16,8 +16,6 @@ import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.AreaInfo
 import kotlinx.android.synthetic.main.fragment_area.*
-import top.limuyang2.customldialog.BottomTextListDialog
-import top.limuyang2.ldialog.base.BaseLDialog
 import xyz.doikki.videoplayer.util.PlayerUtils
 
 class AreaFragment : DialogFragment() {

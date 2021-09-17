@@ -1,38 +1,41 @@
 package com.sunnyweather.android
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.angcyo.tablayout.delegate2.ViewPager2Delegate
-import com.google.android.material.tabs.TabLayoutMediator
+import com.sunnyweather.android.logic.model.UserInfo
 import com.sunnyweather.android.ui.area.AreaFragment
 import com.sunnyweather.android.ui.area.AreaSingleFragment
 import com.sunnyweather.android.ui.follows.FollowsFragment
 import com.sunnyweather.android.ui.home.HomeFragment
 import com.sunnyweather.android.ui.login.LoginActivity
+import com.sunnyweather.android.ui.login.LoginViewModel
 import com.sunnyweather.android.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_follows.*
-import kotlinx.android.synthetic.main.fragment_home.*
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
+    private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
     private lateinit var areaFragment: AreaFragment
     private lateinit var viewPager: ViewPager2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolBar)
+        initLogin()
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.baseline_menu_black_24)
@@ -51,7 +54,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         viewPager.isUserInputEnabled = false
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
-        viewPager.offscreenPageLimit = 2
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when (position) {
@@ -74,6 +76,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         })
         //tabLayout
         ViewPager2Delegate.install(viewPager, tab_main)
+
         //标题栏的标题click事件
         main_toolBar_title.setOnClickListener {
             val fragmentManager = supportFragmentManager
@@ -100,6 +103,11 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
+            R.id.toolbar_logout -> {
+                SunnyWeatherApplication.clearLoginInfo(this)
+                main_fragment.currentItem = 0
+                Toast.makeText(this, "已退出", Toast.LENGTH_SHORT).show()
+            }
         }
         return true
     }
@@ -120,8 +128,27 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                 else -> Fragment()
             }
     }
-
     fun toFirst(){
         viewPager.currentItem = 0
+    }
+    private fun initLogin(){
+        var sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+        val username = sharedPref.getString("username", "").toString()
+        val password = sharedPref.getString("password", "").toString()
+        val hsa = sharedPref.contains("")
+        viewModel.loginResponseLiveDate.observe(this, { result ->
+            val userInfo = result.getOrNull()
+            if (userInfo is UserInfo) {
+                SunnyWeatherApplication.userInfo = userInfo
+                SunnyWeatherApplication.isLogin.value = true
+            } else if(userInfo is String){
+                SunnyWeatherApplication.clearLoginInfo(this)
+                Toast.makeText(this, "用户密码已修改，请重新登录", Toast.LENGTH_SHORT).show()
+                result.exceptionOrNull()?.printStackTrace()
+            }
+        })
+        if (password.length > 1) {
+            viewModel.doLogin(username, password)
+        }
     }
 }

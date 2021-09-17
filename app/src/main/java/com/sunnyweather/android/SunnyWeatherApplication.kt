@@ -1,18 +1,21 @@
 package com.sunnyweather.android
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModelProvider
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.sunnyweather.android.logic.Repository
-import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.logic.model.UserInfo
-import com.sunnyweather.android.logic.network.LiveNetwork
+import com.sunnyweather.android.ui.login.LoginViewModel
 import xyz.doikki.videoplayer.exo.ExoMediaPlayerFactory
 import xyz.doikki.videoplayer.player.VideoViewConfig
 import xyz.doikki.videoplayer.player.VideoViewManager
-import java.lang.Exception
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -25,9 +28,21 @@ class SunnyWeatherApplication : Application() {
         var areaName = MutableLiveData<String>()
         var areaType = MutableLiveData<String>()
         var userInfo: UserInfo? = null
-        var isLogin = false
+        var isLogin = MutableLiveData(false)
 
-        fun platformName(platform: String): String{
+        fun clearLoginInfo(activity: Activity) {
+            var sharedPref = activity.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+            sharedPref.edit().remove("username").remove("password").commit()
+            userInfo = null
+            isLogin.value = false
+        }
+
+        fun saveLoginInfo(activity: Activity, username: String, password: String) {
+            var sharedPref = activity.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+            sharedPref.edit().putString("username", username).putString("password", password).commit()
+        }
+
+        fun platformName(platform: String?): String{
             return when(platform) {
                 "douyu" -> "斗鱼"
                 "huya" -> "虎牙"
@@ -68,10 +83,5 @@ class SunnyWeatherApplication : Application() {
             //使用ExoPlayer解码
             .setPlayerFactory(ExoMediaPlayerFactory.create())
             .build())
-//        var sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
-//        val username = sharedPref.getString("username", "").toString()
-//        val password = sharedPref.getString("password", "").toString()
-//        Repository.login(username, password)
     }
-
 }
