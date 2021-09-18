@@ -31,11 +31,6 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        val multiStateContainer = recyclerView.bindMultiState()
-//        multiStateContainer.isShown
-        if (SunnyWeatherApplication.isLogin.value!!){
-            progressBar_roomList.isVisible = true
-        }
         val layoutManager = GridLayoutManager(context, 2)
         recyclerView.addItemDecoration(SpaceItemDecoration(10))
         recyclerView.layoutManager = layoutManager
@@ -43,7 +38,6 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
         recyclerView.adapter = adapterOn
         //下拉刷新，加载更多
         refresh_home.setRefreshHeader(ClassicsHeader(context))
-//        refresh_home_foot.visibility = View.GONE
         refresh_home.finishLoadMoreWithNoMoreData()
         refresh_home.setOnRefreshListener {
             viewModel.clearRoomList()
@@ -75,6 +69,9 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
             })
         }
         viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
+        if (SunnyWeatherApplication.isLogin.value!!){
+            progressBar_roomList.isVisible = true
+        }
     }
 
     private fun sortRooms(roomList: List<RoomInfo>) {

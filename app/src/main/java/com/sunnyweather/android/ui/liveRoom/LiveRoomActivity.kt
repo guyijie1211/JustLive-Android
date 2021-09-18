@@ -20,7 +20,6 @@ import xyz.doikki.videocontroller.component.*
 import com.sunnyweather.android.util.dkplayer.PIPManager
 import com.sunnyweather.android.util.dkplayer.YJstandardController
 import com.yanzhenjie.permission.AndPermission
-import kotlinx.android.synthetic.main.fragment_roomlist.*
 import xyz.doikki.videoplayer.exo.ExoMediaPlayer
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
@@ -37,7 +36,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     private lateinit var mPIPManager: PIPManager
     private var controller: YJstandardController? = null
     private var videoView: VideoView<ExoMediaPlayer>? = null
-    private var show = false
     private lateinit var mMyDanmakuView: MyDanmakuView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,9 +70,8 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
         mPIPManager = PIPManager.getInstance()
         controller = YJstandardController(this)
-        addControlComponents(controller!!)
         mMyDanmakuView = MyDanmakuView(this)
-        controller!!.addControlComponent(mMyDanmakuView)
+        addControlComponents(controller!!)
         controller!!.setDoubleTapTogglePlayEnabled(false)
         controller!!.setEnableInNormal(true)
 
@@ -143,7 +140,8 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             prepareView,
             titleView,
             mDefinitionControlView,
-            gestureView
+            gestureView,
+            mMyDanmakuView
         )
     }
 

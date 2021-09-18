@@ -37,7 +37,6 @@ class RecommendFragment(val platform: String) : Fragment()  {
         recyclerView.layoutManager = layoutManager
         adapter = RoomListAdapter(this, viewModel.roomList)
         recyclerView.adapter = adapter
-        progressBar_roomList.isVisible = true
         //下拉刷新，加载更多
         refresh_home_foot.setFinishDuration(0)//设置Footer 的 “加载完成” 显示时间为0
         refresh_home.setOnRefreshListener {
@@ -78,6 +77,7 @@ class RecommendFragment(val platform: String) : Fragment()  {
                 }
             })
             viewModel.getRecommend(platform, SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+            progressBar_roomList.isVisible = true
         }
     }
 }

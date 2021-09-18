@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'           //烈焰弹幕
     implementation 'com.roger.gifloadinglibrary:gifloadinglibrary:1.1.1'//加载动画
     implementation 'com.github.liangjingkanji:StateLayout:1.2.0'        //缺省页
+    implementation 'com.auth0:java-jwt:3.18.2'                          //虎牙JWT
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

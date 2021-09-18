@@ -161,7 +161,6 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
 
     /**
      * 发送文字弹幕
-     *
      * @param text   弹幕文字
      * @param isSelf 是不是自己发的
      */
@@ -175,7 +174,7 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
         danmaku.text = text;
         danmaku.priority = 0;  // 可能会被各种过滤器过滤并隐藏显示
         danmaku.isLive = false;
-        danmaku.setTime(getCurrentTime() + 1200);
+        danmaku.setTime(getCurrentTime());
         danmaku.textSize = PlayerUtils.sp2px(getContext(), 12);
         danmaku.textColor = Color.WHITE;
         danmaku.textShadowColor = Color.GRAY;
@@ -199,17 +198,14 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
         int size = PlayerUtils.dp2px(getContext(), 20);
         drawable.setBounds(0, 0, size, size);
 
-//        danmaku.text = "这是一条弹幕";
-        danmaku.text = createSpannable(drawable);
-//        danmaku.padding = 5;
-        danmaku.priority = 0;  // 可能会被各种过滤器过滤并隐藏显示
-        danmaku.isLive = false;
-        danmaku.setTime(getCurrentTime() + 1200);
-        danmaku.textSize = PlayerUtils.sp2px(getContext(), 12);
+        danmaku.padding = 5;
+        danmaku.priority = 8;  // 可能会被各种过滤器过滤并隐藏显示，所以提高等级
+        danmaku.isLive = true;
+        danmaku.setTime(getCurrentTime() + 500);
+        danmaku.textSize = 25f * (mParser.getDisplayer().getDensity() - 0.6f);
         danmaku.textColor = Color.RED;
         danmaku.textShadowColor = Color.WHITE;
-        // danmaku.underlineColor = Color.GREEN;
-//        danmaku.borderColor = Color.GREEN;
+        danmaku.borderColor = Color.GREEN;
         addDanmaku(danmaku);
 
     }
