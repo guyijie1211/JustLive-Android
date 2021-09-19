@@ -2,10 +2,9 @@ package com.sunnyweather.android
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
@@ -26,6 +25,14 @@ import com.sunnyweather.android.ui.login.LoginActivity
 import com.sunnyweather.android.ui.login.LoginViewModel
 import com.sunnyweather.android.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
+
+import android.os.Build
+import android.view.*
+import xyz.doikki.videoplayer.util.PlayerUtils.getStatusBarHeight
+
+import android.view.ViewGroup
+import xyz.doikki.videoplayer.util.PlayerUtils
+
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }

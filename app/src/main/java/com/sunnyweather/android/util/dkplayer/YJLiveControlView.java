@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +40,9 @@ import xyz.doikki.videoplayer.util.L;
 import xyz.doikki.videoplayer.util.PlayerUtils;
 
 public class YJLiveControlView extends FrameLayout implements IControlComponent, View.OnClickListener{
-
+    private OnRateSwitchListener onRateSwitchListener;
     protected ControlWrapper mControlWrapper;
-
+    private Boolean showDanmu = true;
     private TextView mDefinition;
     private LiveRoomActivity liveRoomActivity;
 
@@ -59,6 +60,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     private FrameLayout mBottomContainer;
     private ProgressBar mBottomProgress;
     private ImageView mPlayButton;
+    private ImageView danmu_show;
 
     private boolean mIsDragging;
 
@@ -81,7 +83,9 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         super(context, attrs, defStyleAttr);
     }
 
+
     {
+        onRateSwitchListener = (OnRateSwitchListener) getContext();
         setVisibility(GONE);
         LayoutInflater.from(getContext()).inflate(getLayoutId(), this, true);
         mFullScreen = findViewById(xyz.doikki.videocontroller.R.id.fullscreen);
@@ -90,6 +94,8 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         mPlayButton = findViewById(xyz.doikki.videocontroller.R.id.iv_play);
         mPlayButton.setOnClickListener(this);
         mBottomProgress = findViewById(xyz.doikki.videocontroller.R.id.bottom_progress);
+        danmu_show = findViewById(R.id.danmu_show);
+        danmu_show.setOnClickListener(this);
         ImageView refresh = findViewById(R.id.iv_refresh);
         refresh.setOnClickListener(this);
 
@@ -103,29 +109,22 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         mDefinition = findViewById(R.id.tv_definition);
         mDefinition.setOnClickListener(v -> showRateMenu());
     }
-
     private void showRateMenu() {
         mPopLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         mPopupWindow.showAsDropDown(mDefinition, -((mPopLayout.getMeasuredWidth() - mDefinition.getMeasuredWidth()) / 2),
                 -(mPopLayout.getMeasuredHeight() + mDefinition.getMeasuredHeight() + PlayerUtils.dp2px(getContext(), 10)));
     }
-
     protected int getLayoutId() {
         return R.layout.layout_definition_control_view;
     }
-
     @Override
     public void attach(@NonNull ControlWrapper controlWrapper) {
         mControlWrapper = controlWrapper;
     }
-
     @Override
     public View getView() {
         return this;
     }
-
-
-
     @Override
     public void onVisibilityChanged(boolean isVisible, Animation anim) {
         if (isVisible) {
@@ -152,7 +151,6 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
             }
         }
     }
-
     @Override
     public void onPlayStateChanged(int playState) {
         switch (playState) {
@@ -194,7 +192,6 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                 break;
         }
     }
-
     @Override
     public void onPlayerStateChanged(int playerState) {
         switch (playerState) {
@@ -223,19 +220,16 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
             }
         }
     }
-
     @Override
     public void setProgress(int duration, int position) {
         if (mIsDragging) {
             return;
         }
     }
-
     @Override
     public void onLockStateChanged(boolean isLocked) {
         onVisibilityChanged(!isLocked, null);
     }
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -245,6 +239,10 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
             mControlWrapper.togglePlay();
         } else if (id == R.id.iv_refresh) {
             mControlWrapper.replay(true);
+        } else if (id == R.id.danmu_show) {
+            danmu_show.setSelected(showDanmu);
+            showDanmu = !showDanmu;
+            onRateSwitchListener.onDanmuShowChange();
         }
     }
 
@@ -306,9 +304,11 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
 
     public interface OnRateSwitchListener {
         void onRateChange(String url);
+        void onDanmuShowChange();
     }
 
     public void setOnRateSwitchListener(YJLiveControlView.OnRateSwitchListener onRateSwitchListener) {
         mOnRateSwitchListener = onRateSwitchListener;
     }
+
 }

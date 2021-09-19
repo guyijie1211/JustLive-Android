@@ -25,6 +25,7 @@ import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
 import xyz.doikki.videoplayer.util.PlayerUtils
 import android.util.DisplayMetrics
+import android.util.Log
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.sunnyweather.android.util.dkplayer.MyDanmakuView
@@ -34,6 +35,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     private var mDefinitionControlView: YJLiveControlView? = null
     private lateinit var adapter: LiveRoomAdapter
     private lateinit var mPIPManager: PIPManager
+    private var danmuShow = true
     private var controller: YJstandardController? = null
     private var videoView: VideoView<ExoMediaPlayer>? = null
     private lateinit var mMyDanmakuView: MyDanmakuView
@@ -185,6 +187,17 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     override fun onRateChange(url: String?) {
         videoView?.setUrl(url)
         videoView?.replay(false)
+    }
+
+    override fun onDanmuShowChange() {
+        Log.i("test", "showDanmuMain")
+        danmuShow = if (danmuShow) {
+            mMyDanmakuView.hide()
+            !danmuShow
+        } else {
+            mMyDanmakuView.show()
+            !danmuShow
+        }
     }
 
     private fun startFloatWindow(view: View?) {

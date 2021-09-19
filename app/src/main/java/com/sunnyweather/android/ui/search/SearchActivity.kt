@@ -2,10 +2,10 @@ package com.sunnyweather.android.ui.search
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,18 +18,25 @@ import com.paulrybitskyi.persistentsearchview.listeners.OnSearchConfirmedListene
 import com.paulrybitskyi.persistentsearchview.listeners.OnSearchQueryChangeListener
 import com.paulrybitskyi.persistentsearchview.listeners.OnSuggestionChangeListener
 import com.paulrybitskyi.persistentsearchview.utils.SuggestionCreationUtil
-import com.paulrybitskyi.persistentsearchview.utils.VoiceRecognitionDelegate
 import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.Owner
 import com.sunnyweather.android.ui.customerUIs.AnimationUtils
 import com.sunnyweather.android.ui.customerUIs.HeaderedRecyclerViewListener
 import com.sunnyweather.android.ui.customerUIs.VerticalSpacingItemDecorator
 import com.sunnyweather.android.ui.roomList.SpaceItemDecoration
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_search.*
 import java.lang.StringBuilder
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
+import android.view.WindowManager
+import android.app.Activity
+import com.arlib.floatingsearchview.FloatingSearchView
+import com.sunnyweather.android.SunnyWeatherApplication
+import java.lang.Exception
+import java.lang.reflect.Method
+
 
 class SearchActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var sharedPref: SharedPreferences
@@ -42,7 +49,19 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         init()
+        val window: Window = this.window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.TRANSPARENT
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
 
+            val decor: View = this.window.decorView
+                decor.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            SunnyWeatherApplication.MIUISetStatusBarLightMode(this, true)
+        }
         //****************************
         recyclerView_search.addItemDecoration(SpaceItemDecoration(10))
         searchAdapter = SearchAdapter(this, viewModel.ownersList as List<Owner>)
@@ -72,8 +91,13 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         sharedPref = this.getPreferences(Context.MODE_PRIVATE)
-        val temp = java.util.ArrayList(sharedPref.getString("historySearch", "").toString().split(","))
-        historySearchList = temp as ArrayList<String>
+        val tempString = sharedPref.getString("historySearch", "")
+        historySearchList = if (tempString == "") {
+            ArrayList()
+        } else {
+            val temp = java.util.ArrayList(tempString.toString().trim().split(","))
+            temp
+        }
 
         initProgressBar()
         initSearchView()
@@ -116,19 +140,17 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
     private fun initSearchView() = with(persistentSearchView) {
         setOnLeftBtnClickListener(this@SearchActivity)
         setOnClearInputBtnClickListener(this@SearchActivity)
-        setVoiceRecognitionDelegate(VoiceRecognitionDelegate(this@SearchActivity))
         setOnSearchConfirmedListener(mOnSearchConfirmedListener) //提交搜索监听
         setOnSearchQueryChangeListener(mOnSearchQueryChangeListener)//输入监听
         setOnSuggestionChangeListener(mOnSuggestionChangeListener)  //选择历史记录或删除
         setDismissOnTouchOutside(true)
         setDimBackground(true)
         isProgressBarEnabled = true
-        isVoiceInputButtonEnabled = true
         isClearInputButtonEnabled = true
         setSuggestionsDisabled(false)
         setQueryInputGravity(Gravity.START or Gravity.CENTER)
+        setQueryInputHint("搜索")
     }
-
     //选择历史记录或删除
     private val mOnSuggestionChangeListener = object : OnSuggestionChangeListener {
         override fun onSuggestionPicked(suggestion: SuggestionItem) {
@@ -211,6 +233,9 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun listToString(list: List<String>, separator: Char): String? {
+        if (list.isEmpty()) {
+            return ""
+        }
         val sb = StringBuilder()
         for (i in list.indices) {
             sb.append(list[i]).append(separator)
@@ -266,4 +291,5 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
                     persistentSearchView.isExpanded
         )
     }
+
 }

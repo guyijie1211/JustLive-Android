@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dkplayer_controller_height"
         android:layout_gravity="bottom"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
@@ -34,8 +34,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1"/>
 
-
-
+        <ImageView
+            android:id="@+id/danmu_show"
+            android:layout_width="@dimen/dkplayer_controller_height"
+            android:layout_height="@dimen/dkplayer_controller_height"
+            android:padding="6dp"
+            android:src="@drawable/dkplayer_danmu_show_button" />
+        <ImageView
+            android:id="@+id/danmu_setting"
+            android:layout_width="@dimen/dkplayer_controller_height"
+            android:layout_height="@dimen/dkplayer_controller_height"
+            android:padding="10dp"
+            android:src="@drawable/dkplayer_danmu_setting_button" />
         <TextView
             android:id="@+id/tv_definition"
             android:layout_width="wrap_content"
