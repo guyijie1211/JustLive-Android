@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.danmu.DanmuService
+import com.sunnyweather.android.logic.model.DanmuSetting
 
 class LiveRoomViewModel : ViewModel() {
     class UrlRequest (val platform: String, val roomId: String)
@@ -12,6 +13,7 @@ class LiveRoomViewModel : ViewModel() {
     class DanmuInfo(val userName: String, val content: String)
     var danmuNum = MutableLiveData<Int>()
     val danmuList = ArrayList<DanmuInfo>()
+    var danmuSetting = MutableLiveData<DanmuSetting>()
     lateinit var danmuService: DanmuService
 
     private val urlsRequestData = MutableLiveData<UrlRequest>()

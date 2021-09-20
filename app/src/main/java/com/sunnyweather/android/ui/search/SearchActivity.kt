@@ -37,12 +37,9 @@ import com.sunnyweather.android.SunnyWeatherApplication
 import java.lang.Exception
 import java.lang.reflect.Method
 
-
 class SearchActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var sharedPref: SharedPreferences
     private lateinit var historySearchList: ArrayList<String>
-
-
     private val viewModel by lazy { ViewModelProvider(this).get(SearchViewModel::class.java) }
     private lateinit var searchAdapter: SearchAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +87,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun init() {
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
         val tempString = sharedPref.getString("historySearch", "")
         historySearchList = if (tempString == "") {
             ArrayList()

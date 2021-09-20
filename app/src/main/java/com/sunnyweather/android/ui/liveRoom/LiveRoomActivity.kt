@@ -1,6 +1,8 @@
 package com.sunnyweather.android.ui.liveRoom
 
 import android.animation.ValueAnimator
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Bundle
 import android.view.View
@@ -13,12 +15,9 @@ import com.google.gson.internal.LinkedTreeMap
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
 import com.sunnyweather.android.logic.model.RoomInfo
-import com.sunnyweather.android.util.dkplayer.YJLiveControlView
 import kotlinx.android.synthetic.main.activity_liveroom.*
 import xyz.doikki.videocontroller.StandardVideoController
 import xyz.doikki.videocontroller.component.*
-import com.sunnyweather.android.util.dkplayer.PIPManager
-import com.sunnyweather.android.util.dkplayer.YJstandardController
 import com.yanzhenjie.permission.AndPermission
 import xyz.doikki.videoplayer.exo.ExoMediaPlayer
 import xyz.doikki.videoplayer.player.VideoView
@@ -28,9 +27,16 @@ import android.util.DisplayMetrics
 import android.util.Log
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import com.sunnyweather.android.util.dkplayer.MyDanmakuView
+import com.sunnyweather.android.logic.model.DanmuSetting
+import com.sunnyweather.android.util.dkplayer.*
+import com.google.gson.Gson
+import com.google.gson.JsonParser
 
-class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener {
+import com.google.gson.JsonElement
+import java.lang.Exception
+
+
+class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
     private var mDefinitionControlView: YJLiveControlView? = null
     private lateinit var adapter: LiveRoomAdapter
@@ -39,6 +45,8 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     private var controller: YJstandardController? = null
     private var videoView: VideoView<ExoMediaPlayer>? = null
     private lateinit var mMyDanmakuView: MyDanmakuView
+    private lateinit var danmuSetting: DanmuSetting
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +68,10 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                 startSmoothScroll(smoothScroller)
             }
         }
+        //获取本地弹幕设置
+        sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+        danmuSetting = getDanmuSetting()
+
         danMu_recyclerView.layoutManager = linearLayoutManager
         adapter = LiveRoomAdapter(viewModel.danmuList)
         danMu_recyclerView.adapter = adapter
@@ -88,7 +100,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         player_container.addView(videoView)
         viewModel.danmuNum.observe(this, {
             adapter.notifyDataSetChanged()
-            mMyDanmakuView.addDanmaku(viewModel.danmuList[viewModel.danmuList.size-1].content, false)
+            mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content, false)
             danMu_recyclerView.smoothScrollToPosition(viewModel.danmuList.size)
         })
         viewModel.urlResponseData.observe(this, {result ->
@@ -102,6 +114,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         })
         pipBtn.setOnClickListener {
             startFloatWindow(videoView)
+        }
+        tinyScreen.setOnClickListener {
+            videoView!!.startTinyScreen()
         }
         viewModel.roomInfoResponseData.observe(this, {result ->
             val roomInfo : RoomInfo = result.getOrNull() as RoomInfo
@@ -200,6 +215,10 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         }
     }
 
+    override fun onDanmuSettingShowChanged() {
+        controller!!.stopFadeOut()
+    }
+
     private fun startFloatWindow(view: View?) {
         AndPermission
             .with(this)
@@ -211,5 +230,39 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             }
             .onDenied { }
             .start()
+    }
+
+    //SharedPreferences保存对象
+    fun setDanmuSetting(data: DanmuSetting) {
+        if (null == data) return
+        val gson = Gson()
+        //change data to json
+        val strJson = gson.toJson(data)
+        sharedPref.edit().putString("danmuSetting", strJson).commit()
+    }
+
+    //SharedPreferences读取对象
+    fun getDanmuSetting(): DanmuSetting {
+        val strJson: String? = sharedPref.getString("danmuSetting", null)
+        if (strJson != null) {
+            try {
+                val gson = Gson()
+                val jsonElement = JsonParser().parse(strJson)
+                return gson.fromJson(jsonElement, DanmuSetting::class.java)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        //默认弹幕设置
+        return DanmuSetting(0f,20f,0f,0.5f,0.5f,0f)
+    }
+
+    override fun getSetting(): DanmuSetting {
+        return danmuSetting
+    }
+
+    override fun changeSetting(setting: DanmuSetting) {
+        danmuSetting = setting
+        setDanmuSetting(setting)
     }
 }

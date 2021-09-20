@@ -1,5 +1,9 @@
 package com.sunnyweather.android.util.dkplayer;
 
+import static xyz.doikki.videoplayer.util.PlayerUtils.dp2px;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,13 +38,14 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import xyz.doikki.videoplayer.controller.BaseVideoController;
 import xyz.doikki.videoplayer.controller.ControlWrapper;
 import xyz.doikki.videoplayer.controller.IControlComponent;
 import xyz.doikki.videoplayer.player.VideoView;
 import xyz.doikki.videoplayer.util.L;
 import xyz.doikki.videoplayer.util.PlayerUtils;
 
-public class YJLiveControlView extends FrameLayout implements IControlComponent, View.OnClickListener{
+public class YJLiveControlView extends FrameLayout implements IControlComponent, View.OnClickListener {
     private OnRateSwitchListener onRateSwitchListener;
     protected ControlWrapper mControlWrapper;
     private Boolean showDanmu = true;
@@ -61,6 +67,8 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     private ProgressBar mBottomProgress;
     private ImageView mPlayButton;
     private ImageView danmu_show;
+    private ImageView danmu_setting;
+    private LinearLayout danmu_setting_container;
 
     private boolean mIsDragging;
 
@@ -96,6 +104,10 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         mBottomProgress = findViewById(xyz.doikki.videocontroller.R.id.bottom_progress);
         danmu_show = findViewById(R.id.danmu_show);
         danmu_show.setOnClickListener(this);
+        danmu_setting = findViewById(R.id.danmu_setting);
+        danmu_setting.setOnClickListener(this);
+        danmu_setting_container = findViewById(R.id.setting_layout);
+        danmu_setting_container.setOnClickListener(this);
         ImageView refresh = findViewById(R.id.iv_refresh);
         refresh.setOnClickListener(this);
 
@@ -110,9 +122,10 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         mDefinition.setOnClickListener(v -> showRateMenu());
     }
     private void showRateMenu() {
+        onRateSwitchListener.onDanmuSettingShowChanged();
         mPopLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         mPopupWindow.showAsDropDown(mDefinition, -((mPopLayout.getMeasuredWidth() - mDefinition.getMeasuredWidth()) / 2),
-                -(mPopLayout.getMeasuredHeight() + mDefinition.getMeasuredHeight() + PlayerUtils.dp2px(getContext(), 10)));
+                -(mPopLayout.getMeasuredHeight() + mDefinition.getMeasuredHeight() + dp2px(getContext(), 10)));
     }
     protected int getLayoutId() {
         return R.layout.layout_definition_control_view;
@@ -139,6 +152,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         } else {
             liveRoomActivity.changeRoomInfoVisible(false);
             mPopupWindow.dismiss();
+            hideSetting();
             mBottomContainer.setVisibility(GONE);
             if (anim != null) {
                 mBottomContainer.startAnimation(anim);
@@ -243,6 +257,10 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
             danmu_show.setSelected(showDanmu);
             showDanmu = !showDanmu;
             onRateSwitchListener.onDanmuShowChange();
+        } else if (id == R.id.danmu_setting) {
+            handleSetting();
+        } else if (id == R.id.setting_layout) {
+
         }
     }
 
@@ -305,10 +323,46 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     public interface OnRateSwitchListener {
         void onRateChange(String url);
         void onDanmuShowChange();
+        void onDanmuSettingShowChanged();
     }
 
     public void setOnRateSwitchListener(YJLiveControlView.OnRateSwitchListener onRateSwitchListener) {
         mOnRateSwitchListener = onRateSwitchListener;
+    }
+    //处理设置页面的显示
+    private void handleSetting() {
+        if (danmu_setting_container.getVisibility() == INVISIBLE) {
+            onRateSwitchListener.onDanmuSettingShowChanged();
+            showSetting();
+        } else {
+            hideSetting();
+        }
+    }
+    //显示设置页面
+    private void showSetting() {
+        danmu_setting_container.animate()
+                .translationX(0f)
+                .setDuration(300)
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        danmu_setting_container.setVisibility(VISIBLE);
+                    }
+                }).start();
+    }
+    //隐藏设置
+    private void hideSetting() {
+        danmu_setting_container.animate()
+                .translationX(dp2px(getContext(), 340f))
+                .setDuration(300)
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        danmu_setting_container.setVisibility(INVISIBLE);
+                    }
+                }).start();
     }
 
 }
