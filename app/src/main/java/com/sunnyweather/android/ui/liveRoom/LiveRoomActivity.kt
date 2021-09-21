@@ -33,6 +33,8 @@ import com.google.gson.Gson
 import com.google.gson.JsonParser
 
 import com.google.gson.JsonElement
+import com.xyoye.player.controller.danmu.DanmuView
+import com.xyoye.player.info.PlayerInitializer
 import java.lang.Exception
 
 
@@ -44,7 +46,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     private var danmuShow = true
     private var controller: YJstandardController? = null
     private var videoView: VideoView<ExoMediaPlayer>? = null
-    private lateinit var mMyDanmakuView: MyDanmakuView
+    private lateinit var mMyDanmakuView: DanmuView
     private lateinit var danmuSetting: DanmuSetting
     private lateinit var sharedPref: SharedPreferences
 
@@ -84,7 +86,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
         mPIPManager = PIPManager.getInstance()
         controller = YJstandardController(this)
-        mMyDanmakuView = MyDanmakuView(this)
+        mMyDanmakuView = DanmuView(this)
+        mMyDanmakuView.showFPS(true)
+//        mMyDanmakuView.enableDanmakuDrawingCache(true)
         addControlComponents(controller!!)
         controller!!.setDoubleTapTogglePlayEnabled(false)
         controller!!.setEnableInNormal(true)
@@ -100,7 +104,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         player_container.addView(videoView)
         viewModel.danmuNum.observe(this, {
             adapter.notifyDataSetChanged()
-            mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content, false)
+            mMyDanmakuView.addDanmuToView(viewModel.danmuList.last().content)
             danMu_recyclerView.smoothScrollToPosition(viewModel.danmuList.size)
         })
         viewModel.urlResponseData.observe(this, {result ->
@@ -205,7 +209,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     }
 
     override fun onDanmuShowChange() {
-        Log.i("test", "showDanmuMain")
         danmuShow = if (danmuShow) {
             mMyDanmakuView.hide()
             !danmuShow
@@ -261,8 +264,11 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         return danmuSetting
     }
 
-    override fun changeSetting(setting: DanmuSetting) {
+    override fun changeSetting(setting: DanmuSetting, updateItem: String) {
         danmuSetting = setting
         setDanmuSetting(setting)
+//        mMyDanmakuView.setContext(setting, updateItem)
     }
+
+
 }

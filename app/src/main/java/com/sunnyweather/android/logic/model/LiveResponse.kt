@@ -1,5 +1,7 @@
 package com.sunnyweather.android.logic.model
 
+import android.graphics.Color
+
 data class LiveRoomResponse(val code: String, val message: String, val data: List<RoomInfo>)
 data class UrlsResponse(val code: String, val message: String, val data: Map<String, String>)
 data class RoomInfoResponse(val code: String, val message: String, val data: RoomInfo)
@@ -54,3 +56,11 @@ data class DanmuSetting(
     var size: Float,
     var border: Float,
     var miDu: Float,)
+data class SendDanmuBean(
+    var position: Long,
+    var text: String = "",
+    var isSmallSize: Boolean = false,
+    var isScroll : Boolean = true,
+    var isTop: Boolean = false,
+    var color: Int = Color.WHITE,
+)

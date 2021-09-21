@@ -73,42 +73,42 @@ class DanmuSettingFragment : Fragment() {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
                 setting.showArea = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting)
+                onDanmuSettingChangedListener.changeSetting(setting, "showArea")
             }
         })
         alphaSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
                 setting.alpha = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting)
+                onDanmuSettingChangedListener.changeSetting(setting, "alpha")
             }
         })
         speedSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
                 setting.speed = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting)
+                onDanmuSettingChangedListener.changeSetting(setting, "speed")
             }
         })
         sizeSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
                 setting.size = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting)
+                onDanmuSettingChangedListener.changeSetting(setting, "size")
             }
         })
         borderSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
                 setting.border = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting)
+                onDanmuSettingChangedListener.changeSetting(setting, "border")
             }
         })
         miDuSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {}
             override fun onStopTrackingTouch(slider: Slider) {
                 setting.miDu = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting)
+                onDanmuSettingChangedListener.changeSetting(setting, "miDu")
             }
         })
         showAreaSlider.value = setting.showArea
@@ -121,7 +121,7 @@ class DanmuSettingFragment : Fragment() {
 
     interface OnDanmuSettingChangedListener {
         fun getSetting(): DanmuSetting
-        fun changeSetting(setting: DanmuSetting)
+        fun changeSetting(setting: DanmuSetting, updateItem: String)
     }
 
     fun getNoMoreThanTwoDigits(number: Float): String {
