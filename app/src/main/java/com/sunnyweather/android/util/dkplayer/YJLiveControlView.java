@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import xyz.doikki.videoplayer.controller.BaseVideoController;
 import xyz.doikki.videoplayer.controller.ControlWrapper;
 import xyz.doikki.videoplayer.controller.IControlComponent;
 import xyz.doikki.videoplayer.player.VideoView;
@@ -208,12 +207,19 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     }
     @Override
     public void onPlayerStateChanged(int playerState) {
+        LiveRoomActivity context = (LiveRoomActivity) getContext();
         switch (playerState) {
             case VideoView.PLAYER_NORMAL:
+                context.stopFullScreen();
+                danmu_show.setVisibility(INVISIBLE);
+                danmu_setting.setVisibility(INVISIBLE);
                 mFullScreen.setSelected(false);
                 mPopupWindow.dismiss();
                 break;
             case VideoView.PLAYER_FULL_SCREEN:
+                context.startFullScreen();
+                danmu_show.setVisibility(VISIBLE);
+                danmu_setting.setVisibility(VISIBLE);
                 mFullScreen.setSelected(true);
                 break;
         }

@@ -4,9 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
@@ -50,7 +48,6 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
         mContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, setting.getBorder())
                 .setDuplicateMergingEnabled(setting.getMerge())
                 .setScrollSpeedFactor(getSpeedValue(setting.getSpeed()))
-//                .setScrollSpeedFactor(1.2f)
                 .setDanmakuTransparency(setting.getAlpha())
                 .setScaleTextSize(setting.getSize())
                 .setMaximumLines(getLineNum(setting.getShowArea()))
@@ -59,7 +56,6 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
                 .setDanmakuMargin(10);
         Log.i("test", "屏幕刷新率" + refreshRate);
         mContext.setFrameUpateRate(getFps(setting.getFps()));
-//        mContext.updateMethod = 2;
     }
 
     public MyDanmakuView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -197,8 +193,10 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
     //转换fps
     private int getFps(Boolean value) {
         if (value) {
-            return 60;
+            Log.i("test", "60");
+            return (int) (1000 / fps * 2);
         } else {
+            Log.i("test", "120");
             return (int) (1000 / fps);
         }
     }

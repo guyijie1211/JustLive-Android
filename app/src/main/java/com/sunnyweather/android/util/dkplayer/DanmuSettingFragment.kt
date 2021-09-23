@@ -79,9 +79,9 @@ class DanmuSettingFragment : Fragment() {
         speedSlider.value = setting.speed
         sizeSlider.value = setting.size
         borderSlider.value = setting.border
-        merge_select.isSelected = setting.merge
-        bold_select.isSelected = setting.bold
-        fps_select.isSelected = setting.fps
+        merge_select.isChecked = setting.merge
+        bold_select.isChecked = setting.bold
+        fps_select.isChecked = setting.fps
     }
 
     interface OnDanmuSettingChangedListener {
