@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -25,30 +26,29 @@ import xyz.doikki.videoplayer.player.VideoViewManager
 import xyz.doikki.videoplayer.util.PlayerUtils
 import android.util.DisplayMetrics
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.sunnyweather.android.logic.model.DanmuSetting
 import com.sunnyweather.android.util.dkplayer.*
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-
-import com.google.gson.JsonElement
-import com.xyoye.player.controller.danmu.DanmuView
-import com.xyoye.player.info.PlayerInitializer
+import java.io.*
 import java.lang.Exception
-
 
 class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
     private var mDefinitionControlView: YJLiveControlView? = null
-    private lateinit var adapter: LiveRoomAdapter
+    private lateinit var adapter: LiveRoomAdapterNew
     private lateinit var mPIPManager: PIPManager
     private var danmuShow = true
     private var controller: YJstandardController? = null
     private var videoView: VideoView<ExoMediaPlayer>? = null
-    private lateinit var mMyDanmakuView: DanmuView
+    private lateinit var mMyDanmakuView: MyDanmakuView
     private lateinit var danmuSetting: DanmuSetting
     private lateinit var sharedPref: SharedPreferences
+    private var toBottom = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +60,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                     object : LinearSmoothScroller(recyclerView.context) {
                         override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
                             // 返回：滑过1px时经历的时间(ms)。
-                            return 400f / displayMetrics.densityDpi
+                            return 20f / displayMetrics.densityDpi
                         }
                         override fun calculateDtToFit(viewStart: Int, viewEnd: Int, boxStart: Int, boxEnd: Int, snapPreference: Int): Int {
                             return boxStart - viewStart
@@ -75,8 +75,26 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         danmuSetting = getDanmuSetting()
 
         danMu_recyclerView.layoutManager = linearLayoutManager
-        adapter = LiveRoomAdapter(viewModel.danmuList)
+        adapter = LiveRoomAdapterNew()
         danMu_recyclerView.adapter = adapter
+        //绑定回到底部按钮
+        to_bottom_danmu.setOnClickListener {
+            danMu_recyclerView.smoothScrollToPosition(adapter.itemCount-1)
+            to_bottom_danmu.visibility = View.GONE
+            toBottom = true
+        }
+        //向上滚动弹幕时，显示回到底部按钮
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            danMu_recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
+                if (danMu_recyclerView.canScrollVertically(1)) {
+                    toBottom = false
+                    to_bottom_danmu.visibility = View.VISIBLE
+                } else {
+                    to_bottom_danmu.visibility = View.GONE
+                    toBottom = true
+                }
+            }
+        }
         //设置16:9的高宽
         val lp = player_container.layoutParams
         val point = Point()
@@ -86,7 +104,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
         mPIPManager = PIPManager.getInstance()
         controller = YJstandardController(this)
-        mMyDanmakuView = DanmuView(this)
+        val display = windowManager.defaultDisplay
+        val refreshRate = display.refreshRate
+        mMyDanmakuView = MyDanmakuView(this, danmuSetting, refreshRate)
         mMyDanmakuView.showFPS(true)
 //        mMyDanmakuView.enableDanmakuDrawingCache(true)
         addControlComponents(controller!!)
@@ -102,11 +122,16 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
         videoView = VideoViewManager.instance().get("pip") as VideoView<ExoMediaPlayer>?
         player_container.addView(videoView)
+
+        //弹幕更新
         viewModel.danmuNum.observe(this, {
-            adapter.notifyDataSetChanged()
-            mMyDanmakuView.addDanmuToView(viewModel.danmuList.last().content)
-            danMu_recyclerView.smoothScrollToPosition(viewModel.danmuList.size)
+            mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content)
+            adapter.addData(viewModel.danmuList.last())
+            if (toBottom) {
+                danMu_recyclerView.scrollToPosition(adapter.itemCount-1)
+            }
         })
+        //获取到房间信息
         viewModel.urlResponseData.observe(this, {result ->
             val urls : LinkedTreeMap<String, String> = result.getOrNull() as LinkedTreeMap<String, String>
             if (urls != null) {
@@ -136,6 +161,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     override fun onStart() {
         super.onStart()
+        mMyDanmakuView.resume()
         if (mPIPManager.isStartFloatWindow) {
             val playerTemp = VideoViewManager.instance().get("pip")
             mPIPManager.stopFloatWindow()
@@ -164,6 +190,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             gestureView,
             mMyDanmakuView
         )
+        controller.setCanChangePosition(false)
     }
 
     fun changeRoomInfoVisible(isVisible: Boolean) {
@@ -236,7 +263,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     }
 
     //SharedPreferences保存对象
-    fun setDanmuSetting(data: DanmuSetting) {
+    private fun setDanmuSetting(data: DanmuSetting) {
         if (null == data) return
         val gson = Gson()
         //change data to json
@@ -245,7 +272,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     }
 
     //SharedPreferences读取对象
-    fun getDanmuSetting(): DanmuSetting {
+    private fun getDanmuSetting(): DanmuSetting {
         val strJson: String? = sharedPref.getString("danmuSetting", null)
         if (strJson != null) {
             try {
@@ -257,7 +284,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             }
         }
         //默认弹幕设置
-        return DanmuSetting(0f,20f,0f,0.5f,0.5f,0f)
+        return DanmuSetting(0f,20f,0f,0.5f,0.5f,false, false, false)
     }
 
     override fun getSetting(): DanmuSetting {
@@ -267,8 +294,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     override fun changeSetting(setting: DanmuSetting, updateItem: String) {
         danmuSetting = setting
         setDanmuSetting(setting)
-//        mMyDanmakuView.setContext(setting, updateItem)
+        mMyDanmakuView.setContext(setting, updateItem)
     }
-
-
 }

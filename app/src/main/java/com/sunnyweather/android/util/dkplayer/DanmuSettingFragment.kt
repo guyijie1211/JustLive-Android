@@ -34,89 +34,54 @@ class DanmuSettingFragment : Fragment() {
 
     private fun init() {
         showAreaSlider.addOnChangeListener { _, value, _ ->
-            showAreaText.text = when (value) {
-                0f -> "1/4屏"
-                1f -> "半屏"
-                2f -> "3/4屏"
-                3f -> "全屏"
-                else -> "???"
+            if (value == 20f) {
+                showAreaText.text = "不限制"
+            } else {
+                showAreaText.text = value.toInt().toString() + "行"
             }
+            setting.showArea = value
+            onDanmuSettingChangedListener.changeSetting(setting, "showArea")
         }
         alphaSlider.addOnChangeListener { _, value, _ ->
-            alphaText.text = value.toInt().toString() + "%"
+            alphaText.text = (value * 100).toInt().toString() + "%"
+            setting.alpha = value
+            onDanmuSettingChangedListener.changeSetting(setting, "alpha")
         }
         speedSlider.addOnChangeListener { _, value, _ ->
-            speedText.text = when (value) {
-                0f -> "慢"
-                1f -> "适中"
-                2f -> "快"
-                3f -> "很快"
-                else -> "???"
-            }
+            speedText.text = (value * 100 / 4).toInt().toString() + "%"
+            setting.speed = value
+            onDanmuSettingChangedListener.changeSetting(setting, "speed")
         }
         sizeSlider.addOnChangeListener { _, value, _ ->
             sizeText.text = getNoMoreThanTwoDigits(value)
+            setting.size = value
+            onDanmuSettingChangedListener.changeSetting(setting, "size")
         }
         borderSlider.addOnChangeListener { _, value, _ ->
             borderText.text = getNoMoreThanTwoDigits(value)
+            setting.border = value
+            onDanmuSettingChangedListener.changeSetting(setting, "border")
         }
-        miDuSlider.addOnChangeListener { _, value, _ ->
-            miDuText.text = when (value) {
-                0f -> "不过滤"
-                1f -> "少量过滤"
-                2f -> "减半"
-                3f -> "强过滤"
-                else -> "???"
-            }
+        merge_select.setOnCheckedChangeListener { _, isChecked ->
+            setting.merge = isChecked
+            onDanmuSettingChangedListener.changeSetting(setting, "merge")
         }
-        showAreaSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {}
-            override fun onStopTrackingTouch(slider: Slider) {
-                setting.showArea = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting, "showArea")
-            }
-        })
-        alphaSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {}
-            override fun onStopTrackingTouch(slider: Slider) {
-                setting.alpha = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting, "alpha")
-            }
-        })
-        speedSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {}
-            override fun onStopTrackingTouch(slider: Slider) {
-                setting.speed = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting, "speed")
-            }
-        })
-        sizeSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {}
-            override fun onStopTrackingTouch(slider: Slider) {
-                setting.size = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting, "size")
-            }
-        })
-        borderSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {}
-            override fun onStopTrackingTouch(slider: Slider) {
-                setting.border = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting, "border")
-            }
-        })
-        miDuSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {}
-            override fun onStopTrackingTouch(slider: Slider) {
-                setting.miDu = slider.value
-                onDanmuSettingChangedListener.changeSetting(setting, "miDu")
-            }
-        })
+        bold_select.setOnCheckedChangeListener { _, isChecked ->
+            setting.bold = isChecked
+            onDanmuSettingChangedListener.changeSetting(setting, "bold")
+        }
+        fps_select.setOnCheckedChangeListener { _, isChecked ->
+            setting.fps = isChecked
+            onDanmuSettingChangedListener.changeSetting(setting, "fps")
+        }
         showAreaSlider.value = setting.showArea
         alphaSlider.value = setting.alpha
         speedSlider.value = setting.speed
         sizeSlider.value = setting.size
         borderSlider.value = setting.border
-        miDuSlider.value = setting.miDu
+        merge_select.isSelected = setting.merge
+        bold_select.isSelected = setting.bold
+        fps_select.isSelected = setting.fps
     }
 
     interface OnDanmuSettingChangedListener {
@@ -124,7 +89,7 @@ class DanmuSettingFragment : Fragment() {
         fun changeSetting(setting: DanmuSetting, updateItem: String)
     }
 
-    fun getNoMoreThanTwoDigits(number: Float): String {
+    private fun getNoMoreThanTwoDigits(number: Float): String {
         val format = DecimalFormat("0.##")
         //未保留小数的舍弃规则，RoundingMode.FLOOR表示直接舍弃。
         format.roundingMode = RoundingMode.FLOOR

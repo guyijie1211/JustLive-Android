@@ -55,7 +55,9 @@ data class DanmuSetting(
     var speed: Float,
     var size: Float,
     var border: Float,
-    var miDu: Float,)
+    var merge: Boolean,
+    var bold: Boolean,
+    var fps: Boolean)
 data class SendDanmuBean(
     var position: Long,
     var text: String = "",

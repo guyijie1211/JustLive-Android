@@ -2,18 +2,11 @@ package com.sunnyweather.android.logic.danmu;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomViewModel;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

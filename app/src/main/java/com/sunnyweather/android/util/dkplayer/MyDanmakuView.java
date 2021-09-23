@@ -3,7 +3,10 @@ package com.sunnyweather.android.util.dkplayer;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
@@ -11,48 +14,51 @@ import androidx.annotation.Nullable;
 import com.sunnyweather.android.logic.model.DanmuSetting;
 
 import java.util.HashMap;
+import java.util.Map;
 
-import master.flame.danmaku.controller.DrawHandler;
-import master.flame.danmaku.danmaku.model.BaseDanmaku;
-import master.flame.danmaku.danmaku.model.DanmakuTimer;
-import master.flame.danmaku.danmaku.model.IDanmakus;
-import master.flame.danmaku.danmaku.model.IDisplayer;
-import master.flame.danmaku.danmaku.model.android.DanmakuContext;
-import master.flame.danmaku.danmaku.model.android.Danmakus;
-import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
-import master.flame.danmaku.ui.widget.DanmakuView;
+import com.sunnyweather.android.flame.master.flame.danmaku.controller.DrawHandler;
+import com.sunnyweather.android.flame.master.flame.danmaku.danmaku.model.BaseDanmaku;
+import com.sunnyweather.android.flame.master.flame.danmaku.danmaku.model.DanmakuTimer;
+import com.sunnyweather.android.flame.master.flame.danmaku.danmaku.model.IDanmakus;
+import com.sunnyweather.android.flame.master.flame.danmaku.danmaku.model.IDisplayer;
+import com.sunnyweather.android.flame.master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import com.sunnyweather.android.flame.master.flame.danmaku.danmaku.model.android.Danmakus;
+import com.sunnyweather.android.flame.master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import com.sunnyweather.android.flame.master.flame.danmaku.ui.widget.DanmakuView;
 import xyz.doikki.videoplayer.BuildConfig;
 import xyz.doikki.videoplayer.controller.ControlWrapper;
 import xyz.doikki.videoplayer.controller.IControlComponent;
 import xyz.doikki.videoplayer.player.VideoView;
-import xyz.doikki.videoplayer.util.PlayerUtils;
 
 public class MyDanmakuView extends DanmakuView implements IControlComponent {
 
     private DanmakuContext mContext;
     private BaseDanmakuParser mParser;
     private DanmuSetting setting;
+    private float fps;
 
-    public MyDanmakuView(@NonNull Context context, @NonNull DanmuSetting set) {
+    public MyDanmakuView(@NonNull Context context, @NonNull DanmuSetting set, @Nullable float refreshRate) {
         super(context);
-        // 设置最大显示行数
-        HashMap<Integer, Integer> maxLinesPair = new HashMap<Integer, Integer>();
-        maxLinesPair.put(BaseDanmaku.TYPE_SCROLL_RL, 5); // 滚动弹幕最大显示5行
         // 设置是否禁止重叠
+        fps = refreshRate;
         HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<Integer, Boolean>();
         overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_RL, true);
         overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_TOP, true);
 
         setting = set;
         mContext = DanmakuContext.create();
-        mContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 3)
-                .setDuplicateMergingEnabled(false)
-//                .setScrollSpeedFactor(getSpeedValue(setting.getSpeed()))
-                .setScrollSpeedFactor(1.2f)
-                .setScaleTextSize(1.2f)
-                .setMaximumLines(maxLinesPair)
+        mContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, setting.getBorder())
+                .setDuplicateMergingEnabled(setting.getMerge())
+                .setScrollSpeedFactor(getSpeedValue(setting.getSpeed()))
+//                .setScrollSpeedFactor(1.2f)
+                .setDanmakuTransparency(setting.getAlpha())
+                .setScaleTextSize(setting.getSize())
+                .setMaximumLines(getLineNum(setting.getShowArea()))
+                .setDanmakuBold(setting.getBold())
                 .preventOverlapping(overlappingEnablePair)
-                .setDanmakuMargin(40);
+                .setDanmakuMargin(10);
+        Log.i("test", "屏幕刷新率" + refreshRate);
+        mContext.setFrameUpateRate(getFps(setting.getFps()));
 //        mContext.updateMethod = 2;
     }
 
@@ -76,21 +82,12 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
             public void prepared() {
                 start();
             }
-
             @Override
-            public void updateTimer(DanmakuTimer timer) {
-
-            }
-
+            public void updateTimer(DanmakuTimer timer) { }
             @Override
-            public void danmakuShown(BaseDanmaku danmaku) {
-
-            }
-
+            public void danmakuShown(BaseDanmaku danmaku) { }
             @Override
-            public void drawingFinished() {
-
-            }
+            public void drawingFinished() { }
         });
         showFPS(BuildConfig.DEBUG);
         enableDanmakuDrawingCache(true);
@@ -151,37 +148,74 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
     /**
      * 发送文字弹幕
      * @param text   弹幕文字
-     * @param isSelf 是不是自己发的
      */
-    public void addDanmaku(String text, boolean isSelf) {
+    public void addDanmaku(String text) {
         BaseDanmaku danmaku = mContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
         if (danmaku == null) {
             return;
         }
         danmaku.text = text;
-        danmaku.padding = 5;
+//        danmaku.padding = 5;
         danmaku.priority = 0;  // 可能会被各种过滤器过滤并隐藏显示
         danmaku.isLive = false;
         danmaku.setTime(getCurrentTime());
-        danmaku.textSize = 25f * (mParser.getDisplayer().getDensity() - 0.6f);
-        danmaku.textColor = Color.RED;
-        danmaku.textShadowColor = Color.WHITE;
+        danmaku.textSize = 14f * (mParser.getDisplayer().getDensity() - 0.6f);
+        danmaku.textColor = Color.WHITE;
+        danmaku.textShadowColor = Color.BLACK;
         addDanmaku(danmaku);
     }
     //设置弹幕属性
     public void setContext(DanmuSetting setting, String updateItem) {
         switch (updateItem) {
-            case "speed": mContext.setScrollSpeedFactor(getSpeedValue(setting.getSpeed()));
+            case "speed":
+                mContext.setScrollSpeedFactor(getSpeedValue(setting.getSpeed()));
+                break;
+            case "alpha":
+                mContext.setDanmakuTransparency(setting.getAlpha());
+                break;
+            case "size":
+                mContext.setScaleTextSize(setting.getSize());
+                break;
+            case "showArea":
+                mContext.setMaximumLines(getLineNum(setting.getShowArea()));
+                break;
+            case "border":
+                mContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, setting.getBorder());
+                break;
+            case "merge":
+                mContext.setDuplicateMergingEnabled(setting.getMerge());
+                break;
+            case "bold":
+                mContext.setDanmakuBold(setting.getBold());
+                break;
+            case "fps":
+                mContext.setFrameUpateRate(getFps(setting.getFps()));
+                break;
         }
     }
 
-    private float getSpeedValue(float value) {
-        switch ((int) value) {
-            case 0: return 3f;
-            case 1: return 2f;
-            case 2: return 1.5f;
-            case 3: return 1f;
-            default: return 0f;
+    //转换fps
+    private int getFps(Boolean value) {
+        if (value) {
+            return 60;
+        } else {
+            return (int) (1000 / fps);
         }
+    }
+
+    //转换最大行数
+    private Map<Integer, Integer> getLineNum(float value) {
+        Map<Integer, Integer> result = new HashMap<>();
+        if (value == 20f) {
+            return null;
+        } else {
+            result.put(BaseDanmaku.TYPE_SCROLL_RL, (int) value);
+        }
+        return result;
+    }
+
+    //转换speed
+    private float getSpeedValue(float value) {
+        return 4f - value;
     }
 }

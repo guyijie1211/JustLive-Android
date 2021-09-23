@@ -21,12 +21,12 @@
             android:layout_height="match_parent"
             android:textColor="@color/cardBackgroundColor"
             android:textSize="12sp"
-            android:text="显示区域"
+            android:text="最大行数"
             android:gravity="center"/>
         <com.google.android.material.slider.Slider
             android:id="@+id/showAreaSlider"
-            android:valueFrom="0"
-            android:valueTo="3"
+            android:valueFrom="1"
+            android:valueTo="20"
             android:stepSize="1"
             android:layout_height="match_parent"
             android:layout_width="160dp"/>
@@ -53,8 +53,8 @@
             android:gravity="center"/>
         <com.google.android.material.slider.Slider
             android:id="@+id/alphaSlider"
-            android:valueFrom="20"
-            android:valueTo="100"
+            android:valueFrom="0.20"
+            android:valueTo="1"
             android:layout_height="match_parent"
             android:layout_width="160dp"/>
         <TextView
@@ -81,8 +81,7 @@
         <com.google.android.material.slider.Slider
             android:id="@+id/speedSlider"
             android:valueFrom="0"
-            android:valueTo="3"
-            android:stepSize="1"
+            android:valueTo="4"
             android:layout_height="match_parent"
             android:layout_width="160dp"/>
         <TextView
@@ -109,7 +108,7 @@
         <com.google.android.material.slider.Slider
             android:id="@+id/sizeSlider"
             android:valueFrom="0.50"
-            android:valueTo="2.00"
+            android:valueTo="3.00"
             android:layout_height="match_parent"
             android:layout_width="160dp"/>
         <TextView
@@ -135,8 +134,8 @@
             android:gravity="center"/>
         <com.google.android.material.slider.Slider
             android:id="@+id/borderSlider"
-            android:valueFrom="0.50"
-            android:valueTo="2.50"
+            android:valueFrom="0"
+            android:valueTo="25"
             android:layout_height="match_parent"
             android:layout_width="160dp"/>
         <TextView
@@ -148,7 +147,6 @@
             android:text="1.00"
             android:gravity="center"/>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -158,22 +156,51 @@
             android:layout_height="match_parent"
             android:textColor="@color/cardBackgroundColor"
             android:textSize="12sp"
-            android:text="同屏密度"
+            android:text="合并重复"
             android:gravity="center"/>
-        <com.google.android.material.slider.Slider
-            android:id="@+id/miDuSlider"
-            android:valueFrom="0"
-            android:valueTo="3"
-            android:stepSize="1"
-            android:layout_height="match_parent"
-            android:layout_width="160dp"/>
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/merge_select"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <TextView
-            android:id="@+id/miDuText"
-            android:layout_width="70dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:textColor="@color/cardBackgroundColor"
             android:textSize="12sp"
-            android:text="适中"
+            android:text="粗体"
+            android:gravity="center"/>
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/bold_select"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/cardBackgroundColor"
+            android:textSize="12sp"
+            android:text="60FPS"
+            android:gravity="center"/>
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/fps_select"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/cardBackgroundColor"
+            android:textSize="12sp"
+            android:text="（高刷屏幕可能会省电吧）"
             android:gravity="center"/>
     </LinearLayout>
+
 </LinearLayout>
