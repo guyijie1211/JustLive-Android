@@ -55,7 +55,7 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
                 .preventOverlapping(overlappingEnablePair)
                 .setDanmakuMargin(10);
         Log.i("test", "屏幕刷新率" + refreshRate);
-        mContext.setFrameUpateRate(getFps(setting.getFps()));
+        mContext.setFrameUpateRate((int) (1000 / refreshRate));
     }
 
     public MyDanmakuView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -184,19 +184,17 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
             case "bold":
                 mContext.setDanmakuBold(setting.getBold());
                 break;
-            case "fps":
-                mContext.setFrameUpateRate(getFps(setting.getFps()));
-                break;
+//            case "fps":
+//                mContext.setFrameUpateRate(getFps(setting.getFps()));
+//                break;
         }
     }
 
     //转换fps
     private int getFps(Boolean value) {
         if (value) {
-            Log.i("test", "60");
             return (int) (1000 / fps * 2);
         } else {
-            Log.i("test", "120");
             return (int) (1000 / fps);
         }
     }

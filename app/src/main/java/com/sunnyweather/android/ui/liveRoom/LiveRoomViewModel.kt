@@ -36,7 +36,6 @@ class LiveRoomViewModel : ViewModel() {
     }
 
     fun startDanmu(platform: String, roomId: String) {
-        if (platform == "bilibili") return
         danmuService = DanmuService(platform, roomId)
         danmuService.connect(danmuList, danmuNum)
     }

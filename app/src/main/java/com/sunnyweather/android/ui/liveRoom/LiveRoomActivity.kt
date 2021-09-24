@@ -311,4 +311,8 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         setDanmuSetting(setting)
         mMyDanmakuView.setContext(setting, updateItem)
     }
+
+    fun hideViews(){
+        controller!!.hide()
+    }
 }

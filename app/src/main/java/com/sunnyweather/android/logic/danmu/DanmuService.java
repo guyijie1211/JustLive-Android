@@ -35,6 +35,7 @@ public class DanmuService {
 
     //连接弹幕服务器
     public void connect(ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) {
+        if (platform.equals("bilibili")) return;
         //开始连接
         request = DanmuUtils.getRequest(platform, roomId);
         webSocket = mClient.newWebSocket(request, new WebSocketListener() {
@@ -74,7 +75,9 @@ public class DanmuService {
 
     //停止接受消息
     public void stop() {
-        webSocket.cancel();
+        if (!platform.equals("bilibili")) {
+            webSocket.cancel();
+        }
         myTimer.cancel();
     }
 }

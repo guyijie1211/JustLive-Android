@@ -67,6 +67,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     private ImageView mPlayButton;
     private ImageView danmu_show;
     private ImageView danmu_setting;
+    private LinearLayout bottom_container;
     private LinearLayout danmu_setting_container;
 
     private boolean mIsDragging;
@@ -98,6 +99,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         mFullScreen = findViewById(xyz.doikki.videocontroller.R.id.fullscreen);
         mFullScreen.setOnClickListener(this);
         mBottomContainer = findViewById(R.id.controllerContainer);
+        bottom_container = findViewById(R.id.bottom_container);
         mPlayButton = findViewById(xyz.doikki.videocontroller.R.id.iv_play);
         mPlayButton.setOnClickListener(this);
         mBottomProgress = findViewById(xyz.doikki.videocontroller.R.id.bottom_progress);
@@ -141,6 +143,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     public void onVisibilityChanged(boolean isVisible, Animation anim) {
         if (isVisible) {
             liveRoomActivity.changeRoomInfoVisible(true);
+            showBottom();
             mBottomContainer.setVisibility(VISIBLE);
             if (anim != null) {
                 mBottomContainer.startAnimation(anim);
@@ -152,6 +155,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
             liveRoomActivity.changeRoomInfoVisible(false);
             mPopupWindow.dismiss();
             hideSetting();
+            hideBottom();
             mBottomContainer.setVisibility(GONE);
             if (anim != null) {
                 mBottomContainer.startAnimation(anim);
@@ -208,6 +212,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     @Override
     public void onPlayerStateChanged(int playerState) {
         LiveRoomActivity context = (LiveRoomActivity) getContext();
+        context.hideViews();
         switch (playerState) {
             case VideoView.PLAYER_NORMAL:
                 context.stopFullScreen();
@@ -356,6 +361,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                         danmu_setting_container.setVisibility(VISIBLE);
                     }
                 }).start();
+        hideBottom();
     }
     //隐藏设置
     private void hideSetting() {
@@ -370,5 +376,30 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                     }
                 }).start();
     }
-
+    //隐藏底部
+    private void hideBottom(){
+        bottom_container.animate()
+                .translationY(dp2px(getContext(), 46f))
+                .setDuration(300)
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        bottom_container.setVisibility(INVISIBLE);
+                    }
+                }).start();
+    }
+    //显示底部
+    private void showBottom(){
+        bottom_container.animate()
+                .translationY(0f)
+                .setDuration(300)
+                .setInterpolator(new DecelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        bottom_container.setVisibility(VISIBLE);
+                    }
+                }).start();
+    }
 }
