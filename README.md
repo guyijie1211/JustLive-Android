@@ -33,3 +33,13 @@ BILIBILI直播弹幕协议参考	[lovelyyoshino/Bilibili-Live-API](https://githu
 
 ## 应用页面
 
+![1](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/1.jpg)
+
+![2](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/2.jpg)
+
+![3](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/3.jpg)
+
+![4](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/4.jpg)
+
+![5](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/5.jpg)
+
