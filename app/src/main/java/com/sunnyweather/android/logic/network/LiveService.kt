@@ -25,6 +25,8 @@ interface LiveService {
     fun search(@Query("platform") platform: String, @Query("keyWords") keyWords: String, @Query("isLive") isLive: String): Call<SearchResponse>
     @GET("/api/live/getAllAreas")
     fun getAllAreas(): Call<AreaAllResponse>
+    @GET("/api/live/follow")
+    fun follow(@Query("platform") platform: String, @Query("roomId") roomId: String, @Query("uid") uid: String): Call<FollowResponse>
 
     @POST("/api/login")
     fun login(@Query("username") username: String, @Query("password") password: String): Call<UserInfoResponse>
