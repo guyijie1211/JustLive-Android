@@ -3,6 +3,8 @@
 
 网站页面    [live.yj1211.work](live.yj1211.work)
 
+[点击下载app](https://github.com/guyijie1211/JustLive-Android/releases)
+
 #### 功能
 
 ✔	多平台直播信息获取
@@ -33,13 +35,6 @@ BILIBILI直播弹幕协议参考	[lovelyyoshino/Bilibili-Live-API](https://githu
 
 ## 应用页面
 
-![1](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/1.jpg)
-
-![2](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/2.jpg)
-
-![3](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/3.jpg)
-
-![4](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/4.jpg)
-
-![5](https://github.com/guyijie1211/JustLive-Android/blob/master/pic/5.png)
-
+<img src="https://github.com/guyijie1211/JustLive-Android/blob/master/pic/1.jpg" width="250" alt="首页推荐"><img src="https://github.com/guyijie1211/JustLive-Android/blob/master/pic/2.jpg" width="250" alt="关注">
+<img src="https://github.com/guyijie1211/JustLive-Android/blob/master/pic/3.jpg" width="250" alt="直播页面"><img src="https://github.com/guyijie1211/JustLive-Android/blob/master/pic/5.png" width="250" alt="直播搜索">
+<img src="https://github.com/guyijie1211/JustLive-Android/blob/master/pic/4.jpg" width="500" alt="弹幕设置">
