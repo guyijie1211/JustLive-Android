@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.RoomInfo
+import com.sunnyweather.android.ui.customerUIs.BlackWhiteTransformation
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
 
 class RoomListAdapter(private val fragment: Fragment, private val roomList: ArrayList<RoomInfo>) :
@@ -26,6 +27,7 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
         val roomName: TextView = view.findViewById(R.id.roomName)
         val roomCategory: TextView = view.findViewById(R.id.roomCategory)
         val liveNum: TextView = view.findViewById(R.id.liveNum)
+        val notLive: TextView = view.findViewById(R.id.room_not_live)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolder{
@@ -46,11 +48,19 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val roomInfo = roomList[position]
         holder.ownerName.text = SunnyWeatherApplication.platformName(roomInfo.platForm) + "·" + roomInfo.ownerName
-        Glide.with(fragment).load(roomInfo.ownerHeadPic).transition(withCrossFade()).into(holder.ownerPic)
-        Glide.with(fragment).load(roomInfo.roomPic).transition(withCrossFade()).placeholder(R.drawable.takeplace).into(holder.roomPic)
+
         holder.roomCategory.text = roomInfo.categoryName
         holder.liveNum.text = getWan(roomInfo.online)
         holder.roomName.text = roomInfo.roomName
+        if (roomInfo.isLive == 1) {
+            Glide.with(fragment).load(roomInfo.ownerHeadPic).transition(withCrossFade()).into(holder.ownerPic)
+            Glide.with(fragment).load(roomInfo.roomPic).transition(withCrossFade()).placeholder(R.drawable.takeplace).into(holder.roomPic)
+        } else {
+            holder.notLive.visibility = View.VISIBLE
+            //黑白图
+            Glide.with(fragment).load(roomInfo.ownerHeadPic).transforms(BlackWhiteTransformation()).transition(withCrossFade()).into(holder.ownerPic)
+//            Glide.with(fragment).load(roomInfo.roomPic).transforms(BlackWhiteTransformation()).transition(withCrossFade()).placeholder(R.drawable.takeplace).into(holder.roomPic)
+        }
     }
 
     override fun getItemCount(): Int {

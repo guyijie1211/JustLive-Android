@@ -17,6 +17,17 @@
             android:layout_height="110dp"
             android:scaleType="fitXY"
             android:layout_alignParentTop="true" />
+        <TextView
+            android:id="@+id/room_not_live"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:gravity="center"
+            android:background="#232323"
+            android:textColor="#8C8C8C"
+            android:text="未开播"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/ownerPic"

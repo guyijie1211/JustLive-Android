@@ -90,11 +90,18 @@
         <entry key="..\:/Users/YJ211/.gradle/caches/transforms-3/2e97cd61c5398af1eadb1470410c4033/transformed/jetified-persistentsearchview-1.1.3/res/layout/persistent_search_view_suggestion_item_layout.xml" value="0.2994791666666667" />
         <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/drawable-xxhdpi/dkplayer_danmu_show_button.xml" value="0.2609375" />
         <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/drawable/dkplayer_danmu_setting_button.xml" value="0.40260416666666665" />
+        <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/drawable/indicator_background.xml" value="0.40260416666666665" />
+        <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/activity_liveroom.xml" value="0.38645833333333335" />
+        <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/activity_login.xml" value="0.38645833333333335" />
         <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/activity_main.xml" value="0.16510416666666666" />
         <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/activity_search.xml" value="0.21822916666666667" />
         <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/danmu_item.xml" value="0.38645833333333335" />
         <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/fragment_danmu_setting.xml" value="0.38645833333333335" />
+        <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/fragment_home.xml" value="0.38645833333333335" />
         <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/layout_definition_control_view.xml" value="0.38645833333333335" />
+        <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/layout/room_item.xml" value="0.34322916666666664" />
+        <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/menu/toolbar.xml" value="0.38645833333333335" />
+        <entry key="..\:/WorkSpace/SunnyWeather/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2947916666666667" />
       </map>
     </option>
   </component>

@@ -2,6 +2,7 @@ package com.sunnyweather.android.ui.liveRoom
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Build
@@ -25,13 +26,24 @@ import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
 import xyz.doikki.videoplayer.util.PlayerUtils
 import android.util.DisplayMetrics
+import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sunnyweather.android.logic.model.DanmuSetting
 import com.sunnyweather.android.util.dkplayer.*
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.ui.login.LoginActivity
 import java.lang.Exception
+import android.view.WindowManager
+
+import android.app.Activity
+import android.view.Window
+import android.widget.ImageView
+
 
 class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
@@ -47,18 +59,22 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     private var toBottom = true
     private var updateList = true
 
+    private var isFollowed = false
+    private var platform = ""
+    private var roomId = ""
+    private var isFirstGetInfo = true
+
     fun startFullScreen() {
         updateList = false
         mMyDanmakuView.show()
-        mMyDanmakuView.resume()
     }
 
     fun stopFullScreen() {
-        updateList = true
+        adapter.setList(viewModel.danmuList)
+        danMu_recyclerView.scrollToPosition(adapter.itemCount-1)
         mMyDanmakuView.hide()
-        mMyDanmakuView.clear()
-        mMyDanmakuView.pause()
-
+        toBottom = true
+        updateList = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +97,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                 startSmoothScroll(smoothScroller)
             }
         }
+        setStatusBarColor(this, R.color.black)
         //获取本地弹幕设置
         sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
         danmuSetting = getDanmuSetting()
@@ -119,37 +136,39 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         val display = windowManager.defaultDisplay
         val refreshRate = display.refreshRate
         mMyDanmakuView = MyDanmakuView(this, danmuSetting, refreshRate)
-        mMyDanmakuView.showFPS(true)
+//        mMyDanmakuView.showFPS(true)
         mMyDanmakuView.hide()
         addControlComponents(controller!!)
         controller!!.setDoubleTapTogglePlayEnabled(false)
         controller!!.setEnableInNormal(true)
 
         mPIPManager.actClass = LiveRoomActivity::class.java
-        val platform = intent.getStringExtra("platform")?:""
-        val roomId = intent.getStringExtra("roomId")?:""
-        viewModel.getRealUrl(platform, roomId)
-        viewModel.getRoomInfo("0eb26a33e68d4582858a74abf5a645d5", platform, roomId)
+        platform = intent.getStringExtra("platform")?:""
+        roomId = intent.getStringExtra("roomId")?:""
+        var uid = ""
+        if (SunnyWeatherApplication.userInfo != null) {
+            uid = SunnyWeatherApplication.userInfo!!.uid
+        }
+        viewModel.getRoomInfo(uid, platform, roomId)
         viewModel.startDanmu(platform, roomId)
 
         videoView = VideoViewManager.instance().get("pip") as VideoView<ExoMediaPlayer>?
-        player_container.addView(videoView)
+
 
         //弹幕更新
         viewModel.danmuNum.observe(this, {
+            mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content)
             if (updateList) {
                 adapter.addData(viewModel.danmuList.last())
                 if (toBottom) {
                     danMu_recyclerView.scrollToPosition(adapter.itemCount-1)
                 }
-            } else {
-                mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content)
             }
         })
-        //获取到房间信息
+        //获取到直播源信息
         viewModel.urlResponseData.observe(this, {result ->
             val urls : LinkedTreeMap<String, String> = result.getOrNull() as LinkedTreeMap<String, String>
-            if (urls != null) {
+            if (urls != null && urls.size > 0) {
                 mDefinitionControlView?.setData(urls)
                 videoView?.setVideoController(controller) //设置控制器
                 videoView?.setUrl(urls["原画"]) //设置视频地址
@@ -162,14 +181,71 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         tinyScreen.setOnClickListener {
             videoView!!.startTinyScreen()
         }
+        viewModel.followResponseLiveDate.observe(this, {result ->
+            val result = result.getOrNull()
+            if (result is String) {
+                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                if (result == "关注成功") {
+                    follow_roomInfo.text = "已关注"
+                    isFollowed = true
+                } else if (result == "已经取消关注") {
+                    follow_roomInfo.text = "关注"
+                    isFollowed = false
+                }
+            }
+        })
+        //获取到房间信息
         viewModel.roomInfoResponseData.observe(this, {result ->
             val roomInfo : RoomInfo = result.getOrNull() as RoomInfo
             if (roomInfo != null) {
-                Glide.with(this).load(roomInfo.ownerHeadPic).transition(
-                    DrawableTransitionOptions.withCrossFade()
-                ).into(ownerPic_roomInfo)
-                ownerName_roomInfo.text = roomInfo.ownerName
-                roomName_roomInfo.text = roomInfo.roomName
+                //关注按钮
+                if (isFirstGetInfo) {
+                    follow_roomInfo.setOnClickListener {
+                        if (SunnyWeatherApplication.isLogin.value!!) {
+                            if (isFollowed) {
+                                viewModel.unFollow(roomInfo.platForm, roomInfo.roomId, SunnyWeatherApplication.userInfo!!.uid)
+                            } else {
+                                viewModel.follow(roomInfo.platForm, roomInfo.roomId, SunnyWeatherApplication.userInfo!!.uid)
+                            }
+                        } else {
+                            MaterialAlertDialogBuilder(this)
+                                .setTitle("启用关注")
+                                .setMessage("登录后关注直播间")
+                                .setCancelable(true)
+                                .setNegativeButton("取消") { _, _ ->
+
+                                }
+                                .setPositiveButton("登录") { _, _ ->
+                                    val intent = Intent(context, LoginActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                .show()
+                        }
+                    }
+                    //提示弹幕不支持
+                    if (roomInfo.platForm == "bilibili" || roomInfo.platForm == "egame" || roomInfo.platForm == "cc") {
+                        danmu_not_support.visibility = View.VISIBLE
+                        danmu_not_support.text = "暂不支持${SunnyWeatherApplication.platformName(roomInfo.platForm)}弹幕"
+                    }
+                    //未开播
+                    if (roomInfo.isLive == 0) {
+                        liveRoom_not_live.visibility = View.VISIBLE
+                        liveRoom_not_live.setOnClickListener {
+                            changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
+                        }
+                    } else {
+                        player_container.addView(videoView)
+                        viewModel.getRealUrl(platform, roomId)
+                    }
+                    Glide.with(this).load(roomInfo.ownerHeadPic).transition(
+                        DrawableTransitionOptions.withCrossFade()
+                    ).into(ownerPic_roomInfo)
+                    ownerName_roomInfo.text = roomInfo.ownerName
+                    roomName_roomInfo.text = roomInfo.roomName
+                    isFirstGetInfo = false
+                }
+                isFollowed = (roomInfo.isFollowed == 1)
+                if (isFollowed) follow_roomInfo.text = "已关注"
             }
         })
     }
@@ -209,7 +285,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     }
 
     fun changeRoomInfoVisible(isVisible: Boolean) {
-        val height = PlayerUtils.dp2px(context, 100f)
+        val height = PlayerUtils.dp2px(context, 80f)
         var va: ValueAnimator = if(isVisible){
             ValueAnimator.ofInt(0,height)
         }else{
@@ -217,8 +293,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         }
         va.addUpdateListener {
             val h: Int = it.animatedValue as Int
-            roomInfo.layoutParams.height = h
-            roomInfo.requestLayout()
+            roomInfo_liveRoom.layoutParams.height = h
+            roomInfo_liveRoom.requestLayout()
+            danMu_recyclerView.scrollToPosition(adapter.itemCount-1)
         }
         va.duration = 200
         va.start()
@@ -231,6 +308,11 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     override fun onResume() {
         super.onResume()
+        var uid = ""
+        if (SunnyWeatherApplication.userInfo != null) {
+            uid = SunnyWeatherApplication.userInfo!!.uid
+        }
+        viewModel.getRoomInfo(uid, platform, roomId)
         mPIPManager!!.resume()
     }
 
@@ -314,5 +396,19 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     fun hideViews(){
         controller!!.hide()
+    }
+
+    /**
+     * 修改状态栏颜色，支持4.4以上版本
+     * @param activity
+     * @param colorId
+     */
+    fun setStatusBarColor(activity: Activity, colorId: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window: Window = activity.window
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = activity.resources.getColor(colorId)
+        }
     }
 }

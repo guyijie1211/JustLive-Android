@@ -70,7 +70,6 @@ class RecommendFragment(val platform: String) : Fragment()  {
                     recyclerView.isVisible = true
                     refresh_home.finishLoadMoreWithNoMoreData()
                     if (viewModel.roomList.size == 0) {
-                        Log.i("test", "空空空空空")
                         state.showEmpty()
                     }
                     result.exceptionOrNull()?.printStackTrace()

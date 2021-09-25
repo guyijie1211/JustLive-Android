@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
+//            android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
             R.id.menu_search -> {
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
