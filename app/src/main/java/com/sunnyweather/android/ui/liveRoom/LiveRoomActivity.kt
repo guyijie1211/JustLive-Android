@@ -223,7 +223,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                         }
                     }
                     //提示弹幕不支持
-                    if (roomInfo.platForm == "bilibili" || roomInfo.platForm == "egame" || roomInfo.platForm == "cc") {
+                    if (roomInfo.platForm == "egame" || roomInfo.platForm == "cc") {
                         danmu_not_support.visibility = View.VISIBLE
                         danmu_not_support.text = "暂不支持${SunnyWeatherApplication.platformName(roomInfo.platForm)}弹幕"
                     }
