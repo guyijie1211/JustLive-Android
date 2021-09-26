@@ -35,10 +35,14 @@ class SunnyWeatherApplication : Application() {
         var isLogin = MutableLiveData(false)
 
         fun clearLoginInfo(activity: Activity) {
+            if (!isLogin.value!!) {
+                Toast.makeText(context, "未登录", Toast.LENGTH_SHORT).show()
+            }
             var sharedPref = activity.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
             sharedPref.edit().remove("username").remove("password").commit()
             userInfo = null
             isLogin.value = false
+            Toast.makeText(context, "已退出", Toast.LENGTH_SHORT).show()
         }
 
         fun saveLoginInfo(activity: Activity, username: String, password: String) {

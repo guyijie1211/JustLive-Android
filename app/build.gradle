@@ -31,8 +31,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    compileSdkVersion 30
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
 }
 
 dependencies {
@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.roger.gifloadinglibrary:gifloadinglibrary:1.1.1'//加载动画
     implementation 'com.github.liangjingkanji:StateLayout:1.2.0'        //缺省页
     implementation 'com.auth0:java-jwt:3.18.2'                          //虎牙JWT
+    implementation 'com.github.AlexLiuSheng:CheckVersionLib:2.4.1_androidx' //版本更新
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

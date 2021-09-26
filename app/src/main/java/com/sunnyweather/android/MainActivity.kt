@@ -31,6 +31,7 @@ import android.view.*
 import xyz.doikki.videoplayer.util.PlayerUtils.getStatusBarHeight
 
 import android.view.ViewGroup
+import androidx.drawerlayout.widget.DrawerLayout
 import xyz.doikki.videoplayer.util.PlayerUtils
 
 
@@ -48,6 +49,8 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             it.setHomeAsUpIndicator(R.drawable.baseline_menu_black_24)
             it.setDisplayShowTitleEnabled(false)
         }
+        //关闭抽屉滑动打开
+        main_drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         //颜色主题
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val dayNight = sharedPreferences.getBoolean("dayNight", false)
@@ -106,14 +109,13 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
             }
-            R.id.toolbar_login -> {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
+//            R.id.toolbar_login -> {
+//                val intent = Intent(this, LoginActivity::class.java)
+//                startActivity(intent)
+//            }
             R.id.toolbar_logout -> {
                 SunnyWeatherApplication.clearLoginInfo(this)
                 main_fragment.currentItem = 0
-                Toast.makeText(this, "已退出", Toast.LENGTH_SHORT).show()
             }
         }
         return true
