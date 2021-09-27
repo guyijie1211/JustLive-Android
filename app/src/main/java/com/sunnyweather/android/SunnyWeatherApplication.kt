@@ -4,17 +4,16 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModelProvider
+import com.alibaba.fastjson.JSON
+import com.allenliu.versionchecklib.v2.AllenVersionChecker
+import com.allenliu.versionchecklib.v2.builder.DownloadBuilder
+import com.allenliu.versionchecklib.v2.builder.UIData
+import com.allenliu.versionchecklib.v2.callback.RequestVersionListener
 import com.nostra13.universalimageloader.core.ImageLoader
-import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.model.UserInfo
-import com.sunnyweather.android.ui.login.LoginViewModel
 import xyz.doikki.videoplayer.exo.ExoMediaPlayerFactory
 import xyz.doikki.videoplayer.player.VideoViewConfig
 import xyz.doikki.videoplayer.player.VideoViewManager
@@ -22,6 +21,8 @@ import java.lang.Exception
 import java.lang.reflect.Method
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import com.sunnyweather.android.logic.model.UpdateInfo
+import com.sunnyweather.android.ui.customerUIs.UpdateDialog
 
 class SunnyWeatherApplication : Application() {
     companion object {
@@ -49,7 +50,6 @@ class SunnyWeatherApplication : Application() {
             var sharedPref = activity.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
             sharedPref.edit().putString("username", username).putString("password", password).commit()
         }
-
         fun platformName(platform: String?): String{
             return when(platform) {
                 "douyu" -> "斗鱼"
@@ -60,7 +60,6 @@ class SunnyWeatherApplication : Application() {
                 else -> "未知平台"
             }
         }
-
         fun encodeMD5(password: String): String {
             try {
                 val  instance: MessageDigest = MessageDigest.getInstance("MD5")//获取md5加密对象
@@ -81,7 +80,6 @@ class SunnyWeatherApplication : Application() {
             }
             return ""
         }
-
         fun MIUISetStatusBarLightMode(activity: Activity, dark: Boolean): Boolean {
             var result = false
             val window = activity.window
@@ -118,15 +116,74 @@ class SunnyWeatherApplication : Application() {
             }
             return result
         }
+        /**
+         * 获取应用程序版本名称信息
+         * @param context
+         * @return 当前应用的版本名称
+         */
+        @Synchronized
+        fun getVersionCode(context: Context): Int {
+            try {
+                val packageManager = context.packageManager
+                val packageInfo = packageManager.getPackageInfo(
+                    context.packageName, 0
+                )
+                return packageInfo.versionCode
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return 0
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
+        var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+        val ignoreVersion = sharedPref.getInt("ignoreVersion", getVersionCode(context))
+        checkUpdate(ignoreVersion)
         VideoViewManager.setConfig(
             VideoViewConfig.newBuilder()
             //使用ExoPlayer解码
             .setPlayerFactory(ExoMediaPlayerFactory.create())
             .build())
     }
+
+    private fun checkUpdate(ignoreVersion: Int) {
+        AllenVersionChecker
+            .getInstance()
+            .requestVersion()
+            .setRequestUrl("https://yj1211.work:8014/api/live/versionUpdate")
+            .request(object : RequestVersionListener {
+                override fun onRequestVersionSuccess(
+                    downloadBuilder: DownloadBuilder?,
+                    result: String?
+                ): UIData? {
+                    val jsonObject = JSON.parseObject(result)
+                    if (jsonObject.getInteger("code") == 200) {
+                        val resultData = jsonObject.getJSONObject("data")
+                        val updateInfo = JSON.toJavaObject(resultData, UpdateInfo::class.java)
+                        val versionNum = getVersionCode(context)
+                        if (versionNum == updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
+                            return null
+                        }
+                        return UIData.create().setDownloadUrl(updateInfo.updateUrl).setContent(resultData.toJSONString())
+                    }
+                    return null
+                }
+
+                override fun onRequestVersionFailure(message: String?) {
+                    Toast.makeText(context, "检查版本更新失败", Toast.LENGTH_SHORT).show()
+                }
+            }).setCustomVersionDialogListener { context, versionBundle ->
+                versionBundle.content
+                val data = JSON.parseObject(versionBundle.content)
+                val updateInfo = JSON.toJavaObject(data, UpdateInfo::class.java)
+                return@setCustomVersionDialogListener UpdateDialog(context, updateInfo)
+            }
+            .setShowNotification(false)
+            .executeMission(context)
+    }
+
+
 }

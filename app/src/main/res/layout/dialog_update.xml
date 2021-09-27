@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp">
+    <TextView
+        android:id="@+id/update_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="更新提示"/>
+    <LinearLayout
+        android:id="@+id/update_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/update_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/update_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="版本: 0.1.0"/>
+        <TextView
+            android:id="@+id/update_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="下载体积: 10.05MB"/>
+        <TextView
+            android:id="@+id/update_description_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="更新内容："/>
+        <TextView
+            android:id="@+id/update_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1.去除主页侧边抽屉的滑动打开"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/versionchecklib_version_dialog_commit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/update_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="立即更新"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorPrimary" />
+    <Button
+        android:id="@+id/versionchecklib_version_dialog_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/versionchecklib_version_dialog_commit"
+        android:text="稍后提醒"
+        style="?attr/materialButtonOutlinedStyle" />
+
+    <Button
+        android:id="@+id/ignore_btn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/versionchecklib_version_dialog_cancel"
+        android:layout_centerHorizontal="true"
+        android:text="忽略此版本"
+        android:textColor="@color/dark_gray"
+        android:textSize="10sp" />
+</RelativeLayout>
