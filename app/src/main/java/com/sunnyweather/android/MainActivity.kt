@@ -113,6 +113,9 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
 //                val intent = Intent(this, LoginActivity::class.java)
 //                startActivity(intent)
 //            }
+            R.id.toolbar_update -> {
+                SunnyWeatherApplication.checkUpdate(0, true)
+            }
             R.id.toolbar_logout -> {
                 SunnyWeatherApplication.clearLoginInfo(this)
                 main_fragment.currentItem = 0

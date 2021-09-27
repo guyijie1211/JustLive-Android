@@ -43,7 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1.去除主页侧边抽屉的滑动打开"/>
-
     </LinearLayout>
 
     <Button
@@ -52,17 +51,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/update_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="-10dp"
         android:text="立即更新"
         android:textColor="@color/white"
         app:backgroundTint="@color/colorPrimary" />
+
     <Button
         android:id="@+id/versionchecklib_version_dialog_cancel"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/versionchecklib_version_dialog_commit"
-        android:text="稍后提醒"
-        style="?attr/materialButtonOutlinedStyle" />
+        android:text="取消" />
 
     <Button
         android:id="@+id/ignore_btn"

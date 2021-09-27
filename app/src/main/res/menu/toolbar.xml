@@ -15,6 +15,10 @@
 <!--        android:icon="@drawable/outline_favorite_border_black_24"-->
 <!--        android:title="设置" />-->
     <item
+        android:id="@+id/toolbar_update"
+        android:icon="@drawable/outline_home_black_24"
+        android:title="检查更新" />
+    <item
         android:id="@+id/toolbar_logout"
         android:icon="@drawable/outline_home_black_24"
         android:title="退出账号" />

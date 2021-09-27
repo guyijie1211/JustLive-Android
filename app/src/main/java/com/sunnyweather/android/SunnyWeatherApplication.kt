@@ -4,7 +4,9 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.alibaba.fastjson.JSON
@@ -23,6 +25,10 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import com.sunnyweather.android.logic.model.UpdateInfo
 import com.sunnyweather.android.ui.customerUIs.UpdateDialog
+import java.security.AccessController.getContext
+import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
+
 
 class SunnyWeatherApplication : Application() {
     companion object {
@@ -34,7 +40,54 @@ class SunnyWeatherApplication : Application() {
         var areaType = MutableLiveData<String>()
         var userInfo: UserInfo? = null
         var isLogin = MutableLiveData(false)
+        var newestVersionNum = 0
 
+
+        fun checkUpdate(ignoreVersion: Int, isCheck: Boolean) {
+            AllenVersionChecker
+                .getInstance()
+                .requestVersion()
+                .setRequestUrl("https://yj1211.work:8014/api/live/versionUpdate")
+                .request(object : RequestVersionListener {
+                    override fun onRequestVersionSuccess(
+                        downloadBuilder: DownloadBuilder?,
+                        result: String?
+                    ): UIData? {
+                        val jsonObject = JSON.parseObject(result)
+                        if (jsonObject.getInteger("code") == 200) {
+                            val resultData = jsonObject.getJSONObject("data")
+                            val updateInfo = JSON.toJavaObject(resultData, UpdateInfo::class.java)
+                            val versionNum = getVersionCode(context)
+                            newestVersionNum = updateInfo.versionNum
+                            Log.i("test", newestVersionNum.toString())
+                            if (versionNum == updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
+                                return null
+                            }
+                            return UIData.create().setDownloadUrl(updateInfo.updateUrl).setContent(resultData.toJSONString())
+                        }
+                        return null
+                    }
+
+                    override fun onRequestVersionFailure(message: String?) {
+                        Toast.makeText(context, "检查版本更新失败", Toast.LENGTH_SHORT).show()
+                    }
+                }).setCustomVersionDialogListener { context, versionBundle ->
+                    versionBundle.content
+                    val data = JSON.parseObject(versionBundle.content)
+                    val updateInfo = JSON.toJavaObject(data, UpdateInfo::class.java)
+                    val dialog = UpdateDialog(context, updateInfo)
+                    if (isCheck) {
+                        val ignoreBtn = dialog.findViewById<Button>(R.id.ignore_btn)
+                        ignoreBtn.visibility = View.GONE
+                        val cancelBtn = dialog.findViewById<Button>(R.id.versionchecklib_version_dialog_cancel)
+                        setMargins(cancelBtn, 0, 0, 0, 40)
+                    }
+                    return@setCustomVersionDialogListener dialog
+                }
+                .setShowNotification(false)
+                .setNewestVersionCode(newestVersionNum)
+                .executeMission(context)
+        }
         fun clearLoginInfo(activity: Activity) {
             if (!isLogin.value!!) {
                 Toast.makeText(context, "未登录", Toast.LENGTH_SHORT).show()
@@ -58,6 +111,13 @@ class SunnyWeatherApplication : Application() {
                 "egame" -> "企鹅电竞"
                 "cc" -> "网易CC"
                 else -> "未知平台"
+            }
+        }
+        fun setMargins(v: View, l: Int, t: Int, r: Int, b: Int) {
+            if (v.layoutParams is MarginLayoutParams) {
+                val p = v.layoutParams as MarginLayoutParams
+                p.setMargins(l, t, r, b)
+                v.requestLayout()
             }
         }
         fun encodeMD5(password: String): String {
@@ -141,49 +201,11 @@ class SunnyWeatherApplication : Application() {
         context = applicationContext
         var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
         val ignoreVersion = sharedPref.getInt("ignoreVersion", getVersionCode(context))
-        checkUpdate(ignoreVersion)
+        checkUpdate(ignoreVersion, false)
         VideoViewManager.setConfig(
             VideoViewConfig.newBuilder()
             //使用ExoPlayer解码
             .setPlayerFactory(ExoMediaPlayerFactory.create())
             .build())
     }
-
-    private fun checkUpdate(ignoreVersion: Int) {
-        AllenVersionChecker
-            .getInstance()
-            .requestVersion()
-            .setRequestUrl("https://yj1211.work:8014/api/live/versionUpdate")
-            .request(object : RequestVersionListener {
-                override fun onRequestVersionSuccess(
-                    downloadBuilder: DownloadBuilder?,
-                    result: String?
-                ): UIData? {
-                    val jsonObject = JSON.parseObject(result)
-                    if (jsonObject.getInteger("code") == 200) {
-                        val resultData = jsonObject.getJSONObject("data")
-                        val updateInfo = JSON.toJavaObject(resultData, UpdateInfo::class.java)
-                        val versionNum = getVersionCode(context)
-                        if (versionNum == updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
-                            return null
-                        }
-                        return UIData.create().setDownloadUrl(updateInfo.updateUrl).setContent(resultData.toJSONString())
-                    }
-                    return null
-                }
-
-                override fun onRequestVersionFailure(message: String?) {
-                    Toast.makeText(context, "检查版本更新失败", Toast.LENGTH_SHORT).show()
-                }
-            }).setCustomVersionDialogListener { context, versionBundle ->
-                versionBundle.content
-                val data = JSON.parseObject(versionBundle.content)
-                val updateInfo = JSON.toJavaObject(data, UpdateInfo::class.java)
-                return@setCustomVersionDialogListener UpdateDialog(context, updateInfo)
-            }
-            .setShowNotification(false)
-            .executeMission(context)
-    }
-
-
 }
