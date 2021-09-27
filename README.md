@@ -23,7 +23,9 @@
 
 直播源获取参考	[wbt5/real-url](https://github.com/wbt5/real-url)
 
-播放器使用	[zhw2590582/ArtPlayer](https://github.com/zhw2590582/ArtPlayer)
+播放器	[Doikki/DKVideoPlayer](https://github.com/Doikki/DKVideoPlayer)
+
+弹幕显示 [bilibili/DanmakuFlameMaster](https://github.com/bilibili/DanmakuFlameMaster)
 
 ## 弹幕支持(暂不支持弹幕发送)
 
