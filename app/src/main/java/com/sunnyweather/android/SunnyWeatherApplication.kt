@@ -61,6 +61,9 @@ class SunnyWeatherApplication : Application() {
                             newestVersionNum = updateInfo.versionNum
                             Log.i("test", newestVersionNum.toString())
                             if (versionNum == updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
+                                if (isCheck) {
+                                    Toast.makeText(context, "当前已是最新版本^_^", Toast.LENGTH_SHORT).show()
+                                }
                                 return null
                             }
                             return UIData.create().setDownloadUrl(updateInfo.updateUrl).setContent(resultData.toJSONString())
@@ -91,6 +94,7 @@ class SunnyWeatherApplication : Application() {
         fun clearLoginInfo(activity: Activity) {
             if (!isLogin.value!!) {
                 Toast.makeText(context, "未登录", Toast.LENGTH_SHORT).show()
+                return
             }
             var sharedPref = activity.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
             sharedPref.edit().remove("username").remove("password").commit()
