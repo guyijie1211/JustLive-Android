@@ -20,7 +20,7 @@ import com.sunnyweather.android.logic.model.RoomInfo
 import kotlinx.android.synthetic.main.activity_liveroom.*
 import xyz.doikki.videocontroller.StandardVideoController
 import xyz.doikki.videocontroller.component.*
-import com.yanzhenjie.permission.AndPermission
+//import com.yanzhenjie.permission.AndPermission
 import xyz.doikki.videoplayer.exo.ExoMediaPlayer
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
@@ -176,7 +176,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             }
         })
         pipBtn.setOnClickListener {
-            startFloatWindow(videoView)
+//            startFloatWindow(videoView)
         }
         tinyScreen.setOnClickListener {
             videoView!!.startTinyScreen()
@@ -346,18 +346,18 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         controller!!.stopFadeOut()
     }
 
-    private fun startFloatWindow(view: View?) {
-        AndPermission
-            .with(this)
-            .overlay()
-            .onGranted {
-                mPIPManager!!.startFloatWindow()
-                mPIPManager!!.resume()
-                finish()
-            }
-            .onDenied { }
-            .start()
-    }
+//    private fun startFloatWindow(view: View?) {
+//        AndPermission
+//            .with(this)
+//            .overlay()
+//            .onGranted {
+//                mPIPManager!!.startFloatWindow()
+//                mPIPManager!!.resume()
+//                finish()
+//            }
+//            .onDenied { }
+//            .start()
+//    }
 
     //SharedPreferences保存对象
     private fun setDanmuSetting(data: DanmuSetting) {

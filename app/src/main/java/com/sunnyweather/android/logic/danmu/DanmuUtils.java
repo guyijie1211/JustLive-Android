@@ -300,7 +300,7 @@ public class DanmuUtils {
     public static void sendOpenMsgBilibili(WebSocket webSocket, String roomId, Timer myTimer) {
         AddRoomData addRoomData = new AddRoomData();
         addRoomData.setRoomId(Long.valueOf(roomId));
-        String data = JSON.toJSONString(addRoomData);
+        String data = "{\"roomid\":" + roomId + "}";
         int dataLen = data.length() + 16;
         byte[] openMessage = byteMergerAll(intToByteBig(dataLen), shortToByteBig((short)16), shortToByteBig((short)1),
                 intToByteBig(7), intToByteBig(1), data.getBytes(StandardCharsets.UTF_8));

@@ -1,7 +1,5 @@
 package com.sunnyweather.android.logic.danmu;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.sunnyweather.android.ui.liveRoom.LiveRoomViewModel;
