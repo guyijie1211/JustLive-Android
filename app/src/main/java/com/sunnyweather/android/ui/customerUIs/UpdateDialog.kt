@@ -28,6 +28,8 @@ class UpdateDialog : Dialog{
             index++
         }
         update_description.text = Html.fromHtml("<div>$descriptions</div>")
+        update_version.text = "版本: ${updateInfo.latestVersion}"
+        update_size.text = "下载体积: ${updateInfo.apkSize}"
         ignore_btn.setOnClickListener {
             var sharedPref = context.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
             sharedPref.edit().putInt("ignoreVersion", updateInfo.versionNum).commit()

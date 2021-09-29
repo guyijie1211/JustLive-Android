@@ -107,11 +107,12 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
                 release();
                 break;
             case VideoView.STATE_PREPARING:
-                if (isPrepared()) {
-                    clear();
-                    clearDanmakusOnScreen();
+                Log.i("test", String.valueOf(isPrepared()));
+                if (!isPrepared()) {
+//                    clear();
+//                    clearDanmakusOnScreen();
+                    prepare(mParser, mContext);
                 }
-                prepare(mParser, mContext);
                 break;
             case VideoView.STATE_PLAYING:
                 if (isPrepared() && isPaused()) {
@@ -124,8 +125,8 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
                 }
                 break;
             case VideoView.STATE_PLAYBACK_COMPLETED:
-                clear();
-                clearDanmakusOnScreen();
+//                clear();
+//                clearDanmakusOnScreen();
                 break;
         }
     }
