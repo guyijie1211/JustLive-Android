@@ -108,7 +108,8 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
                 break;
             case VideoView.STATE_PREPARING:
                 if (isPrepared()) {
-                    restart();
+                    clear();
+                    clearDanmakusOnScreen();
                 }
                 prepare(mParser, mContext);
                 break;
