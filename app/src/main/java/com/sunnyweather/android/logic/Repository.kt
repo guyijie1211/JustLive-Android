@@ -8,6 +8,7 @@ import com.google.gson.internal.LinkedTreeMap
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
 import com.sunnyweather.android.logic.model.RoomInfo
+import com.sunnyweather.android.logic.model.UserInfo
 import com.sunnyweather.android.logic.network.LiveNetwork
 import kotlinx.coroutines.Dispatchers
 import java.lang.Exception
@@ -226,6 +227,29 @@ object Repository {
     fun login(username: String, password: String) = liveData(Dispatchers.IO){
         val result = try {
             val liveResponse = LiveNetwork.login(username, password)
+            when (liveResponse.code) {
+                "200" -> {
+                    Log.i("test","successLogin")
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
+            }
+        } catch (e: Exception) {
+            Result.failure<List<RoomInfo>>(e)
+        }
+        emit(result)
+    }
+    fun changeUserInfo(userInfo: UserInfo) = liveData(Dispatchers.IO){
+        val result = try {
+            val liveResponse = LiveNetwork.changeUserInfo(userInfo)
             when (liveResponse.code) {
                 "200" -> {
                     Log.i("test","successLogin")

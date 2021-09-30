@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#54000000"
+    android:padding="15dp">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/add_ban_TextField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/white"
+        app:helperTextTextColor="@color/white"
+        android:hint="关键词"
+        app:boxStrokeColor="?attr/colorPrimary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_ban_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/add_ban_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
+        android:layout_alignBottom="@+id/add_ban_TextField"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/add_ban_TextField"
+        android:text="添加" />
+    <TextView
+        android:id="@+id/ban_help"
+        android:layout_below="@+id/add_ban_TextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="输入屏蔽关键词(正则请以“/”开头)"
+        android:textColor="@color/white"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/ban_chipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ban_help"/>
+
+</RelativeLayout>

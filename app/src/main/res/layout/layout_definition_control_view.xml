@@ -78,7 +78,7 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="com.sunnyweather.android.util.dkplayer.DanmuSettingFragment"/>
+            android:name="com.sunnyweather.android.util.dkplayer.DanmuMainFragment"/>
 <!--        <com.google.android.material.tabs.TabLayout-->
 <!--            android:id="@+id/tab_setting"-->
 <!--            android:layout_width="match_parent"-->

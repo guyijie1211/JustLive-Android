@@ -26,7 +26,6 @@ import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
 import xyz.doikki.videoplayer.util.PlayerUtils
 import android.util.DisplayMetrics
-import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +42,6 @@ import android.view.WindowManager
 import android.app.Activity
 import android.view.Window
 import android.widget.ImageView
-
 
 class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
@@ -198,6 +196,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         viewModel.roomInfoResponseData.observe(this, {result ->
             val roomInfo : RoomInfo = result.getOrNull() as RoomInfo
             if (roomInfo != null) {
+                changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
                 //关注按钮
                 if (isFirstGetInfo) {
                     follow_roomInfo.setOnClickListener {
@@ -230,9 +229,10 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                     //未开播
                     if (roomInfo.isLive == 0) {
                         liveRoom_not_live.visibility = View.VISIBLE
-                        liveRoom_not_live.setOnClickListener {
-                            changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
-                        }
+                        //点击播放器区域显示关注窗口
+//                        liveRoom_not_live.setOnClickListener {
+//                            changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
+//                        }
                     } else {
                         player_container.addView(videoView)
                         viewModel.getRealUrl(platform, roomId)
@@ -284,6 +284,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         controller.setCanChangePosition(false)
     }
 
+    /**
+     *
+     */
     fun changeRoomInfoVisible(isVisible: Boolean) {
         val height = PlayerUtils.dp2px(context, 80f)
         var va: ValueAnimator = if(isVisible){

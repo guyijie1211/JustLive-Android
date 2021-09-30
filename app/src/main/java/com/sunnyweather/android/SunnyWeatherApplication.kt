@@ -29,19 +29,14 @@ import java.security.AccessController.getContext
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 
-
 class SunnyWeatherApplication : Application() {
     companion object {
-        const val TOKEN = "4JHO0bP5s6SeRJ1D"
-        const val LANGUAGE = "zh_CN"
         lateinit var context: Context
-        val imageLoader: ImageLoader? = ImageLoader.getInstance() // Get singleton instance
         var areaName = MutableLiveData<String>()
         var areaType = MutableLiveData<String>()
         var userInfo: UserInfo? = null
         var isLogin = MutableLiveData(false)
         var newestVersionNum = 0
-
 
         fun checkUpdate(ignoreVersion: Int, isCheck: Boolean) {
             AllenVersionChecker
@@ -102,7 +97,6 @@ class SunnyWeatherApplication : Application() {
             isLogin.value = false
             Toast.makeText(context, "已退出", Toast.LENGTH_SHORT).show()
         }
-
         fun saveLoginInfo(activity: Activity, username: String, password: String) {
             var sharedPref = activity.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
             sharedPref.edit().putString("username", username).putString("password", password).commit()

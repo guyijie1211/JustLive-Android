@@ -7,20 +7,21 @@
     <FrameLayout
         android:id="@+id/player_container"
         android:layout_width="match_parent"
-        android:background="@color/black"
         android:layout_height="250dp"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:background="@color/black">
+
         <TextView
             android:id="@+id/liveRoom_not_live"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:background="#000000"
-            android:textColor="#8C8C8C"
+            android:gravity="center"
             android:text="未开播"
+            android:textColor="#8C8C8C"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </FrameLayout>
 
 

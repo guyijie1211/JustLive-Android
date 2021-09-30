@@ -1,5 +1,6 @@
 package com.sunnyweather.android.logic.network
 
+import com.sunnyweather.android.logic.model.UserInfo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +25,7 @@ object LiveNetwork {
     suspend fun register(username: String, nickname: String, password: String) = liveService.register(username, nickname, password).await()
     suspend fun follow(platform: String, roomId: String, uid: String) = liveService.follow(platform, roomId, uid).await()
     suspend fun unFollow(platform: String, roomId: String, uid: String) = liveService.unFollow(platform, roomId, uid).await()
+    suspend fun changeUserInfo(userInfo: UserInfo) = liveService.changeUserInfo(userInfo).await()
 
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->

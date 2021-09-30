@@ -2,6 +2,7 @@ package com.sunnyweather.android.logic.network
 
 import com.sunnyweather.android.logic.model.*
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -34,4 +35,6 @@ interface LiveService {
     fun login(@Query("username") username: String, @Query("password") password: String): Call<UserInfoResponse>
     @POST("/api/register")
     fun register(@Query("username") username: String, @Query("nickname") nickname: String,  @Query("password") password: String): Call<UserInfoResponse>
+    @POST("/api/live/changeUserInfo")
+    fun changeUserInfo(@Body userInfo: UserInfo): Call<UserInfoResponse>
 }
