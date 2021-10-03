@@ -31,6 +31,7 @@
         <activity android:name=".ui.liveRoom.LiveRoomActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.setting.SettingActivity"
             android:label="设置"/>

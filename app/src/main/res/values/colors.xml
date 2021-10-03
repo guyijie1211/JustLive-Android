@@ -22,4 +22,5 @@
     <color name="suggestionSelectedTextColor">#212121</color>
 
     <color name="textSecond">#bdbdbd</color>
+    <color name="mtrl_textinput_default_box_stroke_color">#fff</color>
 </resources>

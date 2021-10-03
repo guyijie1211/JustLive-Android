@@ -27,9 +27,9 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpage_area"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        app:defaultNavHost="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tab_area" />
+        android:layout_below="@+id/tab_area"
+        app:defaultNavHost="true" />
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.sunnyweather.android.logic.danmu;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.sunnyweather.android.SunnyWeatherApplication;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomViewModel;
 
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ public class DanmuService {
             .build();
     Request request;
     Timer myTimer = new Timer();
+    ArrayList<String> isActiveArray = new ArrayList<>();
+    Boolean isActive = false;
+
 
     //构造函数
     public DanmuService(String platform, String roomId) {
@@ -34,7 +38,8 @@ public class DanmuService {
     }
 
     //连接弹幕服务器
-    public void connect(ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) {
+    public void connect(ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, ArrayList<String> activeArray) {
+        this.isActiveArray = activeArray;
         if (platform.equals("egame") || platform.equals("cc")) {
             return;
         }
@@ -50,13 +55,13 @@ public class DanmuService {
             @Override
             public void onMessage(WebSocket webSocket, ByteString bytes) {
                 super.onMessage(webSocket, bytes);
-                DanmuUtils.onMessage(platform, bytes, resultList, danmuNum);
+                DanmuUtils.onMessage(platform, bytes, resultList, danmuNum, isActiveArray, isActive);
             }
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
                 super.onMessage(webSocket, text);
-                DanmuUtils.onMessageString(platform, text, resultList, danmuNum);
+                DanmuUtils.onMessageString(platform, text, resultList, danmuNum, isActiveArray, isActive);
             }
 
             @Override
@@ -73,6 +78,14 @@ public class DanmuService {
                 System.out.println("onFailure");
             }
         });
+    }
+
+    public void changeBan(ArrayList<String> isActiveArray) {
+        this.isActiveArray = isActiveArray;
+    }
+
+    public void changeActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     //停止接受消息

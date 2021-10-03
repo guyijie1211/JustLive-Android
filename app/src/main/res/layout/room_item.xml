@@ -25,7 +25,7 @@
             android:background="#232323"
             android:textColor="#8C8C8C"
             android:text="未开播"
-            android:textSize="18sp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:visibility="gone"/>
 
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:textSize="10sp"
+                android:textSize="13dp"
                 android:layout_marginLeft="5dp"
                 android:textColor="@color/white"/>
             <TextView
@@ -61,7 +61,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="5dp"
                 android:textColor="@color/white"
-                android:textSize="10sp"/>
+                android:textSize="13dp"/>
         </RelativeLayout>
 
         <TextView
@@ -75,7 +75,7 @@
             android:layout_marginLeft="5dp"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textSize="12sp"
+            android:textSize="16dp"
             android:textColor="@color/black"
             android:textStyle="bold"/>
 
@@ -88,7 +88,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="直播间标题测试直播间标题测试直播间标题测试直播间标题测试"
-            android:textSize="10sp" />
+            android:textSize="12dp" />
 
     </RelativeLayout>
 

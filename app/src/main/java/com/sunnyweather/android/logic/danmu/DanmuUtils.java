@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -34,6 +36,8 @@ public class DanmuUtils {
 
     static String douyuUrl = "wss://danmuproxy.douyu.com:8503/";
     static String bilibiliUrl = "wss://broadcastlv.chat.bilibili.com:2245/sub";
+    static ArrayList<String> isActiveArray = new ArrayList<>();
+    static Boolean isActive = false;
     //获取请求对象
     public static Request getRequest(String platform, String roomId) {
         Request request = null;
@@ -61,7 +65,9 @@ public class DanmuUtils {
         }
     }
     //处理字节消息
-    public static void onMessage(String platform, ByteString bytes, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) {
+    public static void onMessage(String platform, ByteString bytes, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, ArrayList<String> activeArray, Boolean isActived) {
+        isActiveArray = activeArray;
+        isActive = isActived;
         if (platform.equals("douyu")) {
             onMessageDouyu(bytes, resultList, danmuNum);
         }
@@ -74,7 +80,9 @@ public class DanmuUtils {
         }
     }
     //处理字符串消息
-    public static void onMessageString(String platform, String bytes, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) {
+    public static void onMessageString(String platform, String bytes, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, ArrayList<String> activeArray, Boolean isActived) {
+        isActiveArray = activeArray;
+        isActive = isActived;
         if (platform.equals("huya")) {
             omMessageHuya(bytes, resultList, danmuNum);
         }
@@ -106,7 +114,7 @@ public class DanmuUtils {
                 String sendNick = data.getString("sendNick");
                 //用户等级
                 Long senderLevel = data.getLong("senderLevel");
-                if (msgType != 2) {
+                if (msgType != 2 && (!isActive || !isBanned(content))) {
                     resultList.add(new LiveRoomViewModel.DanmuInfo(sendNick, content));
                     danmuNum.postValue(0);
                 }
@@ -210,8 +218,10 @@ public class DanmuUtils {
         JSONObject jsonObject;
         try {
             jsonObject = DanmuUtils.douyuDecode(bytes);
-            if (jsonObject.getString("type").equals("chatmsg")) {
-                resultList.add(new LiveRoomViewModel.DanmuInfo(jsonObject.getString("nn"), jsonObject.getString("txt")));
+            String name = jsonObject.getString("nn");
+            String content = jsonObject.getString("txt");
+            if (jsonObject.getString("type").equals("chatmsg") && (!isActive || !isBanned(content))) {
+                resultList.add(new LiveRoomViewModel.DanmuInfo(name, content));
                 danmuNum.postValue(0);
             }
         } catch (Exception e) {
@@ -296,6 +306,7 @@ public class DanmuUtils {
     }
 
     //=====================================bilibili=================================
+
     //bilibili发送入场消息
     public static void sendOpenMsgBilibili(WebSocket webSocket, String roomId, Timer myTimer) {
         AddRoomData addRoomData = new AddRoomData();
@@ -348,8 +359,10 @@ public class DanmuUtils {
                                 JSONArray obj = jsonObject.getJSONArray("info");
                                 String userName = obj.getJSONArray(2).getString(1);
                                 String danmu = obj.getString(1);
-                                resultList.add(new LiveRoomViewModel.DanmuInfo(userName, danmu));
-                                danmuNum.postValue(0);
+                                if (!isActive || !isBanned(danmu)) {
+                                    resultList.add(new LiveRoomViewModel.DanmuInfo(userName, danmu));
+                                    danmuNum.postValue(0);
+                                }
                             }
                         }
                     } else if (action == 4){
@@ -377,8 +390,10 @@ public class DanmuUtils {
                                             JSONArray obj = jsonObject.getJSONArray("info");
                                             String userName = obj.getJSONArray(2).getString(1);
                                             String danmu = obj.getString(1);
-                                            resultList.add(new LiveRoomViewModel.DanmuInfo(userName, danmu));
-                                            danmuNum.postValue(0);
+                                            if (!isActive || !isBanned(danmu)) {
+                                                resultList.add(new LiveRoomViewModel.DanmuInfo(userName, danmu));
+                                                danmuNum.postValue(0);
+                                            }
                                         }
                                     }
                                 }
@@ -423,5 +438,45 @@ public class DanmuUtils {
         }
     }
 
+    //=================================屏蔽判断==================================
+
+    /**
+     * 判断弹幕是否被屏蔽
+     * @param content 弹幕内容
+     * @return
+     */
+    private static Boolean isBanned(String content) {
+        for (String ban : isActiveArray) {
+            if (isBannedSingle(content, ban)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断单条屏蔽规则是否生效
+     * @param content 弹幕内容
+     * @param banRule 屏蔽规则
+     * @return
+     */
+    private static Boolean isBannedSingle(String content, String banRule) {
+        if (banRule.startsWith("/") && banRule.endsWith("/")) {
+            banRule = banRule.substring(1, banRule.length() - 1);
+            Pattern p = Pattern.compile(banRule);
+            Matcher m = p.matcher(content);
+            if (m.matches()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (content.contains(banRule)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
 

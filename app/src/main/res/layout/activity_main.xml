@@ -34,7 +34,7 @@
                         android:textStyle="bold"
                         android:singleLine="true"
                         android:ellipsize="end"
-                        android:textSize="28dp"
+                        android:textSize="25dp"
                         android:text="标题"/>
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.AppBarLayout>

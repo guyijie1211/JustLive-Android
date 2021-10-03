@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/dkplayer_controller_time_text_size"
+            android:textSize="20dp"
             android:layout_marginLeft="12dp"
             tools:text="高清" />
 

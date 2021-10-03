@@ -93,6 +93,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
 
 
     {
+        LiveRoomActivity context = (LiveRoomActivity) getContext();
         onRateSwitchListener = (OnRateSwitchListener) getContext();
         setVisibility(GONE);
         LayoutInflater.from(getContext()).inflate(getLayoutId(), this, true);
@@ -111,6 +112,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         danmu_setting_container.setOnClickListener(this);
         ImageView refresh = findViewById(R.id.iv_refresh);
         refresh.setOnClickListener(this);
+        danmu_show.setSelected(!context.getSetting().isShow());
 
         //增加清晰度切换
         mPopupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

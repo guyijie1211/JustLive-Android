@@ -40,6 +40,7 @@ import java.lang.Exception
 import android.view.WindowManager
 
 import android.app.Activity
+import android.util.Log
 import android.view.Window
 import android.widget.ImageView
 
@@ -64,7 +65,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     fun startFullScreen() {
         updateList = false
-        mMyDanmakuView.show()
+        if (danmuSetting.isShow) {
+            mMyDanmakuView.show()
+        }
     }
 
     fun stopFullScreen() {
@@ -146,9 +149,12 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         var uid = ""
         if (SunnyWeatherApplication.userInfo != null) {
             uid = SunnyWeatherApplication.userInfo!!.uid
+            viewModel.startDanmu(platform, roomId, SunnyWeatherApplication.userInfo!!.selectedContent, SunnyWeatherApplication.userInfo!!.isActived == "1")
+        } else {
+            viewModel.startDanmu(platform, roomId, "", false)
         }
         viewModel.getRoomInfo(uid, platform, roomId)
-        viewModel.startDanmu(platform, roomId)
+
 
         videoView = VideoViewManager.instance().get("pip") as VideoView<ExoMediaPlayer>?
 
@@ -196,7 +202,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         viewModel.roomInfoResponseData.observe(this, {result ->
             val roomInfo : RoomInfo = result.getOrNull() as RoomInfo
             if (roomInfo != null) {
-                changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
+//                changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
                 //关注按钮
                 if (isFirstGetInfo) {
                     follow_roomInfo.setOnClickListener {
@@ -230,9 +236,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                     if (roomInfo.isLive == 0) {
                         liveRoom_not_live.visibility = View.VISIBLE
                         //点击播放器区域显示关注窗口
-//                        liveRoom_not_live.setOnClickListener {
-//                            changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
-//                        }
+                        liveRoom_not_live.setOnClickListener {
+                            changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
+                        }
                     } else {
                         player_container.addView(videoView)
                         viewModel.getRealUrl(platform, roomId)
@@ -240,8 +246,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                     Glide.with(this).load(roomInfo.ownerHeadPic).transition(
                         DrawableTransitionOptions.withCrossFade()
                     ).into(ownerPic_roomInfo)
-                    ownerName_roomInfo.text = roomInfo.ownerName
-                    roomName_roomInfo.text = roomInfo.roomName
+                    ownerName_roomInfo.text = SunnyWeatherApplication.platformName(roomInfo.platForm)
+                    roomName_roomInfo.text = roomInfo.ownerName
+                    liveRoom_bar_txt.text = roomInfo.roomName
                     isFirstGetInfo = false
                 }
                 isFollowed = (roomInfo.isFollowed == 1)
@@ -288,7 +295,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
      *
      */
     fun changeRoomInfoVisible(isVisible: Boolean) {
-        val height = PlayerUtils.dp2px(context, 80f)
+        val height = PlayerUtils.dp2px(context, 60f)
         var va: ValueAnimator = if(isVisible){
             ValueAnimator.ofInt(0,height)
         }else{
@@ -338,9 +345,13 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     override fun onDanmuShowChange() {
         danmuShow = if (danmuShow) {
             mMyDanmakuView.hide()
+            danmuSetting.isShow = !danmuShow
+            setDanmuSetting(danmuSetting)
             !danmuShow
         } else {
             mMyDanmakuView.show()
+            danmuSetting.isShow = !danmuShow
+            setDanmuSetting(danmuSetting)
             !danmuShow
         }
     }
@@ -384,7 +395,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             }
         }
         //默认弹幕设置
-        return DanmuSetting(20f,1f,2f,1.5f,8f,false, false, false)
+        return DanmuSetting(true,20f,1f,2f,1.5f,8f,false, false, false)
     }
 
     override fun getSetting(): DanmuSetting {
@@ -401,12 +412,20 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         controller!!.hide()
     }
 
+    fun banChanged(isActiveArray: ArrayList<String>){
+        viewModel.banChanged(isActiveArray)
+    }
+
+    fun changeBanActive(isActive: Boolean) {
+        viewModel.activeChange(isActive)
+    }
+
     /**
      * 修改状态栏颜色，支持4.4以上版本
      * @param activity
      * @param colorId
      */
-    fun setStatusBarColor(activity: Activity, colorId: Int) {
+    private fun setStatusBarColor(activity: Activity, colorId: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window: Window = activity.window
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)

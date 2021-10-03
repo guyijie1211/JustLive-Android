@@ -19,7 +19,7 @@
             android:gravity="center"
             android:text="未开播"
             android:textColor="#8C8C8C"
-            android:textSize="18sp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:visibility="gone" />
     </FrameLayout>
@@ -35,8 +35,8 @@
 
         <ImageView
             android:id="@+id/ownerPic_roomInfo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"/>
@@ -51,7 +51,7 @@
             android:layout_toLeftOf="@+id/follow_roomInfo"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:textColor="@color/black"
             android:textStyle="bold"/>
 
@@ -64,8 +64,9 @@
             android:layout_marginLeft="5dp"
             android:singleLine="true"
             android:ellipsize="end"
+            android:textStyle="bold"
             android:layout_toRightOf="@+id/ownerPic_roomInfo"
-            android:textSize="15sp"
+            android:textSize="18dp"
             android:text="标题"/>
         <Button
             android:id="@+id/follow_roomInfo"
@@ -76,7 +77,7 @@
             android:layout_marginRight="10dp"
             android:textColor="@color/white"
             app:strokeColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="18dp"
             style="?attr/materialButtonOutlinedStyle"
             android:text="关注"/>
     </RelativeLayout>
@@ -87,13 +88,14 @@
         android:layout_below="@+id/roomInfo_liveRoom"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/liveRoom_bar_txt"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/dark_gray"
+            android:background="@color/textSecond"
             android:gravity="center_vertical"
-            android:paddingLeft="20dp"
+            android:paddingLeft="10dp"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:text="弹幕"/>
         <Button
             android:id="@+id/pipBtn"
@@ -113,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:visibility="gone"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/danMu_recyclerView"

@@ -1,5 +1,6 @@
 package com.sunnyweather.android.ui.area
 
+import android.graphics.Point
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
 import com.sunnyweather.android.logic.model.AreaInfo
+import kotlinx.android.synthetic.main.activity_liveroom.*
+import xyz.doikki.videoplayer.util.PlayerUtils
 
 class AreaListAdapter(private val fragment: AreaSingleFragment, private val areaList: List<AreaInfo>) :
     RecyclerView.Adapter<AreaListAdapter.ViewHolder>(){
@@ -22,6 +26,14 @@ class AreaListAdapter(private val fragment: AreaSingleFragment, private val area
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreaListAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.area_item, parent, false)
         val holder = ViewHolder(view)
+
+        val lp = holder.areaPic.layoutParams
+        val point = Point()
+        PlayerUtils.getWindowManager(context).defaultDisplay.getRealSize(point)
+        lp.height = point.x/3 * 4 / 3
+        holder.areaPic.layoutParams = lp
+
+
         holder.itemView.setOnClickListener {
             val position = holder.layoutPosition
             val areaInfo = areaList[position]

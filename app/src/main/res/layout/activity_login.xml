@@ -11,7 +11,7 @@
         android:gravity="center"
         android:text="登录"
         android:layout_marginTop="100dp"
-        android:textSize="50sp"
+        android:textSize="50dp"
         android:textStyle="normal" />
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,13 +61,13 @@
             android:text="登录"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textSize="25dp"/>
         <Button
             android:id="@+id/textButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/dividerColor"
-            android:textSize="14sp"
+            android:textSize="16dp"
             android:text="注册新账号"
             style="@style/Widget.MaterialComponents.Button.TextButton" />
     </LinearLayout>

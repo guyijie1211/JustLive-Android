@@ -51,6 +51,7 @@ data class UserInfo(val uid: String,
                     val ccLevel: String,
                     val egameLevel: String)
 data class DanmuSetting(
+    var isShow: Boolean,
     var showArea: Float,
     var alpha: Float,
     var speed: Float,

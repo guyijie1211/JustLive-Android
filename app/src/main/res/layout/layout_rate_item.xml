@@ -7,8 +7,8 @@
     android:paddingBottom="10dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:textSize="16sp"
-    android:background="#fff"
+    android:textSize="20dp"
+    android:background="#00000000"
     android:textColor="#000"
     android:gravity="center"
     tools:text="高清" />

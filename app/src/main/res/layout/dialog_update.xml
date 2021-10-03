@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
         android:gravity="center"
-        android:textSize="16sp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:text="更新提示"/>
     <LinearLayout
@@ -73,5 +73,5 @@
         android:layout_centerHorizontal="true"
         android:text="忽略此版本"
         android:textColor="@color/dark_gray"
-        android:textSize="10sp" />
+        android:textSize="14dp" />
 </RelativeLayout>

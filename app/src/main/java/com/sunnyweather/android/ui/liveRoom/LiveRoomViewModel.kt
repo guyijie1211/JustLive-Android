@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.danmu.DanmuService
 import com.sunnyweather.android.logic.model.DanmuSetting
-import com.sunnyweather.android.ui.login.LoginViewModel
 
 class LiveRoomViewModel : ViewModel() {
     class UrlRequest (val platform: String, val roomId: String)
@@ -47,9 +46,27 @@ class LiveRoomViewModel : ViewModel() {
         roomInfoRequestData.value = RoomInfoRequest(uid, platform, roomId)
     }
 
-    fun startDanmu(platform: String, roomId: String) {
+    fun startDanmu(platform: String, roomId: String, banStrings: String, isActive: Boolean) {
         danmuService = DanmuService(platform, roomId)
-        danmuService.connect(danmuList, danmuNum)
+        danmuService.changeActive(isActive)
+        var isSelectedArray = ArrayList<String>()
+        if (banStrings != ""){
+            if (banStrings.contains(";")) {
+                isSelectedArray = banStrings.split(";") as ArrayList<String>
+            } else {
+                isSelectedArray.add(banStrings)
+            }
+
+        }
+        danmuService.connect(danmuList, danmuNum, isSelectedArray)
+    }
+
+    fun banChanged(isActiveArray: ArrayList<String>) {
+        danmuService.changeBan(isActiveArray)
+    }
+
+    fun activeChange(isActive: Boolean) {
+        danmuService.changeActive(isActive)
     }
 
     fun stopDanmu(){
