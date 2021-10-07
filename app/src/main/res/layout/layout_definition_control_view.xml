@@ -41,13 +41,24 @@
             android:layout_width="@dimen/dkplayer_controller_height"
             android:layout_height="@dimen/dkplayer_controller_height"
             android:padding="6dp"
-            android:src="@drawable/dkplayer_danmu_show_button" />
+            android:src="@drawable/dkplayer_danmu_show_button"
+            android:visibility="invisible"/>
         <ImageView
             android:id="@+id/danmu_setting"
             android:layout_width="@dimen/dkplayer_controller_height"
             android:layout_height="@dimen/dkplayer_controller_height"
             android:padding="10dp"
-            android:src="@drawable/dkplayer_danmu_setting_button" />
+            android:src="@drawable/setting"
+            android:visibility="invisible"/>
+        <ImageView
+            android:id="@+id/startFloat"
+            android:layout_width="@dimen/dkplayer_controller_height"
+            android:layout_height="@dimen/dkplayer_controller_height"
+            android:paddingRight="1dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="1dp"
+            android:src="@drawable/float_window_white" />
         <TextView
             android:id="@+id/tv_definition"
             android:layout_width="wrap_content"
@@ -74,26 +85,10 @@
         android:orientation="vertical"
         android:translationX="340dp"
         tools:translationX="0dp">
-
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:name="com.sunnyweather.android.util.dkplayer.DanmuMainFragment"/>
-<!--        <com.google.android.material.tabs.TabLayout-->
-<!--            android:id="@+id/tab_setting"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:tabMode="fixed"-->
-<!--            app:tabTextColor="@color/white"-->
-<!--            app:tabSelectedTextColor="@color/colorPrimary"-->
-<!--            app:tabIndicatorColor="@color/colorPrimary"-->
-<!--            app:tabIndicatorHeight="2dp"/>-->
-
-<!--        <androidx.viewpager.widget.ViewPager-->
-<!--            android:id="@+id/pager_setting"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
-
     </LinearLayout>
 
     <ProgressBar

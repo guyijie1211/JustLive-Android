@@ -2,6 +2,7 @@ package com.sunnyweather.android.logic.danmu;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.blankj.utilcode.util.DeviceUtils;
 import com.sunnyweather.android.SunnyWeatherApplication;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomViewModel;
 
@@ -41,6 +42,9 @@ public class DanmuService {
     public void connect(ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, ArrayList<String> activeArray) {
         this.isActiveArray = activeArray;
         if (platform.equals("egame") || platform.equals("cc")) {
+            return;
+        }
+        if (platform.equals("huya") && DeviceUtils.getSDKVersionCode() < 26) {
             return;
         }
         //开始连接
@@ -90,7 +94,7 @@ public class DanmuService {
 
     //停止接受消息
     public void stop() {
-        if (!platform.equals("egame") && !platform.equals("cc")) {
+        if (!platform.equals("egame") && !platform.equals("cc") && (!platform.equals("huya") || DeviceUtils.getSDKVersionCode() >= 26)) {
             webSocket.cancel();
         }
         myTimer.cancel();

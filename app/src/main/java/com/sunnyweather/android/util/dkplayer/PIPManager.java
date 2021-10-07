@@ -1,5 +1,6 @@
 package com.sunnyweather.android.util.dkplayer;
 
+import android.util.Log;
 import android.view.View;
 
 import com.sunnyweather.android.SunnyWeatherApplication;
@@ -20,45 +21,54 @@ public class PIPManager {
     private boolean mIsShowing;
     private int mPlayingPosition = -1;
     private Class mActClass;
+    private String platform;
+    private String roomId;
 
 
-    private PIPManager() {
+    private PIPManager(String platform, String roomId) {
+        this.platform = platform;
+        this.roomId = roomId;
         mVideoView = new VideoView(SunnyWeatherApplication.context);
-        VideoViewManager.instance().add(mVideoView, "pip");
+        VideoViewManager.instance().removeAll();
+        VideoViewManager.instance().add(mVideoView, platform + roomId);
         mFloatView = new FloatView(SunnyWeatherApplication.context, 0, 0);
-        mFloatController = new FloatController(SunnyWeatherApplication.context, mFloatView, mFloatView.getWindowParams());
+        mFloatController = new FloatController(SunnyWeatherApplication.context, mFloatView, mFloatView.getWindowParams(), platform, roomId);
         mFloatController.setDoubleTapTogglePlayEnabled(false);
     }
 
-    private PIPManager(VideoView videoView) {
-        mVideoView = videoView;
-        VideoViewManager.instance().add(mVideoView, "pip");
-        mFloatView = new FloatView(SunnyWeatherApplication.context, 0, 0);
-        mFloatController = new FloatController(SunnyWeatherApplication.context, mFloatView, mFloatView.getWindowParams());
-        mFloatController.setDoubleTapTogglePlayEnabled(false);
-    }
+//    private PIPManager(VideoView videoView) {
+//        mVideoView = videoView;
+//        VideoViewManager.instance().add(mVideoView, "pip");
+//        mFloatView = new FloatView(SunnyWeatherApplication.context, 0, 0);
+//        mFloatController = new FloatController(SunnyWeatherApplication.context, mFloatView, mFloatView.getWindowParams());
+//        mFloatController.setDoubleTapTogglePlayEnabled(false);
+//    }
 
-    public static PIPManager getInstance() {
-        if (instance == null) {
+    public static PIPManager getInstance(String platform, String roomId) {
+        if (instance == null || !((platform + roomId).equals(instance.platform + instance.roomId))) {
+            if (instance != null) {
+                instance.stopFloatWindow();
+                instance.reset();
+            }
             synchronized (PIPManager.class) {
-                if (instance == null) {
-                    instance = new PIPManager();
+                if (instance == null || !((platform + roomId).equals(instance.platform + instance.roomId))) {
+                    instance = new PIPManager(platform, roomId);
                 }
             }
         }
         return instance;
     }
 
-    public static PIPManager getInstance(VideoView videoView) {
-        if (instance == null) {
-            synchronized (PIPManager.class) {
-                if (instance == null) {
-                    instance = new PIPManager(videoView);
-                }
-            }
-        }
-        return instance;
-    }
+//    public static PIPManager getInstance(VideoView videoView) {
+//        if (instance == null) {
+//            synchronized (PIPManager.class) {
+//                if (instance == null) {
+//                    instance = new PIPManager(videoView);
+//                }
+//            }
+//        }
+//        return instance;
+//    }
 
     public void startFloatWindow() {
         if (mIsShowing) return;
@@ -130,5 +140,4 @@ public class PIPManager {
     public Class getActClass() {
         return mActClass;
     }
-
 }

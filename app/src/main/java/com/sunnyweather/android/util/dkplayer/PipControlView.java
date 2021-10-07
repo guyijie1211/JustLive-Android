@@ -24,12 +24,15 @@ public class PipControlView extends FrameLayout implements IControlComponent, Vi
 
     private ControlWrapper mControlWrapper;
 
-//    private ImageView mPlay;
     private ImageView mClose;
     private ProgressBar mLoading;
+    private String platform;
+    private String roomId;
 
-    public PipControlView(@NonNull Context context) {
+    public PipControlView(@NonNull Context context, @NonNull String platform, @NonNull String roomId) {
         super(context);
+        this.platform = platform;
+        this.roomId = roomId;
     }
 
     public PipControlView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -54,8 +57,8 @@ public class PipControlView extends FrameLayout implements IControlComponent, Vi
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_close) {
-            PIPManager.getInstance().stopFloatWindow();
-            PIPManager.getInstance().reset();
+            PIPManager.getInstance(platform, roomId).stopFloatWindow();
+            PIPManager.getInstance(platform, roomId).reset();
         }
 //        else if (id == R.id.start_play) {
 //            mControlWrapper.togglePlay();

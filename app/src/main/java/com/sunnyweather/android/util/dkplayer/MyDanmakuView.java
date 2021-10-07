@@ -108,12 +108,11 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
                 break;
             case VideoView.STATE_PREPARING:
                 if (!isPrepared()) {
-//                    clear();
-//                    clearDanmakusOnScreen();
                     prepare(mParser, mContext);
                 }
                 break;
             case VideoView.STATE_PLAYING:
+                Log.i("test", "isPrepared():" + isPrepared() + isPaused());
                 if (isPrepared() && isPaused()) {
                     resume();
                 }
@@ -214,5 +213,11 @@ public class MyDanmakuView extends DanmakuView implements IControlComponent {
     //转换speed
     private float getSpeedValue(float value) {
         return 4f - value;
+    }
+
+    public void stopFloatPrepare() {
+        if (!isPrepared()) {
+            prepare(mParser, mContext);
+        }
     }
 }

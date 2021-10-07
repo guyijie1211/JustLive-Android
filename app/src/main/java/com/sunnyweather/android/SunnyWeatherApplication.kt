@@ -28,6 +28,8 @@ import com.sunnyweather.android.ui.customerUIs.UpdateDialog
 import java.security.AccessController.getContext
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import com.umeng.analytics.MobclickAgent
+import com.umeng.commonsdk.UMConfigure
 
 class SunnyWeatherApplication : Application() {
     companion object {
@@ -95,6 +97,7 @@ class SunnyWeatherApplication : Application() {
             sharedPref.edit().remove("username").remove("password").commit()
             userInfo = null
             isLogin.value = false
+            MobclickAgent.onProfileSignOff()//友盟账号退出
             Toast.makeText(context, "已退出", Toast.LENGTH_SHORT).show()
         }
         fun saveLoginInfo(activity: Activity, username: String, password: String) {
@@ -196,6 +199,8 @@ class SunnyWeatherApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        UMConfigure.preInit(this, "6159ddaf14e22b6a4f146772", "QQ群")
+        UMConfigure.init(this,"6159ddaf14e22b6a4f146772","QQ群",UMConfigure.DEVICE_TYPE_PHONE, "")
         context = applicationContext
         var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
         val ignoreVersion = sharedPref.getInt("ignoreVersion", getVersionCode(context))

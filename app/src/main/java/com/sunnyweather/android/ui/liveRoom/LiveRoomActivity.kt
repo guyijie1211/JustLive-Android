@@ -20,7 +20,6 @@ import com.sunnyweather.android.logic.model.RoomInfo
 import kotlinx.android.synthetic.main.activity_liveroom.*
 import xyz.doikki.videocontroller.StandardVideoController
 import xyz.doikki.videocontroller.component.*
-//import com.yanzhenjie.permission.AndPermission
 import xyz.doikki.videoplayer.exo.ExoMediaPlayer
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
@@ -40,9 +39,15 @@ import java.lang.Exception
 import android.view.WindowManager
 
 import android.app.Activity
-import android.util.Log
+import android.net.Uri
 import android.view.Window
-import android.widget.ImageView
+import com.blankj.utilcode.util.DeviceUtils
+import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils
+
+import com.hjq.permissions.XXPermissions
+
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.Permission
 
 class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
@@ -132,20 +137,20 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         lp.height = point.x * 9 / 16
         player_container.layoutParams = lp
 
-        mPIPManager = PIPManager.getInstance()
         controller = YJstandardController(this)
         val display = windowManager.defaultDisplay
         val refreshRate = display.refreshRate
         mMyDanmakuView = MyDanmakuView(this, danmuSetting, refreshRate)
-//        mMyDanmakuView.showFPS(true)
         mMyDanmakuView.hide()
         addControlComponents(controller!!)
         controller!!.setDoubleTapTogglePlayEnabled(false)
         controller!!.setEnableInNormal(true)
 
-        mPIPManager.actClass = LiveRoomActivity::class.java
+
         platform = intent.getStringExtra("platform")?:""
         roomId = intent.getStringExtra("roomId")?:""
+        mPIPManager = PIPManager.getInstance(platform, roomId)
+        mPIPManager.actClass = LiveRoomActivity::class.java
         var uid = ""
         if (SunnyWeatherApplication.userInfo != null) {
             uid = SunnyWeatherApplication.userInfo!!.uid
@@ -156,9 +161,11 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         viewModel.getRoomInfo(uid, platform, roomId)
 
 
-        videoView = VideoViewManager.instance().get("pip") as VideoView<ExoMediaPlayer>?
 
-
+        //去网页
+        to_web.setOnClickListener {
+            toWeb(platform, roomId)
+        }
         //弹幕更新
         viewModel.danmuNum.observe(this, {
             mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content)
@@ -175,13 +182,23 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             if (urls != null && urls.size > 0) {
                 mDefinitionControlView?.setData(urls)
                 videoView?.setVideoController(controller) //设置控制器
+                var sharedPref = SharedPreferencesUtils.getSharedPreferences(context, "JustLive")
+
+                when (sharedPref.getInt("playerSize", R.id.radio_button_1)) {
+                    R.id.radio_button_1 -> {
+                        changeVideoSize(VideoView.SCREEN_SCALE_DEFAULT)
+                    }
+                    R.id.radio_button_2 -> {
+                        changeVideoSize(VideoView.SCREEN_SCALE_MATCH_PARENT)
+                    }
+                    R.id.radio_button_3 -> {
+                        changeVideoSize(VideoView.SCREEN_SCALE_CENTER_CROP)
+                    }
+                }
                 videoView?.setUrl(urls["原画"]) //设置视频地址
                 videoView?.start() //开始播放，不调用则不自动播放
             }
         })
-        pipBtn.setOnClickListener {
-//            startFloatWindow(videoView)
-        }
         tinyScreen.setOnClickListener {
             videoView!!.startTinyScreen()
         }
@@ -232,6 +249,10 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                         danmu_not_support.visibility = View.VISIBLE
                         danmu_not_support.text = "暂不支持${SunnyWeatherApplication.platformName(roomInfo.platForm)}弹幕"
                     }
+                    if (roomInfo.platForm == "huya" && DeviceUtils.getSDKVersionCode() < 26) {
+                        danmu_not_support.visibility = View.VISIBLE
+                        danmu_not_support.text = "安卓8.0以下暂时不支持虎牙弹幕"
+                    }
                     //未开播
                     if (roomInfo.isLive == 0) {
                         liveRoom_not_live.visibility = View.VISIBLE
@@ -240,6 +261,12 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                             changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
                         }
                     } else {
+                        videoView = VideoViewManager.instance().get(platform + roomId) as VideoView<ExoMediaPlayer>?
+                        if (mPIPManager.isStartFloatWindow) {
+                            mPIPManager.stopFloatWindow()
+//                            controller?.setPlayerState(videoView!!.currentPlayerState)
+                            mMyDanmakuView.stopFloatPrepare()
+                        }
                         player_container.addView(videoView)
                         viewModel.getRealUrl(platform, roomId)
                     }
@@ -260,14 +287,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     override fun onStart() {
         super.onStart()
         mMyDanmakuView.resume()
-        if (mPIPManager.isStartFloatWindow) {
-            val playerTemp = VideoViewManager.instance().get("pip")
-            mPIPManager.stopFloatWindow()
-            controller?.setPlayerState(playerTemp.currentPlayerState)
-            controller?.setPlayState(playerTemp.currentPlayState)
-            playerTemp.setVideoController(controller)
-            player_container.addView(playerTemp)
-        }
     }
 
     private fun addControlComponents(controller: StandardVideoController) {
@@ -360,18 +379,35 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         controller!!.stopFadeOut()
     }
 
-//    private fun startFloatWindow(view: View?) {
-//        AndPermission
-//            .with(this)
-//            .overlay()
-//            .onGranted {
-//                mPIPManager!!.startFloatWindow()
-//                mPIPManager!!.resume()
-//                finish()
-//            }
-//            .onDenied { }
-//            .start()
-//    }
+    override fun startFloat() {
+        startFloatWindow()
+    }
+
+    fun stopFloat() {
+        mPIPManager.stopFloatWindow()
+    }
+
+    private fun startFloatWindow() {
+        XXPermissions.with(this)
+            // 申请悬浮窗权限
+            .permission(Permission.SYSTEM_ALERT_WINDOW)
+            .request(object : OnPermissionCallback {
+                override fun onGranted(permissions: List<String>, all: Boolean) {
+                    if (all) {
+                        mPIPManager!!.startFloatWindow()
+                        mPIPManager!!.resume()
+                        finish()
+                    }
+                }
+                override fun onDenied(permissions: List<String>, never: Boolean) {
+                    if (never) {
+                        Toast.makeText(context, "获取悬浮窗权限失败", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(context, "获取悬浮窗权限失败", Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
+    }
 
     //SharedPreferences保存对象
     private fun setDanmuSetting(data: DanmuSetting) {
@@ -408,6 +444,10 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         mMyDanmakuView.setContext(setting, updateItem)
     }
 
+    override fun changeVideoSize(size: Int) {
+        videoView!!.setScreenScaleType(size)
+    }
+
     fun hideViews(){
         controller!!.hide()
     }
@@ -432,5 +472,20 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = activity.resources.getColor(colorId)
         }
+    }
+
+    private fun toWeb(platform: String, roomId: String) {
+        var url = when (platform) {
+            "bilibili" -> "https://live.bilibili.com/$roomId"
+            "douyu" -> "https://www.douyu.com/$roomId"
+            "huya" -> "https://m.huya.com/$roomId"
+            "cc" -> "https://cc.163.com/$roomId"
+            "egame" -> "https://egame.qq.com/$roomId"
+            else -> "https://github.com/guyijie1211/JustLive-Android/issues/new"
+        }
+        val uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.addCategory(Intent. CATEGORY_BROWSABLE)
+        startActivity(intent)
     }
 }

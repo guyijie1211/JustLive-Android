@@ -22,6 +22,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputLayout
+import com.umeng.analytics.MobclickAgent
 
 class LoginActivity: AppCompatActivity() {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
@@ -45,6 +46,7 @@ class LoginActivity: AppCompatActivity() {
         viewModel.loginResponseLiveDate.observe(this, { result ->
             val userInfo = result.getOrNull()
             if (userInfo is UserInfo) {
+                MobclickAgent.onProfileSignIn(userInfo.userName)//友盟账号登录
                 SunnyWeatherApplication.userInfo = userInfo
                 SunnyWeatherApplication.isLogin.value = true
                 //登录信息存本地

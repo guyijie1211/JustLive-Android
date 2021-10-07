@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#54000000"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/danmu_tabLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:tabTextColor="#F3F1F1"
-        android:background="#54000000"/>
+        android:background="#00FFFFFF"/>
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/danmu_viewPager"
         android:name="androidx.navigation.fragment.NavHostFragment"

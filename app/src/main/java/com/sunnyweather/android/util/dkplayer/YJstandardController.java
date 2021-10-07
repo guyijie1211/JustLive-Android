@@ -18,6 +18,8 @@ import xyz.doikki.videocontroller.StandardVideoController;
 import xyz.doikki.videoplayer.controller.IControlComponent;
 
 public class YJstandardController extends StandardVideoController {
+    private Boolean doubleTap = false;
+
     public YJstandardController(@NonNull Context context) {
         super(context);
     }
@@ -31,9 +33,15 @@ public class YJstandardController extends StandardVideoController {
     }
 
     @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        toggleFullScreen();
-        return true;
+    protected void onLockStateChanged(boolean isLocked) {
+        doubleTap = isLocked;
     }
 
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+        if (!doubleTap) {
+            toggleFullScreen();
+        }
+        return true;
+    }
 }

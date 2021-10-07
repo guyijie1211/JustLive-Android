@@ -24,12 +24,19 @@ import xyz.doikki.videoplayer.util.PlayerUtils;
 public class FloatController extends GestureVideoController {
     private int sizeType;
     private View floatView;
+    private String platform;
+    private String roomId;
     private WindowManager.LayoutParams params;
     private WindowManager mWindowManager;
 
-    public FloatController(@NonNull Context context, @NonNull View view, @NonNull WindowManager.LayoutParams params) {
+    public FloatController(@NonNull Context context, @NonNull View view, @NonNull WindowManager.LayoutParams params, @NonNull String platform, @NonNull String roomId) {
         super(context);
-        sizeType = 1;
+        this.platform = platform;
+        this.roomId = roomId;
+        addControlComponent(new CompleteView(getContext()));
+        addControlComponent(new ErrorView(getContext()));
+        addControlComponent(new PipControlView(getContext(), platform, roomId));
+        sizeType = 2;
         mWindowManager = PlayerUtils.getWindowManager(getContext().getApplicationContext());
         this.floatView = view;
         this.params = params;
@@ -51,16 +58,14 @@ public class FloatController extends GestureVideoController {
     @Override
     protected void initView() {
         super.initView();
-        addControlComponent(new CompleteView(getContext()));
-        addControlComponent(new ErrorView(getContext()));
-        addControlComponent(new PipControlView(getContext()));
     }
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        Log.i("test","单击");
-        if (PIPManager.getInstance().getActClass() != null) {
-            Intent intent = new Intent(getContext(), PIPManager.getInstance().getActClass());
+        if (PIPManager.getInstance(platform, roomId).getActClass() != null) {
+            Intent intent = new Intent(getContext(), PIPManager.getInstance(platform, roomId).getActClass());
+            intent.putExtra("platform", platform);
+            intent.putExtra("roomId", roomId);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             getContext().startActivity(intent);
         }
@@ -85,7 +90,7 @@ public class FloatController extends GestureVideoController {
             sizeType = 3;
             return true;
         }
-        if (sizeType == 3) { //占满手机宽度
+        if (sizeType == 3) { //小窗
             int width = PlayerUtils.dp2px(getContext(), 180);
             params.width = width;
             params.height = width * 9 / 16;

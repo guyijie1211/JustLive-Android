@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +65,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     private ProgressBar mBottomProgress;
     private ImageView mPlayButton;
     private ImageView danmu_show;
+    private ImageView mStartFloat;
     private ImageView danmu_setting;
     private LinearLayout bottom_container;
     private LinearLayout danmu_setting_container;
@@ -91,7 +91,6 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         super(context, attrs, defStyleAttr);
     }
 
-
     {
         LiveRoomActivity context = (LiveRoomActivity) getContext();
         onRateSwitchListener = (OnRateSwitchListener) getContext();
@@ -110,6 +109,8 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         danmu_setting.setOnClickListener(this);
         danmu_setting_container = findViewById(R.id.setting_layout);
         danmu_setting_container.setOnClickListener(this);
+        mStartFloat = findViewById(R.id.startFloat);
+        mStartFloat.setOnClickListener(this);
         ImageView refresh = findViewById(R.id.iv_refresh);
         refresh.setOnClickListener(this);
         danmu_show.setSelected(!context.getSetting().isShow());
@@ -272,8 +273,11 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
             onRateSwitchListener.onDanmuShowChange();
         } else if (id == R.id.danmu_setting) {
             handleSetting();
-        } else if (id == R.id.setting_layout) {
-
+        } else if (id == R.id.startFloat) {
+            if (mControlWrapper.isFullScreen()) {
+                toggleFullScreen();
+            }
+            onRateSwitchListener.startFloat();
         }
     }
 
@@ -337,6 +341,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         void onRateChange(String url);
         void onDanmuShowChange();
         void onDanmuSettingShowChanged();
+        void startFloat();
     }
 
     public void setOnRateSwitchListener(YJLiveControlView.OnRateSwitchListener onRateSwitchListener) {

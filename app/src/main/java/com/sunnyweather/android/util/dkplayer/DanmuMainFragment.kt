@@ -25,7 +25,7 @@ class DanmuMainFragment: Fragment() {
         TabLayoutMediator(danmu_tabLayout, danmu_viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "弹幕设置"
+                    tab.text = "播放设置"
                 }
                 1 -> {
                     tab.text = "屏蔽设置"

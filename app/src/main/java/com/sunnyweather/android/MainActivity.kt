@@ -32,8 +32,9 @@ import xyz.doikki.videoplayer.util.PlayerUtils.getStatusBarHeight
 
 import android.view.ViewGroup
 import androidx.drawerlayout.widget.DrawerLayout
+import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
+import com.umeng.analytics.MobclickAgent
 import xyz.doikki.videoplayer.util.PlayerUtils
-
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
@@ -105,6 +106,9 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
 //            android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
+            android.R.id.home -> {
+                Toast.makeText(this, "开发中", Toast.LENGTH_SHORT).show()
+            }
             R.id.menu_search -> {
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
@@ -151,6 +155,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         viewModel.loginResponseLiveDate.observe(this, { result ->
             val userInfo = result.getOrNull()
             if (userInfo is UserInfo) {
+                MobclickAgent.onProfileSignIn(userInfo.userName)//友盟账号登录
                 SunnyWeatherApplication.userInfo = userInfo
                 SunnyWeatherApplication.isLogin.value = true
             } else if(userInfo is String){

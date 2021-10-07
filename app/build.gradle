@@ -12,8 +12,8 @@ android {
         applicationId "com.yj1211.justlive"
         minSdk 21
         targetSdk 31
-        versionCode 5
-        versionName "0.1.4"
+        versionCode 6
+        versionName "0.1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -53,7 +53,6 @@ dependencies {
     implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.5'
     implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.5'
     implementation 'xyz.doikki.android.dkplayer:player-exo:3.3.5'
-//    implementation 'com.yanzhenjie:permission:2.0.3'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-alpha06'
@@ -84,6 +83,11 @@ dependencies {
     implementation 'com.auth0:java-jwt:3.18.2'                          //虎牙JWT
 //    implementation 'com.auth0.android:jwtdecode:2.0.0'
     implementation 'com.github.AlexLiuSheng:CheckVersionLib:2.4.1_androidx' //版本更新
+    implementation  'com.umeng.umsdk:common:9.4.4'// 友盟统计
+    implementation  'com.umeng.umsdk:asms:1.4.1'// 友盟统计
+    implementation 'com.umeng.umsdk:apm:1.4.2' // 错误分析升级为独立SDK，看crash数据请一定集成，可选
+    implementation 'com.github.getActivity:XXPermissions:12.3' //浮窗权限申请
+    implementation 'com.blankj:utilcodex:1.30.6' //安卓常用工具
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -6,6 +6,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -33,6 +34,7 @@ public class FloatView extends FrameLayout{
     private int mDownRawX, mDownRawY;//手指按下时相对于屏幕的坐标
     private int mDownX, mDownY;//手指按下时相对于悬浮窗的坐标
 
+
     public FloatView(@NonNull Context context, int x, int y) {
         super(context);
         mDownX = x;
@@ -42,8 +44,8 @@ public class FloatView extends FrameLayout{
 
 
     private void init() {
-        int padding = PlayerUtils.dp2px(getContext(), 1);
-        setPadding(padding, padding, padding, padding);
+//        int padding = PlayerUtils.dp2px(getContext(), 1);
+//        setPadding(padding, padding, padding, padding);
         initWindow();
     }
 
@@ -58,12 +60,12 @@ public class FloatView extends FrameLayout{
         // 设置图片格式，效果为背景透明
         mParams.format = PixelFormat.TRANSLUCENT;
         mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-//        mParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+//        mParams.flags = WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR;
         mParams.windowAnimations = R.style.FloatWindowAnimation;
         mParams.gravity = Gravity.START | Gravity.TOP; // 调整悬浮窗口至右下角
         // 设置悬浮窗口长宽数据
 
-        int width = PlayerUtils.dp2px(getContext(), 180);
+        int width = getWindowWidth() / 7 * 5;
 //        Point point = new Point();
 //        mWindowManager.getDefaultDisplay().getRealSize(point);
 //        int width = point.x/2;
@@ -164,5 +166,11 @@ public class FloatView extends FrameLayout{
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    private int getWindowWidth() {
+        Point point = new Point();
+        mWindowManager.getDefaultDisplay().getRealSize(point);
+        return point.x;
     }
 }

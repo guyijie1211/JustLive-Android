@@ -1,16 +1,21 @@
 package com.sunnyweather.android.util.dkplayer
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils.getSharedPreferences
 import com.google.android.material.slider.Slider
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.DanmuSetting
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_danmu_setting.*
+import xyz.doikki.videoplayer.player.VideoView
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -82,11 +87,44 @@ class DanmuSettingFragment : Fragment() {
         merge_select.isChecked = setting.merge
         bold_select.isChecked = setting.bold
         fps_select.isChecked = setting.fps
+
+        var sharedPref = getSharedPreferences(context, "JustLive")
+
+        when (sharedPref.getInt("playerSize", R.id.radio_button_1)) {
+            R.id.radio_button_1 -> {
+                radio_button_1.isChecked = true
+                onDanmuSettingChangedListener.changeVideoSize(VideoView.SCREEN_SCALE_DEFAULT)
+            }
+            R.id.radio_button_2 -> {
+                radio_button_2.isChecked = true
+                onDanmuSettingChangedListener.changeVideoSize(VideoView.SCREEN_SCALE_MATCH_PARENT)
+            }
+            R.id.radio_button_3 -> {
+                radio_button_3.isChecked = true
+                onDanmuSettingChangedListener.changeVideoSize(VideoView.SCREEN_SCALE_CENTER_CROP)
+            }
+        }
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.radio_button_1 -> {
+                    onDanmuSettingChangedListener.changeVideoSize(VideoView.SCREEN_SCALE_DEFAULT)
+                }
+                R.id.radio_button_2 -> {
+                    onDanmuSettingChangedListener.changeVideoSize(VideoView.SCREEN_SCALE_MATCH_PARENT)
+                }
+                R.id.radio_button_3 -> {
+                    onDanmuSettingChangedListener.changeVideoSize(VideoView.SCREEN_SCALE_CENTER_CROP)
+                }
+            }
+
+            sharedPref.edit().putInt("playerSize", checkedId).commit()
+        }
     }
 
     interface OnDanmuSettingChangedListener {
         fun getSetting(): DanmuSetting
         fun changeSetting(setting: DanmuSetting, updateItem: String)
+        fun changeVideoSize(size: Int)
     }
 
     private fun getNoMoreThanTwoDigits(number: Float): String {
