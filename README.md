@@ -1,7 +1,7 @@
 # JustLive-Android
 前端Web项目    [JustLive-Web](https://github.com/guyijie1211/JustLive-Web)
 
-网站页面    [live.yj1211.work](live.yj1211.work)
+网站页面    [live.yj1211.work](http://live.yj1211.work)
 
 [点击下载app](https://github.com/guyijie1211/JustLive-Android/releases)
 
