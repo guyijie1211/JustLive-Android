@@ -1,7 +1,7 @@
 # JustLive-Android
 前端Web项目    [JustLive-Web](https://github.com/guyijie1211/JustLive-Web)
 
-网站页面    [live.yj1211.work](live.yj1211.work)
+网站页面    [live.yj1211.work](http://live.yj1211.work)
 
 [点击下载app](https://github.com/guyijie1211/JustLive-Android/releases)
 
@@ -29,7 +29,7 @@
 
 ## 弹幕支持(暂不支持弹幕发送)
 
-斗鱼、虎牙 （企鹅电竞、BILIBILI直播 正在适配中）
+斗鱼、虎牙、BILIBILI直播 （企鹅电竞 正在适配中）
 
 斗鱼弹幕协议参考	[斗鱼开放平台](https://open.douyu.com/source/api/63)
 
