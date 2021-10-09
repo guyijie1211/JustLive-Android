@@ -199,8 +199,8 @@ class SunnyWeatherApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        UMConfigure.preInit(this, "******", "QQ群")
-        UMConfigure.init(this,"******","QQ群",UMConfigure.DEVICE_TYPE_PHONE, "")
+        UMConfigure.preInit(this, "6159ddaf14e22b6a4f146772", "QQ群")
+        UMConfigure.init(this,"6159ddaf14e22b6a4f146772","QQ群",UMConfigure.DEVICE_TYPE_PHONE, "")
         context = applicationContext
         var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
         val ignoreVersion = sharedPref.getInt("ignoreVersion", getVersionCode(context))
