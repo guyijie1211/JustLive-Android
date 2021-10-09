@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout android:id="@+id/main_drawerLayout"
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/main_drawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -80,17 +81,17 @@
         </com.angcyo.tablayout.DslTabLayout>
     </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+    <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+        android:id="@+id/slider"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true">
-        <fragment
-            android:id="@+id/area_fragment"
-            android:name="com.sunnyweather.android.ui.setting.SettingFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.google.android.material.navigation.NavigationView>
+        android:fitsSystemWindows="true" >
+<!--            <fragment-->
+<!--                android:id="@+id/area_fragment"-->
+<!--                android:name="com.sunnyweather.android.ui.setting.SettingFragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent" />-->
+    </com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView>
 </androidx.drawerlayout.widget.DrawerLayout>
 

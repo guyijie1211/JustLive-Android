@@ -146,7 +146,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         isClearInputButtonEnabled = true
         setSuggestionsDisabled(false)
         setQueryInputGravity(Gravity.START or Gravity.CENTER)
-        setQueryInputHint("搜索")
+        setQueryInputHint("斗鱼用房间号搜")
     }
     //选择历史记录或删除
     private val mOnSuggestionChangeListener = object : OnSuggestionChangeListener {

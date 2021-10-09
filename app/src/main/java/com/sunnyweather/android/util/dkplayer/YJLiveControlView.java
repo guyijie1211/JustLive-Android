@@ -6,11 +6,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.gson.internal.LinkedTreeMap;
 import com.sunnyweather.android.R;
@@ -137,6 +140,11 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     @Override
     public void attach(@NonNull ControlWrapper controlWrapper) {
         mControlWrapper = controlWrapper;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Boolean fullScreenStart = sharedPreferences.getBoolean("full_screen_start", false);
+        if (fullScreenStart) {
+            toggleFullScreen();
+        }
     }
     @Override
     public View getView() {
@@ -291,10 +299,9 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
 //        mControlWrapper.toggleFullScreenByVideoSize(activity);
     }
 
-    public void setData(LinkedTreeMap<String, String> multiRateData) {
+    public void setData(LinkedTreeMap<String, String> multiRateData, String txt) {
         mMultiRateData = multiRateData;
         if (mDefinition != null && TextUtils.isEmpty(mDefinition.getText())) {
-            L.d("multiRate");
             if (multiRateData == null) return;
             mRateStr = new ArrayList<>();
             int index = 0;
@@ -309,9 +316,11 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                 mPopLayout.addView(rateItem);
                 index++;
             }
-            ((TextView) mPopLayout.getChildAt(index - 1)).setTextColor(ContextCompat.getColor(getContext(), R.color.purple_500));
-            mDefinition.setText(mRateStr.get(index - 1));
-            mCurIndex = index - 1;
+            Log.i("test", mRateStr.indexOf(txt) + "nnnnnn");
+            Log.i("test", (index-1) + "kkkkkkk");
+            ((TextView) mPopLayout.getChildAt(mRateStr.indexOf(txt))).setTextColor(ContextCompat.getColor(getContext(), R.color.purple_500));
+            mDefinition.setText(txt);
+            mCurIndex = mRateStr.indexOf(txt);
         }
     }
 

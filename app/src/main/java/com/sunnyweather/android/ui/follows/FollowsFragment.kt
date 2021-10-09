@@ -45,27 +45,27 @@ class FollowsFragment : Fragment() {
         }.attach()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (!SunnyWeatherApplication.isLogin.value!! && !showLogin) {
-            showLogin = true
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle("启用关注")
-                .setMessage("登录后获取关注列表")
-                .setCancelable(false)
-                .setNegativeButton("返回") { _, _ ->
-                    showLogin = false
-                    val main: MainActivity = context as MainActivity
-                    main.toFirst()
-                }
-                .setPositiveButton("登录") { _, _ ->
-                    showLogin = false
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent)
-                }
-                .show()
-        }
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        if (!SunnyWeatherApplication.isLogin.value!! && !showLogin) {
+//            showLogin = true
+//            MaterialAlertDialogBuilder(requireContext())
+//                .setTitle("启用关注")
+//                .setMessage("登录后获取关注列表")
+//                .setCancelable(false)
+//                .setNegativeButton("返回") { _, _ ->
+//                    showLogin = false
+//                    val main: MainActivity = context as MainActivity
+//                    main.toFirst()
+//                }
+//                .setPositiveButton("登录") { _, _ ->
+//                    showLogin = false
+//                    val intent = Intent(context, LoginActivity::class.java)
+//                    startActivity(intent)
+//                }
+//                .show()
+//        }
+//    }
 
 
 

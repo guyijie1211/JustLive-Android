@@ -1,7 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <SwitchPreferenceCompat
-        app:key="dayNight"
-        app:title="深色主题"/>
+    <PreferenceCategory
+        app:key="player_setting"
+        app:title="播放设置">
+        <SwitchPreferenceCompat
+            app:key="full_screen_start"
+            app:title="直接全屏播放"
+            app:icon="@drawable/ic_baseline_fullscreen_24"
+            app:summary="进入直播间时直接全屏(建议关闭)"/>
+        <SwitchPreferenceCompat
+            app:key="play_background"
+            app:title="后台播放"
+            app:icon="@drawable/ic_baseline_flip_to_back_24"
+            app:summary="当app切到后台后，继续播放"/>
+        <SwitchPreferenceCompat
+            app:key="tiny_when_back"
+            app:title="退出房间后小窗播放"
+            app:icon="@drawable/ic_baseline_branding_watermark_24"/>
+        <ListPreference
+            app:key="default_definition_wifi"
+            app:title="WiFi下默认清晰度"
+            app:icon="@drawable/ic_baseline_wifi_24"
+            app:entries="@array/default_definition"
+            app:entryValues="@array/default_definition_value"
+            app:useSimpleSummaryProvider="true"/>
+        <ListPreference
+            app:key="default_definition_4G"
+            app:title="移动数据下默认清晰度"
+            app:icon="@drawable/ic_baseline_signal_cellular_alt_24"
+            app:entries="@array/default_definition"
+            app:entryValues="@array/default_definition_value"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="global_setting"
+        app:title="全局设置">
+        <SwitchPreferenceCompat
+            app:key="dayNight"
+            app:icon="@drawable/ic_baseline_brightness_medium_24"
+            app:enabled="false"
+            app:title="深色主题"/>
+        <ListPreference
+            app:key="start_page"
+            app:title="启动时进入界面"
+            app:icon="@drawable/ic_baseline_home_24"
+            app:entries="@array/start_page"
+            app:entryValues="@array/start_page_value"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
 </PreferenceScreen>

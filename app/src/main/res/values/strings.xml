@@ -18,6 +18,30 @@
         <item>网易CC</item>
     </string-array>
 
+    <string-array name="default_definition">
+        <item>原画</item>
+        <item>超清</item>
+        <item>高清</item>
+        <item>流畅</item>
+        <item>清晰</item>
+    </string-array>
+    <string-array name="default_definition_value">
+        <item>原画</item>
+        <item>超清</item>
+        <item>高清</item>
+        <item>流畅</item>
+        <item>清晰</item>
+    </string-array>
+
+    <string-array name="start_page">
+        <item>推荐页面</item>
+        <item>关注页面</item>
+    </string-array>
+    <string-array name="start_page_value">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
 
     <string name="load_button">加载</string>
     <string name="succeed">登录成功</string>
@@ -28,4 +52,8 @@
     <string name="userNameError20">最多20位</string>
     <string name="registerNickNameHelp">1-20位</string>
     <string name="registerRePasswordError">两次输入的密码不一致</string>
+
+    <string name="drawItem1">item1</string>
+    <string name="drawItem2">item2</string>
+    <string name="drawItem3">item3</string>
 </resources>

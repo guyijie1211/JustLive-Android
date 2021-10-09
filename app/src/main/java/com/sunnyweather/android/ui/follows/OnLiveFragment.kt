@@ -40,6 +40,11 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
         refresh_home.setRefreshHeader(ClassicsHeader(context))
         refresh_home.finishLoadMoreWithNoMoreData()
         refresh_home.setOnRefreshListener {
+            if (!SunnyWeatherApplication.isLogin.value!!) {
+                refresh_home.finishRefresh() //传入false表示刷新失败
+                refresh_home.finishLoadMoreWithNoMoreData()
+                return@setOnRefreshListener
+            }
             viewModel.clearRoomList()
             viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         }

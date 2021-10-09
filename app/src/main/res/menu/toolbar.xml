@@ -10,10 +10,10 @@
         android:icon="@drawable/baseline_search_black_24"
         android:title="搜索"
         app:showAsAction="ifRoom|collapseActionView" />
-<!--    <item-->
-<!--        android:id="@+id/toolbar_setting"-->
-<!--        android:icon="@drawable/outline_favorite_border_black_24"-->
-<!--        android:title="设置" />-->
+    <item
+        android:id="@+id/toolbar_setting"
+        android:icon="@drawable/outline_favorite_border_black_24"
+        android:title="设置" />
     <item
         android:id="@+id/toolbar_update"
         android:icon="@drawable/outline_home_black_24"

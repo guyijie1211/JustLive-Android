@@ -104,16 +104,17 @@
                 android:text="弹幕"
                 android:textSize="20dp"
                 android:textStyle="bold" />
+
             <ImageButton
                 android:id="@+id/to_web"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_alignParentRight="true"
                 android:background="#00FFFFFF"
                 android:scaleType="fitXY"
-                android:src="@drawable/net"/>
+                android:src="@drawable/net" />
 
         </RelativeLayout>
 

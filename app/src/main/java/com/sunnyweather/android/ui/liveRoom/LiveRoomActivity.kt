@@ -40,8 +40,11 @@ import android.view.WindowManager
 
 import android.app.Activity
 import android.net.Uri
+import android.util.Log
 import android.view.Window
+import androidx.preference.PreferenceManager
 import com.blankj.utilcode.util.DeviceUtils
+import com.blankj.utilcode.util.NetworkUtils
 import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils
 
 import com.hjq.permissions.XXPermissions
@@ -67,6 +70,8 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     private var platform = ""
     private var roomId = ""
     private var isFirstGetInfo = true
+    private val definitionArray = arrayOf("清晰", "流畅", "高清", "超清", "原画")
+    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     fun startFullScreen() {
         updateList = false
@@ -146,7 +151,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         controller!!.setDoubleTapTogglePlayEnabled(false)
         controller!!.setEnableInNormal(true)
 
-
         platform = intent.getStringExtra("platform")?:""
         roomId = intent.getStringExtra("roomId")?:""
         mPIPManager = PIPManager.getInstance(platform, roomId)
@@ -180,7 +184,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         viewModel.urlResponseData.observe(this, {result ->
             val urls : LinkedTreeMap<String, String> = result.getOrNull() as LinkedTreeMap<String, String>
             if (urls != null && urls.size > 0) {
-                mDefinitionControlView?.setData(urls)
                 videoView?.setVideoController(controller) //设置控制器
                 var sharedPref = SharedPreferencesUtils.getSharedPreferences(context, "JustLive")
 
@@ -195,7 +198,38 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
                         changeVideoSize(VideoView.SCREEN_SCALE_CENTER_CROP)
                     }
                 }
-                videoView?.setUrl(urls["原画"]) //设置视频地址
+                val isMobileData = NetworkUtils.isMobileData()
+                if (isMobileData) {
+                    Toast.makeText(context, "正在使用流量", Toast.LENGTH_SHORT).show()
+                    val defaultDefinition = sharedPreferences.getString("default_definition_4G", "原画")
+                    if (urls.containsKey(defaultDefinition)) {
+                        mDefinitionControlView?.setData(urls, defaultDefinition)
+                        videoView?.setUrl(urls[defaultDefinition]) //设置视频地址
+                    } else {
+                        for (item in definitionArray) {
+                            if (urls.containsKey(item)) {
+                                mDefinitionControlView?.setData(urls, item)
+                                videoView?.setUrl(urls[item]) //设置视频地址
+                                break
+                            }
+                        }
+                    }
+                } else {
+                    val defaultDefinition = sharedPreferences.getString("default_definition_wifi", "原画")
+
+                    if (urls.containsKey(defaultDefinition)) {
+                        mDefinitionControlView?.setData(urls, defaultDefinition)
+                        videoView?.setUrl(urls[defaultDefinition]) //设置视频地址
+                    } else {
+                        for (item in definitionArray) {
+                            if (urls.containsKey(item)) {
+                                mDefinitionControlView?.setData(urls, item)
+                                videoView?.setUrl(urls[item]) //设置视频地址
+                                break
+                            }
+                        }
+                    }
+                }
                 videoView?.start() //开始播放，不调用则不自动播放
             }
         })
@@ -332,7 +366,7 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     override fun onPause() {
         super.onPause()
-        mPIPManager!!.pause()
+        mPIPManager.pause()
     }
 
     override fun onResume() {
@@ -342,12 +376,17 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             uid = SunnyWeatherApplication.userInfo!!.uid
         }
         viewModel.getRoomInfo(uid, platform, roomId)
-        mPIPManager!!.resume()
+        mPIPManager.resume()
     }
 
     override fun onBackPressed() {
-        if (mPIPManager!!.onBackPress()) return
+        if (mPIPManager.onBackPress()) return
         viewModel.stopDanmu()
+        val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
+        if (backTiny) {
+            startFloatWindow()
+            return
+        }
         super.onBackPressed()
     }
 
@@ -394,8 +433,8 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             .request(object : OnPermissionCallback {
                 override fun onGranted(permissions: List<String>, all: Boolean) {
                     if (all) {
-                        mPIPManager!!.startFloatWindow()
-                        mPIPManager!!.resume()
+                        mPIPManager.startFloatWindow()
+                        mPIPManager.resume()
                         finish()
                     }
                 }
@@ -411,7 +450,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     //SharedPreferences保存对象
     private fun setDanmuSetting(data: DanmuSetting) {
-        if (null == data) return
         val gson = Gson()
         //change data to json
         val strJson = gson.toJson(data)
