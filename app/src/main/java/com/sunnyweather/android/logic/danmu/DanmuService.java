@@ -3,7 +3,6 @@ package com.sunnyweather.android.logic.danmu;
 import androidx.lifecycle.MutableLiveData;
 
 import com.blankj.utilcode.util.DeviceUtils;
-import com.sunnyweather.android.SunnyWeatherApplication;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomViewModel;
 
 import java.util.ArrayList;
@@ -30,12 +29,18 @@ public class DanmuService {
     Timer myTimer = new Timer();
     ArrayList<String> isActiveArray = new ArrayList<>();
     Boolean isActive = false;
+    Boolean isConnected = false;
 
 
     //构造函数
     public DanmuService(String platform, String roomId) {
         this.platform = platform;
         this.roomId = roomId;
+    }
+
+    //获取连接状态
+    public Boolean isConnected() {
+        return isConnected;
     }
 
     //连接弹幕服务器
@@ -53,6 +58,7 @@ public class DanmuService {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
                 super.onOpen(webSocket, response);
+                isConnected = true;
                 DanmuUtils.sendOpenMsg(webSocket, platform, roomId, myTimer);
             }
 
@@ -72,14 +78,14 @@ public class DanmuService {
             public void onClosed(WebSocket webSocket, int code, String reason) {
                 super.onClosed(webSocket, code, reason);
                 //连接关闭...
-                System.out.println("onClosed");
+                isConnected = false;
             }
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable throwable, Response response) {
                 super.onFailure(webSocket, throwable, response);
                 //连接失败...
-                System.out.println("onFailure");
+                isConnected = false;
             }
         });
     }

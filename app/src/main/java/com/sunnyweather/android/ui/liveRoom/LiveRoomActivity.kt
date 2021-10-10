@@ -39,6 +39,7 @@ import java.lang.Exception
 import android.view.WindowManager
 
 import android.app.Activity
+import android.app.NotificationManager
 import android.net.Uri
 import android.util.Log
 import android.view.Window
@@ -51,6 +52,7 @@ import com.hjq.permissions.XXPermissions
 
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
+import com.sunnyweather.android.logic.service.ForegroundService
 
 class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
@@ -344,9 +346,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         controller.setCanChangePosition(false)
     }
 
-    /**
-     *
-     */
     fun changeRoomInfoVisible(isVisible: Boolean) {
         val height = PlayerUtils.dp2px(context, 60f)
         var va: ValueAnimator = if(isVisible){
@@ -366,6 +365,15 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     override fun onPause() {
         super.onPause()
+        val playBackGround = sharedPreferences.getBoolean("play_background", false)
+        if (playBackGround) {
+            val intent = Intent(this, ForegroundService::class.java)
+            intent.putExtra("platform", platform)
+            intent.putExtra("roomId", roomId)
+            intent.putExtra("roomInfo", "${ownerName_roomInfo.text}:${roomName_roomInfo.text}")
+            startService(intent)
+            return
+        }
         mPIPManager.pause()
     }
 
@@ -376,6 +384,9 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
             uid = SunnyWeatherApplication.userInfo!!.uid
         }
         viewModel.getRoomInfo(uid, platform, roomId)
+        if (!isFirstGetInfo && !viewModel.isConnecting()) {
+            viewModel.startDanmu(platform, roomId, SunnyWeatherApplication.userInfo!!.selectedContent, SunnyWeatherApplication.userInfo!!.isActived == "1")
+        }
         mPIPManager.resume()
     }
 

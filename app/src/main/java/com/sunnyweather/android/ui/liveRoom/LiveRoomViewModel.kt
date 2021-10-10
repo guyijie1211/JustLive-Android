@@ -61,6 +61,10 @@ class LiveRoomViewModel : ViewModel() {
         danmuService.connect(danmuList, danmuNum, isSelectedArray)
     }
 
+    fun isConnecting(): Boolean {
+        return danmuService.isConnected
+    }
+
     fun banChanged(isActiveArray: ArrayList<String>) {
         danmuService.changeBan(isActiveArray)
     }

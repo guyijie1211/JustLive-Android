@@ -97,10 +97,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_toLeftOf="@+id/to_web"
-                android:gravity="center_vertical"
                 android:ellipsize="end"
-                android:singleLine="true"
+                android:gravity="center_vertical"
                 android:paddingLeft="10dp"
+                android:singleLine="true"
                 android:text="弹幕"
                 android:textSize="20dp"
                 android:textStyle="bold" />
