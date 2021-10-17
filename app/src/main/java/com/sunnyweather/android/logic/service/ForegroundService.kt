@@ -23,7 +23,6 @@ class ForegroundService : Service() {
             val channel = NotificationChannel("foreground", "后台播放通知", NotificationManager.IMPORTANCE_DEFAULT)
             mNotificationManager.createNotificationChannel(channel)
         }
-        mNotificationManager.cancelAll()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

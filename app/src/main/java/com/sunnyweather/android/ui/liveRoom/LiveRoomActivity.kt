@@ -42,10 +42,13 @@ import android.app.Activity
 import android.app.NotificationManager
 import android.net.Uri
 import android.util.Log
+import android.view.Surface
 import android.view.Window
 import androidx.preference.PreferenceManager
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.NetworkUtils
+import com.blankj.utilcode.util.Utils
 import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils
 
 import com.hjq.permissions.XXPermissions
@@ -54,7 +57,7 @@ import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.sunnyweather.android.logic.service.ForegroundService
 
-class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
+class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
     private var mDefinitionControlView: YJLiveControlView? = null
     private lateinit var adapter: LiveRoomAdapterNew
@@ -93,6 +96,12 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_liveroom)
+        val playBackGround = sharedPreferences.getBoolean("play_background", false)
+        val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
+        if (playBackGround || backTiny) {
+            AppUtils.registerAppStatusChangedListener(this)
+        }
+
         //设置滑动到底部的动画时间
         val linearLayoutManager: LinearLayoutManager = object : LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
             override fun smoothScrollToPosition(recyclerView: RecyclerView, state: RecyclerView.State, position: Int) {
@@ -322,6 +331,8 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     override fun onStart() {
         super.onStart()
+        val intent = Intent(this, ForegroundService::class.java)
+        stopService(intent)
         mMyDanmakuView.resume()
     }
 
@@ -365,15 +376,6 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
 
     override fun onPause() {
         super.onPause()
-        val playBackGround = sharedPreferences.getBoolean("play_background", false)
-        if (playBackGround) {
-            val intent = Intent(this, ForegroundService::class.java)
-            intent.putExtra("platform", platform)
-            intent.putExtra("roomId", roomId)
-            intent.putExtra("roomInfo", "${ownerName_roomInfo.text}:${roomName_roomInfo.text}")
-            startService(intent)
-            return
-        }
         mPIPManager.pause()
     }
 
@@ -391,9 +393,13 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
     }
 
     override fun onBackPressed() {
-        if (mPIPManager.onBackPress()) return
         viewModel.stopDanmu()
+        if (mPIPManager.onBackPress()) return
+        val playBackGround = sharedPreferences.getBoolean("play_background", false)
         val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
+        if (playBackGround || backTiny) {
+            AppUtils.unregisterAppStatusChangedListener(this)
+        }
         if (backTiny) {
             startFloatWindow()
             return
@@ -536,5 +542,23 @@ class LiveRoomActivity : AppCompatActivity(), YJLiveControlView.OnRateSwitchList
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.addCategory(Intent. CATEGORY_BROWSABLE)
         startActivity(intent)
+    }
+
+    override fun onForeground(activity: Activity?) {
+        val intent = Intent(this, ForegroundService::class.java)
+        stopService(intent)
+    }
+
+    override fun onBackground(activity: Activity?) {
+        val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
+        if (backTiny) {
+            startFloatWindow()
+            return
+        }
+        val intent = Intent(this, ForegroundService::class.java)
+        intent.putExtra("platform", platform)
+        intent.putExtra("roomId", roomId)
+        intent.putExtra("roomInfo", "${ownerName_roomInfo.text}:${roomName_roomInfo.text}")
+        startService(intent)
     }
 }
