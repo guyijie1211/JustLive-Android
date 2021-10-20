@@ -30,6 +30,8 @@ interface LiveService {
     fun follow(@Query("platform") platform: String, @Query("roomId") roomId: String, @Query("uid") uid: String): Call<FollowResponse>
     @GET("/api/live/unFollow")
     fun unFollow(@Query("platform") platform: String, @Query("roomId") roomId: String, @Query("uid") uid: String): Call<FollowResponse>
+    @GET("/api/live/versionUpdate")
+    fun versionUpdate(): Call<UpdateResponse>
 
     @POST("/api/login")
     fun login(@Query("username") username: String, @Query("password") password: String): Call<UserInfoResponse>

@@ -12,7 +12,7 @@ android {
         applicationId "com.yj1211.justlive"
         minSdk 21
         targetSdk 31
-        versionCode 7
+        versionCode 6
         versionName "0.1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

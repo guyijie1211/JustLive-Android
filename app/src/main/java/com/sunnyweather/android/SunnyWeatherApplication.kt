@@ -40,54 +40,55 @@ class SunnyWeatherApplication : Application() {
         var isLogin = MutableLiveData(false)
         var newestVersionNum = 0
 
-        fun checkUpdate(ignoreVersion: Int, isCheck: Boolean) {
-            AllenVersionChecker
-                .getInstance()
-                .requestVersion()
-                .setRequestUrl("https://yj1211.work:8014/api/live/versionUpdate")
-                .request(object : RequestVersionListener {
-                    override fun onRequestVersionSuccess(
-                        downloadBuilder: DownloadBuilder?,
-                        result: String?
-                    ): UIData? {
-                        val jsonObject = JSON.parseObject(result)
-                        if (jsonObject.getInteger("code") == 200) {
-                            val resultData = jsonObject.getJSONObject("data")
-                            val updateInfo = JSON.toJavaObject(resultData, UpdateInfo::class.java)
-                            val versionNum = getVersionCode(context)
-                            newestVersionNum = updateInfo.versionNum
-                            Log.i("test", newestVersionNum.toString())
-                            if (versionNum == updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
-                                if (isCheck) {
-                                    Toast.makeText(context, "当前已是最新版本^_^", Toast.LENGTH_SHORT).show()
-                                }
-                                return null
-                            }
-                            return UIData.create().setDownloadUrl(updateInfo.updateUrl).setContent(resultData.toJSONString())
-                        }
-                        return null
-                    }
-
-                    override fun onRequestVersionFailure(message: String?) {
-                        Toast.makeText(context, "检查版本更新失败", Toast.LENGTH_SHORT).show()
-                    }
-                }).setCustomVersionDialogListener { context, versionBundle ->
-                    versionBundle.content
-                    val data = JSON.parseObject(versionBundle.content)
-                    val updateInfo = JSON.toJavaObject(data, UpdateInfo::class.java)
-                    val dialog = UpdateDialog(context, updateInfo)
-                    if (isCheck) {
-                        val ignoreBtn = dialog.findViewById<Button>(R.id.ignore_btn)
-                        ignoreBtn.visibility = View.GONE
-                        val cancelBtn = dialog.findViewById<Button>(R.id.versionchecklib_version_dialog_cancel)
-                        setMargins(cancelBtn, 0, 0, 0, 40)
-                    }
-                    return@setCustomVersionDialogListener dialog
-                }
-                .setShowNotification(false)
-                .setNewestVersionCode(newestVersionNum)
-                .executeMission(context)
-        }
+//        fun checkUpdate(ignoreVersion: Int, isCheck: Boolean) {
+//
+//            AllenVersionChecker
+//                .getInstance()
+//                .requestVersion()
+//                .setRequestUrl("https://yj1211.work:8014/api/live/versionUpdate")
+//                .request(object : RequestVersionListener {
+//                    override fun onRequestVersionSuccess(
+//                        downloadBuilder: DownloadBuilder?,
+//                        result: String?
+//                    ): UIData? {
+//                        val jsonObject = JSON.parseObject(result)
+//                        if (jsonObject.getInteger("code") == 200) {
+//                            val resultData = jsonObject.getJSONObject("data")
+//                            val updateInfo = JSON.toJavaObject(resultData, UpdateInfo::class.java)
+//                            val versionNum = getVersionCode(context)
+//                            newestVersionNum = updateInfo.versionNum
+//                            Log.i("test", newestVersionNum.toString())
+//                            if (versionNum == updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
+//                                if (isCheck) {
+//                                    Toast.makeText(context, "当前已是最新版本^_^", Toast.LENGTH_SHORT).show()
+//                                }
+//                                return null
+//                            }
+//                            return UIData.create().setDownloadUrl(updateInfo.updateUrl).setContent(resultData.toJSONString())
+//                        }
+//                        return null
+//                    }
+//
+//                    override fun onRequestVersionFailure(message: String?) {
+//                        Toast.makeText(context, "检查版本更新失败", Toast.LENGTH_SHORT).show()
+//                    }
+//                }).setCustomVersionDialogListener { context, versionBundle ->
+//                    versionBundle.content
+//                    val data = JSON.parseObject(versionBundle.content)
+//                    val updateInfo = JSON.toJavaObject(data, UpdateInfo::class.java)
+//                    val dialog = UpdateDialog(context, updateInfo)
+//                    if (isCheck) {
+//                        val ignoreBtn = dialog.findViewById<Button>(R.id.ignore_btn)
+//                        ignoreBtn.visibility = View.GONE
+//                        val cancelBtn = dialog.findViewById<Button>(R.id.versionchecklib_version_dialog_cancel)
+//                        setMargins(cancelBtn, 0, 0, 0, 40)
+//                    }
+//                    return@setCustomVersionDialogListener dialog
+//                }
+//                .setShowNotification(false)
+//                .setNewestVersionCode(newestVersionNum)
+//                .executeMission(context)
+//        }
         fun clearLoginInfo(activity: Activity) {
             if (!isLogin.value!!) {
                 Toast.makeText(context, "未登录", Toast.LENGTH_SHORT).show()
@@ -204,7 +205,7 @@ class SunnyWeatherApplication : Application() {
         context = applicationContext
         var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
         val ignoreVersion = sharedPref.getInt("ignoreVersion", getVersionCode(context))
-        checkUpdate(ignoreVersion, false)
+//        checkUpdate(ignoreVersion, false)
         VideoViewManager.setConfig(
             VideoViewConfig.newBuilder()
             //使用ExoPlayer解码

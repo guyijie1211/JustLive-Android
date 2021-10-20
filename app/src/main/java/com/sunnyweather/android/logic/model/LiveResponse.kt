@@ -9,6 +9,7 @@ data class SearchResponse(val code: String, val message: String, val data: List<
 data class AreaAllResponse(val code: String, val message: String, val data: List<List<AreaInfo>>)
 data class UserInfoResponse(val code: String, val message: String, val data: UserInfo)
 data class FollowResponse(val code: String, val message: String, val data: String)
+data class UpdateResponse(val code: String, val message: String, val data: UpdateInfo)
 
 data class AreaInfo(val platform: String,
                     val areaType: String,

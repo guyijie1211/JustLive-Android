@@ -12,10 +12,10 @@
         android:background="@color/blue_dark"
         android:minHeight="?attr/actionBarSize"
         app:titleMarginStart="30dp"/>
+
     <fragment
         android:id="@+id/settings_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.sunnyweather.android.ui.setting.SettingFragment"/>
-
 </LinearLayout>
