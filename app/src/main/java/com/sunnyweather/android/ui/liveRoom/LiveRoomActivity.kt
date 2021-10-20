@@ -39,10 +39,7 @@ import java.lang.Exception
 import android.view.WindowManager
 
 import android.app.Activity
-import android.app.NotificationManager
 import android.net.Uri
-import android.util.Log
-import android.view.Surface
 import android.view.Window
 import androidx.preference.PreferenceManager
 import com.blankj.utilcode.util.AppUtils
@@ -376,6 +373,11 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
 
     override fun onPause() {
         super.onPause()
+        val playBackGround = sharedPreferences.getBoolean("play_background", false)
+        val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
+        if (playBackGround || backTiny) {
+            return
+        }
         mPIPManager.pause()
     }
 
@@ -550,6 +552,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     }
 
     override fun onBackground(activity: Activity?) {
+        AppUtils.unregisterAppStatusChangedListener(this)
         val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
         if (backTiny) {
             startFloatWindow()

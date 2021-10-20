@@ -28,6 +28,7 @@ import com.sunnyweather.android.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 import android.view.*
+import androidx.drawerlayout.widget.DrawerLayout
 
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
@@ -37,6 +38,7 @@ import com.mikepenz.materialdrawer.model.interfaces.descriptionText
 import com.mikepenz.materialdrawer.model.interfaces.nameRes
 import com.mikepenz.materialdrawer.model.interfaces.nameText
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
+import com.sunnyweather.android.ui.login.LoginActivity
 import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
 
@@ -55,7 +57,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             it.setDisplayShowTitleEnabled(false)
         }
         //关闭抽屉滑动打开
-//        main_drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        main_drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         //if you want to update the items at a later time it is recommended to keep it in a variable
         val item1 = PrimaryDrawerItem().apply { nameRes = R.string.drawItem1; identifier = 1; isSelectable = false }
         val item2 = SecondaryDrawerItem().apply { nameRes = R.string.drawItem2; identifier = 2; isSelectable = false }
@@ -138,10 +140,10 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
-//            android.R.id.home -> {
-//                Toast.makeText(this, "开发中", Toast.LENGTH_SHORT).show()
-//            }
+//            android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
+            android.R.id.home -> {
+                Toast.makeText(this, "开发中", Toast.LENGTH_SHORT).show()
+            }
             R.id.toolbar_setting -> {
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)
@@ -150,10 +152,10 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
             }
-//            R.id.toolbar_login -> {
-//                val intent = Intent(this, LoginActivity::class.java)
-//                startActivity(intent)
-//            }
+            R.id.toolbar_login -> {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
             R.id.toolbar_update -> {
                 SunnyWeatherApplication.checkUpdate(0, true)
             }

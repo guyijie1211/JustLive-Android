@@ -316,8 +316,6 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                 mPopLayout.addView(rateItem);
                 index++;
             }
-            Log.i("test", mRateStr.indexOf(txt) + "nnnnnn");
-            Log.i("test", (index-1) + "kkkkkkk");
             ((TextView) mPopLayout.getChildAt(mRateStr.indexOf(txt))).setTextColor(ContextCompat.getColor(getContext(), R.color.purple_500));
             mDefinition.setText(txt);
             mCurIndex = mRateStr.indexOf(txt);
