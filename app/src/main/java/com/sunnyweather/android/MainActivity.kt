@@ -2,15 +2,14 @@ package com.sunnyweather.android
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -29,6 +28,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 import android.view.*
 import androidx.drawerlayout.widget.DrawerLayout
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.blankj.utilcode.util.AppUtils
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
@@ -38,14 +41,24 @@ import com.mikepenz.materialdrawer.model.interfaces.descriptionText
 import com.mikepenz.materialdrawer.model.interfaces.nameRes
 import com.mikepenz.materialdrawer.model.interfaces.nameText
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
+import com.sunnyweather.android.logic.model.UpdateInfo
+import com.sunnyweather.android.logic.model.UpdateResponse
+import com.sunnyweather.android.logic.network.LiveService
+import com.sunnyweather.android.logic.network.ServiceCreator
 import com.sunnyweather.android.ui.login.LoginActivity
 import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
+import kotlinx.android.synthetic.main.dialog_update.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
     private lateinit var areaFragment: AreaFragment
     private lateinit var viewPager: ViewPager2
+    private var isVersionCheck = false
+    private lateinit var mMenu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -95,6 +108,49 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         viewPager.isUserInputEnabled = false
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
+        viewModel.updateResponseLiveData.observe(this, { result ->
+            val updateInfo = result.getOrNull()
+            if (updateInfo is UpdateInfo) {
+                var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+                val ignoreVersion = sharedPref.getInt("ignoreVersion",0)
+                if (ignoreVersion == updateInfo.versionNum && !isVersionCheck) return@observe
+                var descriptions = ""
+                var index = 1
+                for (item in updateInfo.description) {
+                    descriptions = "$descriptions$index.$item<br>"
+                    index++
+                }
+                val dialogContent = Html.fromHtml("<div>$descriptions</div>")
+                MaterialDialog(this).show {
+                    customView(R.layout.dialog_update)
+                    update_description.text = dialogContent
+                    update_version.text = "版本: ${updateInfo.latestVersion}"
+                    update_size.text = "下载体积: ${updateInfo.apkSize}"
+                    ignore_btn.setOnClickListener {
+                        var sharedPref = context.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+                        sharedPref.edit().putInt("ignoreVersion", updateInfo.versionNum).commit()
+                        Toast.makeText(context, "已忽略", Toast.LENGTH_SHORT).show()
+                        cancel()
+                    }
+                    versionchecklib_version_dialog_cancel.setOnClickListener {
+                        dismiss()
+                    }
+                    versionchecklib_version_dialog_commit.setOnClickListener {
+                        val uri = Uri.parse(updateInfo.updateUrl)
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        intent.addCategory(Intent. CATEGORY_BROWSABLE)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                    if (isVersionCheck) {
+                        ignore_btn.visibility = View.GONE
+                    }
+                }
+            } else if(updateInfo is String){
+                Toast.makeText(this, "用户密码已修改，请重新登录", Toast.LENGTH_SHORT).show()
+                result.exceptionOrNull()?.printStackTrace()
+            }
+        })
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when (position) {
@@ -134,7 +190,18 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the options menu from XML
         val inflater = menuInflater
+        Log.i("test", "onCreateOptionsMenu")
         inflater.inflate(R.menu.toolbar, menu)
+        mMenu = menu
+        SunnyWeatherApplication.isLogin.observe(this, {result ->
+            if (result) {
+                mMenu.findItem(R.id.toolbar_login).isVisible = false
+                mMenu.findItem(R.id.toolbar_logout).isVisible = true
+            } else {
+                mMenu.findItem(R.id.toolbar_login).isVisible = true
+                mMenu.findItem(R.id.toolbar_logout).isVisible = false
+            }
+        })
         return true
     }
 
@@ -157,7 +224,8 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                 startActivity(intent)
             }
             R.id.toolbar_update -> {
-                SunnyWeatherApplication.checkUpdate(0, true)
+                isVersionCheck = true
+                viewModel.checkVersion()
             }
             R.id.toolbar_logout -> {
                 SunnyWeatherApplication.clearLoginInfo(this)
@@ -206,5 +274,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         if (password.length > 1) {
             viewModel.doLogin(username, password)
         }
+        viewModel.checkVersion()
     }
 }

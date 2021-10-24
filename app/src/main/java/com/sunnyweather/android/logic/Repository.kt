@@ -229,7 +229,6 @@ object Repository {
             val liveResponse = LiveNetwork.login(username, password)
             when (liveResponse.code) {
                 "200" -> {
-                    Log.i("test","successLogin")
                     val rooms = liveResponse.data
                     Result.success(rooms)
                 }

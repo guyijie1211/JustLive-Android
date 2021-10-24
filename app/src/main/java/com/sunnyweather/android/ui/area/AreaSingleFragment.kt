@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.AreaInfo
 import com.sunnyweather.android.ui.roomList.SpaceItemDecoration
@@ -29,7 +31,8 @@ class AreaSingleFragment(private val areaList: List<AreaInfo>) : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val layoutManager = GridLayoutManager(context, 3)
+        val cardNum = ScreenUtils.getAppScreenWidth()/ ConvertUtils.dp2px(129F)
+        val layoutManager = GridLayoutManager(context, cardNum)
         recyclerView_area.addItemDecoration(SpaceItemDecoration(10))
         recyclerView_area.layoutManager = layoutManager
         adapter = AreaListAdapter(this, areaList)

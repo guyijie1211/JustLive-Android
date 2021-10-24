@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.sunnyweather.android.logic.Repository
+import com.sunnyweather.android.logic.model.UpdateInfo
 import com.sunnyweather.android.logic.model.UserInfo
 
 class LoginViewModel : ViewModel() {
@@ -13,7 +14,11 @@ class LoginViewModel : ViewModel() {
     private val loginLiveData = MutableLiveData<LoginRequest>()
     private val registerLiveData = MutableLiveData<RegisterRequest>()
     private val userInfoLiveData = MutableLiveData<UserInfo>()
+    private val updateLiveData = MutableLiveData<Int>()
 
+    val updateResponseLiveData = Transformations.switchMap(updateLiveData) {
+         Repository.versionUpdate()
+    }
     val loginResponseLiveDate = Transformations.switchMap(loginLiveData) {
             value -> Repository.login(value.username, value.password)
     }
@@ -22,6 +27,10 @@ class LoginViewModel : ViewModel() {
     }
     val updateUserInfoLiveDate = Transformations.switchMap(userInfoLiveData) {
             value -> Repository.changeUserInfo(value)
+    }
+
+    fun checkVersion() {
+        updateLiveData.value = 0
     }
 
     fun doLogin(username: String, password: String) {

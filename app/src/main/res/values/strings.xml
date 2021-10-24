@@ -56,4 +56,6 @@
     <string name="drawItem1">item1</string>
     <string name="drawItem2">item2</string>
     <string name="drawItem3">item3</string>
+
+    <string name="update_title">更新提醒</string>
 </resources>

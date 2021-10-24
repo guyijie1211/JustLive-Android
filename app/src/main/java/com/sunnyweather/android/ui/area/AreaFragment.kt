@@ -35,7 +35,14 @@ class AreaFragment : DialogFragment() {
         super.onActivityCreated(savedInstanceState)
         //ViewPager2
         viewPager = viewpage_area
-
+        extended_fab.setOnClickListener {
+            // Respond to Extended FAB click
+            if (extended_fab.isExtended) {
+                extended_fab.shrink()
+            } else {
+                extended_fab.extend()
+            }
+        }
         if (viewModel.areaList.size < 1) {
             viewModel.areaListLiveDate?.observe(viewLifecycleOwner, { result ->
                 Log.i("test","observe")

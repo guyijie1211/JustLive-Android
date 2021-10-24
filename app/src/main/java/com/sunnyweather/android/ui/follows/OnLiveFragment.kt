@@ -9,6 +9,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.scwang.smart.refresh.header.ClassicsHeader
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
@@ -31,7 +33,8 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val layoutManager = GridLayoutManager(context, 2)
+        val cardNum = ScreenUtils.getAppScreenWidth()/ ConvertUtils.dp2px(195F)
+        val layoutManager = GridLayoutManager(context, cardNum)
         recyclerView.addItemDecoration(SpaceItemDecoration(10))
         recyclerView.layoutManager = layoutManager
         adapterOn = RoomListAdapter(this, viewModel.roomList)

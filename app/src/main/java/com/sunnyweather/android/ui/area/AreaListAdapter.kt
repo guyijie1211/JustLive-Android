@@ -26,14 +26,6 @@ class AreaListAdapter(private val fragment: AreaSingleFragment, private val area
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreaListAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.area_item, parent, false)
         val holder = ViewHolder(view)
-
-        val lp = holder.areaPic.layoutParams
-        val point = Point()
-        PlayerUtils.getWindowManager(context).defaultDisplay.getRealSize(point)
-        lp.height = point.x/3 * 4 / 3
-        holder.areaPic.layoutParams = lp
-
-
         holder.itemView.setOnClickListener {
             val position = holder.layoutPosition
             val areaInfo = areaList[position]

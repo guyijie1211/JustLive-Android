@@ -12,6 +12,10 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.blankj.utilcode.util.DeviceUtils;
+import com.blankj.utilcode.util.ScreenUtils;
+
 import xyz.doikki.videocontroller.component.CompleteView;
 import xyz.doikki.videocontroller.component.ErrorView;
 import xyz.doikki.videoplayer.controller.GestureVideoController;
@@ -74,24 +78,39 @@ public class FloatController extends GestureVideoController {
 
     @Override
     public boolean onDoubleTap(MotionEvent e) {
-        if (sizeType == 1) { //屏幕宽度的三分之二
-            int width = getWindowWidth() / 7 * 5;
+        if (sizeType == 1) { //中等
+            int width;
+            if (ScreenUtils.isLandscape()) {
+                width = getWindowWidth() / 7 * 3;
+            } else {
+                width = getWindowWidth() / 7 * 5 ;
+            }
             params.width = width;
             params.height = width * 9 / 16;
             mWindowManager.updateViewLayout(floatView, params);
             sizeType = 2;
             return true;
         }
-        if (sizeType == 2) { //占满手机宽度
-            int width = getWindowWidth();
+        if (sizeType == 2) { //最大
+            int width;
+            if (ScreenUtils.isLandscape()) {
+                width = getWindowWidth() / 3 * 2;
+            } else {
+                width = getWindowWidth() ;
+            }
             params.width = width;
             params.height = width * 9 / 16;
             mWindowManager.updateViewLayout(floatView, params);
             sizeType = 3;
             return true;
         }
-        if (sizeType == 3) { //小窗
-            int width = PlayerUtils.dp2px(getContext(), 180);
+        if (sizeType == 3) { //最小
+            int width;
+            if (ScreenUtils.isLandscape()) {
+                width = getWindowWidth() / 4;
+            }  else {
+                width = getWindowWidth() / 2;
+            }
             params.width = width;
             params.height = width * 9 / 16;
             mWindowManager.updateViewLayout(floatView, params);

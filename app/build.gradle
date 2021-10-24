@@ -89,6 +89,7 @@ dependencies {
     implementation 'com.github.getActivity:XXPermissions:12.3' //浮窗权限申请
     implementation 'com.blankj:utilcodex:1.30.6' //安卓常用工具
     implementation "com.mikepenz:materialdrawer:8.4.4" //抽屉
+    implementation 'com.afollestad.material-dialogs:core:3.3.0' //dialog
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
