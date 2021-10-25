@@ -39,6 +39,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="20dp"
         android:text="收藏"
-        app:icon="@drawable/ic_baseline_favorite_border_24"/>
+        app:icon="@drawable/ic_baseline_favorite_border_24"
+        android:visibility="gone"/>
 
 </RelativeLayout>

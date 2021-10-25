@@ -30,8 +30,6 @@ import android.view.*
 import androidx.drawerlayout.widget.DrawerLayout
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
-import com.blankj.utilcode.util.AppUtils
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
@@ -42,16 +40,10 @@ import com.mikepenz.materialdrawer.model.interfaces.nameRes
 import com.mikepenz.materialdrawer.model.interfaces.nameText
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.sunnyweather.android.logic.model.UpdateInfo
-import com.sunnyweather.android.logic.model.UpdateResponse
-import com.sunnyweather.android.logic.network.LiveService
-import com.sunnyweather.android.logic.network.ServiceCreator
 import com.sunnyweather.android.ui.login.LoginActivity
 import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.dialog_update.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
@@ -113,7 +105,13 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             if (updateInfo is UpdateInfo) {
                 var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
                 val ignoreVersion = sharedPref.getInt("ignoreVersion",0)
-                if (ignoreVersion == updateInfo.versionNum && !isVersionCheck) return@observe
+                val versionNum = SunnyWeatherApplication.getVersionCode(SunnyWeatherApplication.context)
+                if (versionNum == updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
+                    if (isVersionCheck) {
+                        Toast.makeText(SunnyWeatherApplication.context, "当前已是最新版本^_^", Toast.LENGTH_SHORT).show()
+                    }
+                    return@observe
+                }
                 var descriptions = ""
                 var index = 1
                 for (item in updateInfo.description) {

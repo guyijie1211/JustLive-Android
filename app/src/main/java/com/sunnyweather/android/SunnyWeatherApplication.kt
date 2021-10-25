@@ -3,11 +3,7 @@ package com.sunnyweather.android
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.net.Uri
 import android.os.Build
-import android.text.Html
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -19,20 +15,9 @@ import java.lang.Exception
 import java.lang.reflect.Method
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import com.sunnyweather.android.logic.model.UpdateInfo
 import android.view.ViewGroup.MarginLayoutParams
-import androidx.core.content.ContextCompat.startActivity
-import com.afollestad.materialdialogs.MaterialDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.sunnyweather.android.logic.model.UpdateResponse
-import com.sunnyweather.android.logic.network.LiveService
-import com.sunnyweather.android.logic.network.ServiceCreator
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
-import kotlinx.android.synthetic.main.dialog_update.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SunnyWeatherApplication : Application() {
     companion object {
