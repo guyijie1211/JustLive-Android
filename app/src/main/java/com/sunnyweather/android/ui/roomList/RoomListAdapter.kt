@@ -1,6 +1,7 @@
 package com.sunnyweather.android.ui.roomList
 
 import android.content.Intent
+import android.graphics.Point
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.ui.customerUIs.BlackWhiteTransformation
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
+import kotlinx.android.synthetic.main.activity_liveroom.*
 
 class RoomListAdapter(private val fragment: Fragment, private val roomList: ArrayList<RoomInfo>) :
     RecyclerView.Adapter<RoomListAdapter.ViewHolder>(), LoadMoreModule{
@@ -49,10 +51,10 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val roomInfo = roomList[position]
         holder.ownerName.text = SunnyWeatherApplication.platformName(roomInfo.platForm) + "·" + roomInfo.ownerName
-
         holder.roomCategory.text = roomInfo.categoryName
         holder.liveNum.text = getWan(roomInfo.online)
         holder.roomName.text = roomInfo.roomName
+
         if (roomInfo.isLive == 1) {
             Glide.with(fragment).load(roomInfo.ownerHeadPic).transition(withCrossFade()).into(holder.ownerPic)
             Glide.with(fragment).load(roomInfo.roomPic).transition(withCrossFade()).placeholder(R.drawable.takeplace).into(holder.roomPic)
@@ -60,7 +62,6 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
             holder.notLive.visibility = View.VISIBLE
             //黑白图
             Glide.with(fragment).load(roomInfo.ownerHeadPic).transforms(BlackWhiteTransformation()).transition(withCrossFade()).into(holder.ownerPic)
-//            Glide.with(fragment).load(roomInfo.roomPic).transforms(BlackWhiteTransformation()).transition(withCrossFade()).placeholder(R.drawable.takeplace).into(holder.roomPic)
         }
     }
 

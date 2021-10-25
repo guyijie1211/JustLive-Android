@@ -31,7 +31,8 @@ class AreaSingleFragment(private val areaList: List<AreaInfo>) : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val cardNum = ScreenUtils.getAppScreenWidth()/ ConvertUtils.dp2px(129F)
+        var cardNum = ScreenUtils.getAppScreenWidth()/ ConvertUtils.dp2px(129F)
+        if (cardNum < 2) cardNum = 2
         val layoutManager = GridLayoutManager(context, cardNum)
         recyclerView_area.addItemDecoration(SpaceItemDecoration(10))
         recyclerView_area.layoutManager = layoutManager

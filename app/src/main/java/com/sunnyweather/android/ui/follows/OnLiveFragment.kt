@@ -33,7 +33,8 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val cardNum = ScreenUtils.getAppScreenWidth()/ ConvertUtils.dp2px(195F)
+        var cardNum = ScreenUtils.getAppScreenWidth()/ ConvertUtils.dp2px(195F)
+        if (cardNum < 2) cardNum = 2
         val layoutManager = GridLayoutManager(context, cardNum)
         recyclerView.addItemDecoration(SpaceItemDecoration(10))
         recyclerView.layoutManager = layoutManager
@@ -48,7 +49,6 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
                 refresh_home.finishLoadMoreWithNoMoreData()
                 return@setOnRefreshListener
             }
-            viewModel.clearRoomList()
             viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         }
 
@@ -65,11 +65,13 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
             viewModel.userRoomListLiveDate.observe(viewLifecycleOwner, { result ->
                 val rooms: ArrayList<RoomInfo> = result.getOrNull() as ArrayList<RoomInfo>
                 if (rooms != null) {
+                    viewModel.clearRoomList()
                     sortRooms(rooms)
                     adapterOn.notifyDataSetChanged()
                     progressBar_roomList.isGone = true
                     refresh_home.finishRefresh() //传入false表示刷新失败
                     refresh_home.finishLoadMoreWithNoMoreData()
+                    (this.parentFragment as FollowsFragment).enableInput()
                 } else {
                     refresh_home.finishLoadMoreWithNoMoreData()
                     result.exceptionOrNull()?.printStackTrace()

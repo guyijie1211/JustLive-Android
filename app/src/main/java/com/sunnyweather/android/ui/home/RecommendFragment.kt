@@ -34,7 +34,8 @@ class RecommendFragment(val platform: String) : Fragment()  {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val cardNum = ScreenUtils.getAppScreenWidth()/ConvertUtils.dp2px(195F)
+        var cardNum = ScreenUtils.getAppScreenWidth()/ConvertUtils.dp2px(195F)
+        if (cardNum < 2) cardNum = 2
         val layoutManager = GridLayoutManager(context, cardNum)
         recyclerView.addItemDecoration(SpaceItemDecoration(10))
         recyclerView.layoutManager = layoutManager
@@ -53,6 +54,7 @@ class RecommendFragment(val platform: String) : Fragment()  {
         if (viewModel.roomList.size < 1) {
             SunnyWeatherApplication.areaName.observe(viewLifecycleOwner, {
                 viewModel.clearPage()
+                viewModel.clearList()
                 progressBar_roomList.isVisible = true
                 recyclerView.isGone = true
                 viewModel.getRecommend(platform, SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
@@ -62,6 +64,7 @@ class RecommendFragment(val platform: String) : Fragment()  {
                 var rooms: ArrayList<RoomInfo>? = null
                 if (temp != null) rooms = temp as ArrayList<RoomInfo>
                 if (rooms != null && rooms.size > 0) {
+                    viewModel.clearList()
                     viewModel.roomList.addAll(rooms)
                     adapter.notifyDataSetChanged()
                     progressBar_roomList.isGone = true

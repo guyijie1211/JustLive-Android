@@ -19,8 +19,11 @@ class HomeViewModel : ViewModel() {
     }
 
     fun clearPage() {
-        roomList.clear()
         page = 0
+    }
+
+    fun clearList() {
+        roomList.clear()
     }
 
     fun getRecommend(platform: String, areaType: String, area: String) {
