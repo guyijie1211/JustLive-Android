@@ -57,7 +57,7 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
 
         if (roomInfo.isLive == 1) {
             Glide.with(fragment).load(roomInfo.ownerHeadPic).transition(withCrossFade()).into(holder.ownerPic)
-            Glide.with(fragment).load(roomInfo.roomPic).transition(withCrossFade()).placeholder(R.drawable.takeplace).into(holder.roomPic)
+            Glide.with(fragment).load(roomInfo.roomPic).transition(withCrossFade()).into(holder.roomPic)
         } else {
             holder.notLive.visibility = View.VISIBLE
             //黑白图

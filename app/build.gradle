@@ -90,6 +90,8 @@ dependencies {
     implementation 'com.blankj:utilcodex:1.30.6' //安卓常用工具
     implementation "com.mikepenz:materialdrawer:8.4.4" //抽屉
     implementation 'com.afollestad.material-dialogs:core:3.3.0' //dialog
+    implementation 'xyz.aprildown:Theme:0.3.0' // for material-components-android 1.4.0
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

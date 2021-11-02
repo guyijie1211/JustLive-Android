@@ -4,21 +4,24 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@color/colorPrimary"
     app:cardElevation="3dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
+
         <ImageView
             android:id="@+id/areaPic"
             android:layout_width="match_parent"
+            android:background="@color/colorPrimaryVariant"
             android:layout_height="180dp"
-            android:scaleType="fitXY"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY" />
         <TextView
             android:id="@+id/areaName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorOnPrimary"
             android:gravity="center"
             android:layout_below="@+id/areaPic"
             android:textStyle="bold"

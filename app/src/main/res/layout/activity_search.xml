@@ -5,7 +5,7 @@
     android:id="@+id/search_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/contentContainerColor"
+    android:background="@color/colorPrimaryVariant"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:clickable="true">
@@ -68,7 +68,7 @@
         android:paddingEnd="4dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="@color/cardBackgroundColor"
+        app:cardBackgroundColor="@color/colorOnPrimary"
         app:leftButtonDrawable="@drawable/ic_arrow_left"
         app:rightButtonDrawable="@drawable/ic_filters"
         app:clearInputButtonDrawable="@drawable/ic_close"

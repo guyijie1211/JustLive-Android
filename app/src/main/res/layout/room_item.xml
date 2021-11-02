@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/colorPrimary"
     app:cardCornerRadius="5dp"
     app:cardElevation="3dp">
 
@@ -15,8 +16,9 @@
             android:id="@+id/roomPic"
             android:layout_width="match_parent"
             android:layout_height="110dp"
-            android:scaleType="fitXY"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimaryVariant"
+            android:scaleType="fitXY" />
         <TextView
             android:id="@+id/room_not_live"
             android:layout_width="match_parent"
@@ -35,6 +37,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:background="@color/colorPrimaryVariant"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/roomPic"
             android:layout_marginLeft="5dp"/>
@@ -44,24 +47,26 @@
             android:layout_height="30dp"
             android:layout_alignBottom="@+id/roomPic"
             android:background="@drawable/room_pic_bg">
+
             <TextView
                 android:id="@+id/roomCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:textSize="13dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="5dp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="13dp" />
+
             <TextView
                 android:id="@+id/liveNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:layout_marginRight="5dp"
                 android:textColor="@color/white"
-                android:textSize="13dp"/>
+                android:textSize="13dp" />
         </RelativeLayout>
 
         <TextView
@@ -75,7 +80,7 @@
             android:layout_toRightOf="@+id/ownerPic"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="@color/colorOnPrimary"
             android:textSize="16dp"
             android:textStyle="bold" />
 
@@ -86,6 +91,7 @@
             android:layout_below="@+id/ownerName"
             android:layout_alignStart="@+id/ownerName"
             android:ellipsize="end"
+            android:textColor="@color/colorOnPrimary"
             android:singleLine="true"
             android:text="直播间标题测试直播间标题测试直播间标题测试直播间标题测试"
             android:textSize="12dp" />
