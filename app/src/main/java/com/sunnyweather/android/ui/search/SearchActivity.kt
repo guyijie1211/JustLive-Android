@@ -64,9 +64,9 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         searchAdapter = SearchAdapter(this, viewModel.ownersList as List<Owner>)
         recyclerView_search.adapter = searchAdapter
         viewModel.ownerListLiveData.observe(this, {result ->
-            val rooms: ArrayList<Owner> = result.getOrNull() as ArrayList<Owner>
-            if (rooms != null) {
-                viewModel.ownersList.addAll(rooms)
+            val rooms = result.getOrNull()
+            if (rooms is ArrayList<*>) {
+                viewModel.ownersList.addAll(rooms as Collection<Owner>)
                 searchAdapter.notifyDataSetChanged()
                 progressBar.isGone = true
                 recyclerView_search.animate()
@@ -74,8 +74,8 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
                     .setInterpolator(LinearInterpolator())
                     .setDuration(300L)
                     .start()
-            } else {
-                Toast.makeText(this, "没有更多直播间", Toast.LENGTH_SHORT).show()
+            } else if (rooms is String) {
+                Toast.makeText(this, rooms, Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
             }
         })

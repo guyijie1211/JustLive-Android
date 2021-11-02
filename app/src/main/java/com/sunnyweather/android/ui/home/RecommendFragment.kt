@@ -64,7 +64,9 @@ class RecommendFragment(val platform: String) : Fragment()  {
                 var rooms: ArrayList<RoomInfo>? = null
                 if (temp != null) rooms = temp as ArrayList<RoomInfo>
                 if (rooms != null && rooms.size > 0) {
-                    viewModel.clearList()
+                    if(refresh_home.isRefreshing) {
+                        viewModel.clearList()
+                    }
                     viewModel.roomList.addAll(rooms)
                     adapter.notifyDataSetChanged()
                     progressBar_roomList.isGone = true

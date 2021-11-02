@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -63,17 +64,17 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
                 }
             })
             viewModel.userRoomListLiveDate.observe(viewLifecycleOwner, { result ->
-                val rooms: ArrayList<RoomInfo> = result.getOrNull() as ArrayList<RoomInfo>
-                if (rooms != null) {
+                val rooms = result.getOrNull()
+                if (rooms is ArrayList<*>) {
                     viewModel.clearRoomList()
-                    sortRooms(rooms)
+                    sortRooms(rooms as List<RoomInfo>)
                     adapterOn.notifyDataSetChanged()
                     progressBar_roomList.isGone = true
                     refresh_home.finishRefresh() //传入false表示刷新失败
                     refresh_home.finishLoadMoreWithNoMoreData()
                     (this.parentFragment as FollowsFragment).enableInput()
-                } else {
-                    refresh_home.finishLoadMoreWithNoMoreData()
+                } else if (rooms is String) {
+                    Toast.makeText(context, rooms, Toast.LENGTH_SHORT).show()
                     result.exceptionOrNull()?.printStackTrace()
                 }
             })

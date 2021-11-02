@@ -180,11 +180,13 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         }
         //弹幕更新
         viewModel.danmuNum.observe(this, {
-            mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content)
-            if (updateList) {
-                adapter.addData(viewModel.danmuList.last())
-                if (toBottom) {
-                    danMu_recyclerView.scrollToPosition(adapter.itemCount-1)
+            if (viewModel.danmuList.size > 0){
+                mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content)
+                if (updateList) {
+                    adapter.addData(viewModel.danmuList.last())
+                    if (toBottom) {
+                        danMu_recyclerView.scrollToPosition(adapter.itemCount-1)
+                    }
                 }
             }
         })
@@ -259,8 +261,8 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         })
         //获取到房间信息
         viewModel.roomInfoResponseData.observe(this, {result ->
-            val roomInfo : RoomInfo = result.getOrNull() as RoomInfo
-            if (roomInfo != null) {
+            val roomInfo = result.getOrNull()
+            if (roomInfo is RoomInfo) {
 //                changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
                 //关注按钮
                 if (isFirstGetInfo) {
@@ -322,6 +324,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                 }
                 isFollowed = (roomInfo.isFollowed == 1)
                 if (isFollowed) follow_roomInfo.text = "已关注"
+            } else if (roomInfo is String) {
+                Toast.makeText(this, roomInfo, Toast.LENGTH_SHORT).show()
+                result.exceptionOrNull()?.printStackTrace()
             }
         })
     }
@@ -384,7 +389,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     override fun onResume() {
         super.onResume()
         var uid = ""
-        if (SunnyWeatherApplication.userInfo != null) {
+        if (SunnyWeatherApplication.isLogin.value!!) {
             uid = SunnyWeatherApplication.userInfo!!.uid
         }
         viewModel.getRoomInfo(uid, platform, roomId)
@@ -502,7 +507,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     }
 
     override fun changeVideoSize(size: Int) {
-        videoView!!.setScreenScaleType(size)
+        videoView?.setScreenScaleType(size)
     }
 
     fun hideViews(){

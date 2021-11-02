@@ -46,11 +46,11 @@ class LiveRoomViewModel : ViewModel() {
         roomInfoRequestData.value = RoomInfoRequest(uid, platform, roomId)
     }
 
-    fun startDanmu(platform: String, roomId: String, banStrings: String, isActive: Boolean) {
+    fun startDanmu(platform: String, roomId: String, banStrings: String?, isActive: Boolean) {
         danmuService = DanmuService(platform, roomId)
         danmuService.changeActive(isActive)
         var isSelectedArray = ArrayList<String>()
-        if (banStrings != ""){
+        if (banStrings != "" && banStrings != null){
             if (banStrings.contains(";")) {
                 isSelectedArray = banStrings.split(";") as ArrayList<String>
             } else {
