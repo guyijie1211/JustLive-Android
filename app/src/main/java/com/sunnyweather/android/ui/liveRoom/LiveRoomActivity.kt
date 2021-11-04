@@ -92,6 +92,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        var theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        setTheme(theme)
         setContentView(R.layout.activity_liveroom)
         val playBackGround = sharedPreferences.getBoolean("play_background", false)
         val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
@@ -243,9 +246,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                 videoView?.start() //开始播放，不调用则不自动播放
             }
         })
-        tinyScreen.setOnClickListener {
-            videoView!!.startTinyScreen()
-        }
+//        tinyScreen.setOnClickListener {
+//            videoView!!.startTinyScreen()
+//        }
         viewModel.followResponseLiveDate.observe(this, {result ->
             val result = result.getOrNull()
             if (result is String) {

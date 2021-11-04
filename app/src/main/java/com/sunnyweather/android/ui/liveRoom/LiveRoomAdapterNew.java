@@ -25,7 +25,7 @@ public class LiveRoomAdapterNew extends BaseQuickAdapter<LiveRoomViewModel.Danmu
      */
     @Override
     protected void convert(@NotNull BaseViewHolder helper, @NotNull LiveRoomViewModel.DanmuInfo item) {
-        String result = "<b><font color=\"black\">" + item.getUserName() + "：</font></b>" + item.getContent();
+        String result = "<b><font>" + item.getUserName() + "：</font></b>" + item.getContent();
         helper.setText(R.id.danMu_name, Html.fromHtml(result));
     }
 }

@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -53,7 +51,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private lateinit var mMenu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setSupportActionBar(main_toolBar)
         initLogin()
         supportActionBar?.let {

@@ -8,11 +8,16 @@
     <color name="colorOnSecondary_night">#B5B5B5</color>
 
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryVariant">#FAF7F7</color>
+    <color name="colorPrimaryVariant">#D1D1D1</color>
     <color name="colorOnPrimary">#333333</color>
     <color name="colorSecondary">#272727</color>
     <color name="colorSecondaryVariant">#0F8691</color>
     <color name="colorOnSecondary">#B5B5B5</color>
+    <color name="colorBackground">#D1D1D1</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#B5B5B5</color>
+    <color name="colorError">#EF5757</color>
+    <color name="colorOnError">#EFEFEF</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

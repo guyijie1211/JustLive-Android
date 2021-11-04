@@ -30,7 +30,7 @@
         android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/blue_dark"
+        android:background="?attr/colorPrimaryVariant"
         android:layout_below="@+id/player_container">
 
         <ImageView
@@ -52,7 +52,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:textSize="18dp"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnPrimary"
             android:textStyle="bold"/>
 
         <TextView
@@ -65,6 +65,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:textStyle="bold"
+            android:textColor="?attr/colorOnPrimary"
             android:layout_toRightOf="@+id/ownerPic_roomInfo"
             android:textSize="18dp"
             android:text="标题"/>
@@ -75,22 +76,23 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:textColor="@color/white"
-            app:strokeColor="@color/white"
+            android:textColor="?attr/colorOnPrimary"
+            app:strokeColor="?attr/colorOnPrimary"
             android:textSize="18dp"
             style="?attr/materialButtonOutlinedStyle"
             android:text="关注"/>
     </RelativeLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/danMu_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/roomInfo_liveRoom"
-        android:orientation="vertical">
+        android:background="?attr/colorPrimaryVariant">
         <RelativeLayout
+            android:id="@+id/room_head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/textSecond">
+            android:background="?attr/colorPrimary">
 
             <TextView
                 android:id="@+id/liveRoom_bar_txt"
@@ -102,6 +104,7 @@
                 android:paddingLeft="10dp"
                 android:singleLine="true"
                 android:text="弹幕"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -118,25 +121,22 @@
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/tinyScreen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="小窗播放"
-            android:visibility="gone"/>
         <TextView
             android:id="@+id/danmu_not_support"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
+            android:textColor="@color/colorOnPrimary"
             android:textSize="14dp"
             android:visibility="gone"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/danMu_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_below="@+id/room_head" />
+    </RelativeLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/to_bottom_danmu"
         android:layout_width="wrap_content"
