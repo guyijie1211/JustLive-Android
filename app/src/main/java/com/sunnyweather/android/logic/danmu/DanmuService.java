@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.DeviceUtils;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +45,7 @@ public class DanmuService {
     }
 
     //连接弹幕服务器
-    public void connect(ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, ArrayList<String> activeArray) {
+    public void connect(List<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, ArrayList<String> activeArray) {
         this.isActiveArray = activeArray;
         if (platform.equals("egame") || platform.equals("cc")) {
             return;

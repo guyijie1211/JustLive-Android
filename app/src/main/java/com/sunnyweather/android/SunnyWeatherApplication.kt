@@ -18,7 +18,6 @@ import java.security.NoSuchAlgorithmException
 import android.view.ViewGroup.MarginLayoutParams
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
-import xyz.aprildown.theme.Theme
 
 class SunnyWeatherApplication : Application() {
     companion object {
@@ -147,17 +146,5 @@ class SunnyWeatherApplication : Application() {
             //使用ExoPlayer解码
             .setPlayerFactory(ExoMediaPlayerFactory.create())
             .build())
-        Theme.init(
-            context = this,
-            themeRes = R.style.SunnyWeather
-        ) {
-            colorPrimaryRes = R.color.colorPrimary
-            colorPrimaryVariantRes = R.color.colorPrimaryVariant
-            colorOnPrimary = on(colorOnPrimary)
-            colorSecondaryRes = R.color.colorSecondary
-            colorSecondaryVariantRes = R.color.colorSecondaryVariant
-            colorOnSecondary = on(colorOnSecondary)
-            colorStatusBar = colorPrimary
-        }
     }
 }

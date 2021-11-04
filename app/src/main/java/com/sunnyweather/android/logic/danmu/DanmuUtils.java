@@ -17,8 +17,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,7 +38,7 @@ public class DanmuUtils {
 
     static String douyuUrl = "wss://danmuproxy.douyu.com:8503/";
     static String bilibiliUrl = "wss://broadcastlv.chat.bilibili.com:2245/sub";
-    static ArrayList<String> isActiveArray = new ArrayList<>();
+    static List<String> isActiveArray = new ArrayList<>();
     static Boolean isActive = false;
     //获取请求对象
     public static Request getRequest(String platform, String roomId) {
@@ -65,7 +67,7 @@ public class DanmuUtils {
         }
     }
     //处理字节消息
-    public static void onMessage(String platform, ByteString bytes, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, ArrayList<String> activeArray, Boolean isActived) {
+    public static void onMessage(String platform, ByteString bytes, List<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, List<String> activeArray, Boolean isActived) {
         isActiveArray = activeArray;
         isActive = isActived;
         if (platform.equals("douyu")) {
@@ -80,7 +82,7 @@ public class DanmuUtils {
         }
     }
     //处理字符串消息
-    public static void onMessageString(String platform, String bytes, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, ArrayList<String> activeArray, Boolean isActived) {
+    public static void onMessageString(String platform, String bytes, List<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum, List<String> activeArray, Boolean isActived) {
         isActiveArray = activeArray;
         isActive = isActived;
         if (platform.equals("huya")) {
@@ -101,7 +103,7 @@ public class DanmuUtils {
         return urlBuffer.toString();
     }
     //虎牙处理收到消息
-    public static void omMessageHuya(String text, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) {
+    public static void omMessageHuya(String text, List<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) {
         try {
             JSONObject res = JSONObject.parseObject(text);
             if("getMessageNotice".equals(res.getString("notice"))) {
@@ -214,7 +216,7 @@ public class DanmuUtils {
         }, 1000, 45000);
     }
     //斗鱼处理收到消息
-    private static void onMessageDouyu(ByteString bytes, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) {
+    private static void onMessageDouyu(ByteString bytes, List<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) {
         JSONObject jsonObject;
         try {
             jsonObject = DanmuUtils.douyuDecode(bytes);
@@ -328,7 +330,7 @@ public class DanmuUtils {
         }, 10, 30000);
     }
     //bilibili处理收到消息
-    private static void onMessageBilibili(ByteString bytes, ArrayList<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) throws IOException, DataFormatException {
+    private static void onMessageBilibili(ByteString bytes, List<LiveRoomViewModel.DanmuInfo> resultList, MutableLiveData<Integer> danmuNum) throws IOException, DataFormatException {
         byte[] data = bytes.toByteArray();
         int dataLength = data.length;
         if (dataLength < 16) {

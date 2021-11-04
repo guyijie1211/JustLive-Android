@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardBackgroundColor="?attr/colorPrimary"
     app:cardCornerRadius="5dp"
     app:cardElevation="3dp">
 
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:layout_alignParentTop="true"
-            android:background="@color/colorPrimaryVariant"
+            android:background="?attr/colorPrimaryVariant"
             android:scaleType="fitXY" />
         <TextView
             android:id="@+id/room_not_live"
@@ -37,7 +37,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:background="@color/colorPrimaryVariant"
+            android:background="?attr/colorPrimaryVariant"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/roomPic"
             android:layout_marginLeft="5dp"/>
@@ -80,7 +80,7 @@
             android:layout_toRightOf="@+id/ownerPic"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/colorOnPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="16dp"
             android:textStyle="bold" />
 
@@ -91,7 +91,7 @@
             android:layout_below="@+id/ownerName"
             android:layout_alignStart="@+id/ownerName"
             android:ellipsize="end"
-            android:textColor="@color/colorOnPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:singleLine="true"
             android:text="直播间标题测试直播间标题测试直播间标题测试直播间标题测试"
             android:textSize="12dp" />

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <color name="colorPrimary">#252733</color>-->
-<!--    <color name="colorPrimaryVariant">#343947</color>-->
-<!--    <color name="colorOnPrimary">#E3E3E5</color>-->
-<!--    <color name="colorSecondary">#14B9C8</color>-->
-<!--    <color name="colorSecondaryVariant">#0F8691</color>-->
-<!--    <color name="colorOnSecondary">#B5B5B5</color>-->
+    <color name="colorPrimary_night">#252733</color>
+    <color name="colorPrimaryVariant_night">#343947</color>
+    <color name="colorOnPrimary_night">#E3E3E5</color>
+    <color name="colorSecondary_night">#14B9C8</color>
+    <color name="colorSecondaryVariant_night">#0F8691</color>
+    <color name="colorOnSecondary_night">#B5B5B5</color>
 
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryVariant">#FAF7F7</color>
     <color name="colorOnPrimary">#333333</color>
-    <color name="colorSecondary">#02DDF1</color>
+    <color name="colorSecondary">#272727</color>
     <color name="colorSecondaryVariant">#0F8691</color>
     <color name="colorOnSecondary">#B5B5B5</color>
 

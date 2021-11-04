@@ -53,13 +53,27 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private lateinit var mMenu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
         setSupportActionBar(main_toolBar)
         initLogin()
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.baseline_menu_black_24)
             it.setDisplayShowTitleEnabled(false)
+        }
+        //颜色主题
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        var theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        setTheme(theme)
+        setContentView(R.layout.activity_main)
+        changeTheme.setOnClickListener {
+            if (theme == R.style.nightTheme) {
+                theme = R.style.SunnyWeather
+            } else {
+                theme = R.style.nightTheme
+            }
+            sharedPreferences.edit().putInt("theme", theme).commit()
+            recreate()
         }
         //关闭抽屉滑动打开
         main_drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -73,7 +87,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             )
             withSavedInstance(savedInstanceState)
         }
-// get the reference to the slider and add the items
+        // get the reference to the slider and add the items
         slider.itemAdapter.add(
             item1,
             DividerDrawerItem(),
@@ -81,20 +95,13 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             SecondaryDrawerItem().apply { nameRes = R.string.drawItem3 }
         )
 
-// specify a click listener
+        // specify a click listener
         slider.onDrawerItemClickListener = { v, drawerItem, position ->
             // do something with the clicked item :D
             false
         }
 
-        //颜色主题
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val dayNight = sharedPreferences.getBoolean("dayNight", false)
-        if (dayNight) {
-            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+
         //ViewPager2
         viewPager = main_fragment
         viewPager.isUserInputEnabled = false
@@ -252,6 +259,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     fun toFirst(){
         viewPager.currentItem = 0
     }
+
     private fun initLogin(){
         var sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
         val username = sharedPref.getString("username", "").toString()
