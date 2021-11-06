@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryVariant"
+    android:background="?attr/colorPrimaryVariant"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/colorOnSecondary"
+        android:textColor="?attr/colorOnPrimary"
         android:text="登录"
         android:layout_marginTop="100dp"
         android:textSize="50dp"
@@ -26,8 +26,8 @@
             android:id="@+id/username_text"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorOnPrimary"
-            app:hintTextColor="@color/colorOnPrimary"
+            android:textColorHint="?attr/colorOnPrimary"
+            app:hintTextColor="?attr/colorOnPrimary"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:errorEnabled="true"
             android:hint="用户名">
@@ -35,7 +35,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/userName_content"
                 android:layout_width="match_parent"
-                android:textColor="@color/colorOnPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 android:layout_height="wrap_content"
                 android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -46,8 +46,8 @@
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
             app:endIconMode="password_toggle"
-            android:textColorHint="@color/colorOnPrimary"
-            app:hintTextColor="@color/colorOnPrimary"
+            android:textColorHint="?attr/colorOnPrimary"
+            app:hintTextColor="?attr/colorOnPrimary"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:errorEnabled="true"
             android:hint="密码">
@@ -56,7 +56,7 @@
                 android:id="@+id/password_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorOnPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 android:inputType="textPassword"
                 android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -66,7 +66,7 @@
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/colorOnPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:text="登录"
             android:textStyle="bold"
             android:textSize="25dp"/>
@@ -74,7 +74,7 @@
             android:id="@+id/textButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorOnSecondary"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="16dp"
             android:text="注册新账号"
             style="@style/Widget.MaterialComponents.Button.TextButton" />

@@ -88,7 +88,7 @@ dependencies {
     implementation 'com.roger.gifloadinglibrary:gifloadinglibrary:1.1.1'//加载动画
     implementation 'com.github.liangjingkanji:StateLayout:1.2.0'        //缺省页
     implementation 'com.auth0:java-jwt:3.18.2'                          //虎牙JWT
-//    implementation 'com.auth0.android:jwtdecode:2.0.0'
+    //implementation 'com.auth0.android:jwtdecode:2.0.0'
     implementation 'com.github.AlexLiuSheng:CheckVersionLib:2.4.1_androidx' //版本更新
     implementation  'com.umeng.umsdk:common:9.4.4'// 友盟统计
     implementation  'com.umeng.umsdk:asms:1.4.1'// 友盟统计
@@ -97,6 +97,12 @@ dependencies {
     implementation 'com.blankj:utilcodex:1.30.6' //安卓常用工具
     implementation "com.mikepenz:materialdrawer:8.4.4" //抽屉
     implementation 'com.afollestad.material-dialogs:core:3.3.0' //dialog
+    // 基础依赖包，必须要依赖
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    // fragment快速实现（可选）
+    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
+    // kotlin扩展（可选）
+    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

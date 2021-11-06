@@ -28,6 +28,7 @@ import android.view.*
 import androidx.drawerlayout.widget.DrawerLayout
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
+import com.gyf.immersionbar.ImmersionBar
 
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
@@ -51,6 +52,22 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private lateinit var mMenu: Menu
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //颜色主题
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        var theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        setTheme(theme)
+        setContentView(R.layout.activity_main)
+
+        ImmersionBar.with(this)
+//            .transparentStatusBar()  //透明状态栏，不写默认透明色
+//            .statusBarColor(R.style.nightTheme.col)     //状态栏颜色，不写默认透明色
+//            .autoDarkModeEnable(true) //自动状态栏字体和导航栏图标变色，必须指定状态栏颜色和导航栏颜色才可以自动变色哦
+//            .fitsSystemWindows(true)    //解决状态栏和布局重叠问题，任选其一，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色，还有一些重载方法
+            .supportActionBar(true) //支持ActionBar使用
+//            .statusBarDarkFont(true, 0.2f) //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
+            .autoStatusBarDarkModeEnable(true,0.2f) //自动状态栏字体变色，必须指定状态栏颜色才可以自动变色哦
+            .statusBarView(statueBar)
+            .init()  //必须调用方可应用以上所配置的参数
         setSupportActionBar(main_toolBar)
         initLogin()
         supportActionBar?.let {
@@ -58,11 +75,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             it.setHomeAsUpIndicator(R.drawable.baseline_menu_black_24)
             it.setDisplayShowTitleEnabled(false)
         }
-        //颜色主题
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        var theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
-        setTheme(theme)
-        setContentView(R.layout.activity_main)
         changeTheme.setOnClickListener {
             if (theme == R.style.nightTheme) {
                 theme = R.style.SunnyWeather

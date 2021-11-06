@@ -9,7 +9,7 @@
         android:id="@+id/title_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorOnSecondary"
+        android:textColor="@color/colorOnPrimary"
         android:gravity="center"
         android:text="注册"
         android:layout_marginTop="80dp"
@@ -119,7 +119,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:text="注册"
-            android:textColor="@color/white"
+            android:textColor="@color/colorOnPrimary"
             android:textStyle="bold"
             android:textSize="25dp"/>
     </LinearLayout>
