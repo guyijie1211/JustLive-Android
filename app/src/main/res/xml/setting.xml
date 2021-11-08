@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
         app:key="player_setting"
         app:title="播放设置">
@@ -8,6 +8,7 @@
             app:key="full_screen_start"
             app:title="直接全屏播放"
             app:icon="@drawable/ic_baseline_fullscreen_24"
+            android:textAppearance="?attr/colorOnPrimary"
             app:summary="进入直播间时直接全屏(建议关闭)"/>
         <SwitchPreferenceCompat
             app:key="play_background"

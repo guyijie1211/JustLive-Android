@@ -14,13 +14,14 @@ class SettingFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.setting, rootKey)
         val signaturePreference: SwitchPreferenceCompat? = findPreference("dayNight")
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         signaturePreference?.setOnPreferenceChangeListener { _, newValue  ->
             if (newValue as Boolean) {
-                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-                var theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
-
+                sharedPreferences.edit().putInt("theme", R.style.nightTheme).commit()
+                activity?.recreate()
             } else {
-                context?.setTheme(R.style.SunnyWeather)
+                sharedPreferences.edit().putInt("theme", R.style.SunnyWeather).commit()
+                activity?.recreate()
             }
             true
         }

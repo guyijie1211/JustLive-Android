@@ -32,7 +32,9 @@ import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 import android.view.WindowManager
 import android.app.Activity
+import androidx.preference.PreferenceManager
 import com.arlib.floatingsearchview.FloatingSearchView
+import com.blankj.utilcode.util.BarUtils
 import com.sunnyweather.android.SunnyWeatherApplication
 import java.lang.Exception
 import java.lang.reflect.Method
@@ -44,21 +46,31 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var searchAdapter: SearchAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //颜色主题
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        setTheme(themeActived)
         setContentView(R.layout.activity_search)
-        init()
-        val window: Window = this.window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.TRANSPARENT
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-
-            val decor: View = this.window.decorView
-                decor.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            SunnyWeatherApplication.MIUISetStatusBarLightMode(this, true)
+        if (themeActived != R.style.nightTheme) {
+            BarUtils.setStatusBarLightMode(this, true)
+        } else {
+            BarUtils.setStatusBarLightMode(this, false)
         }
+        BarUtils.transparentStatusBar(this)
+        init()
+//        val window: Window = this.window
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//            window.statusBarColor = Color.TRANSPARENT
+//            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+//
+//            val decor: View = this.window.decorView
+//                decor.systemUiVisibility =
+//                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//            SunnyWeatherApplication.MIUISetStatusBarLightMode(this, true)
+//        }
         //****************************
         recyclerView_search.addItemDecoration(SpaceItemDecoration(10))
         searchAdapter = SearchAdapter(this, viewModel.ownersList as List<Owner>)

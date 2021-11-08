@@ -28,7 +28,8 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="PreferenceScreen" parent="SunnyWeather">
-        <item name="android:textColor">@color/colorOnPrimary</item>
+    <style name="PreferenceScreen" parent="nightTheme">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:background">?attr/colorPrimaryVariant</item>
     </style>
 </resources>

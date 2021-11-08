@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.model.RoomInfo
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(val platform: String) : ViewModel() {
     class RecommendInfo(val platform: String, val areaType: String, val area: String, val page: Int, val size: Int)
 
     private val pageLiveData = MutableLiveData<RecommendInfo>()
@@ -26,7 +26,7 @@ class HomeViewModel : ViewModel() {
         roomList.clear()
     }
 
-    fun getRecommend(platform: String, areaType: String, area: String) {
+    fun getRecommend(areaType: String, area: String) {
         page ++
         pageLiveData.value = RecommendInfo(platform, areaType, area, page, 20)
     }

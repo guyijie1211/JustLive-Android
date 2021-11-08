@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_roomlist.*
 
 class RecommendFragment(val platform: String) : Fragment()  {
     constructor(): this("all")
-    private val viewModel by lazy { ViewModelProvider(this).get(HomeViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProvider(this, HomeViewModelFactory(platform)).get(HomeViewModel::class.java) }
     private lateinit var adapter: RoomListAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,46 +45,50 @@ class RecommendFragment(val platform: String) : Fragment()  {
         refresh_home_foot.setFinishDuration(0)//设置Footer 的 “加载完成” 显示时间为0
         refresh_home.setOnRefreshListener {
             viewModel.clearPage()
-            viewModel.getRecommend(platform, SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
         }
         refresh_home.setOnLoadMoreListener {
-            viewModel.getRecommend(platform, SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
         }
         //绑定LiveData监听器
-        if (viewModel.roomList.size < 1) {
-            SunnyWeatherApplication.areaName.observe(viewLifecycleOwner, {
-                viewModel.clearPage()
-                viewModel.clearList()
-                progressBar_roomList.isVisible = true
-                recyclerView.isGone = true
-                viewModel.getRecommend(platform, SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
-            })
-            viewModel.roomListLiveDate.observe(viewLifecycleOwner, { result ->
-                val temp = result.getOrNull()
-                var rooms: ArrayList<RoomInfo>? = null
-                if (temp != null) rooms = temp as ArrayList<RoomInfo>
-                if (rooms != null && rooms.size > 0) {
-                    if(refresh_home.isRefreshing) {
-                        viewModel.clearList()
-                    }
-                    viewModel.roomList.addAll(rooms)
-                    adapter.notifyDataSetChanged()
-                    progressBar_roomList.isGone = true
-                    recyclerView.isVisible = true
-                    refresh_home.finishRefresh() //传入false表示刷新失败
-                    refresh_home.finishLoadMore() //传入false表示加载失败
-                } else {
-                    progressBar_roomList.isGone = true
-                    recyclerView.isVisible = true
-                    refresh_home.finishLoadMoreWithNoMoreData()
-                    if (viewModel.roomList.size == 0) {
-                        state.showEmpty()
-                    }
-                    result.exceptionOrNull()?.printStackTrace()
-                }
-            })
-            viewModel.getRecommend(platform, SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+        SunnyWeatherApplication.areaName.observe(viewLifecycleOwner, {
+            viewModel.clearPage()
+            viewModel.clearList()
             progressBar_roomList.isVisible = true
-        }
+            recyclerView.isGone = true
+            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+        })
+        viewModel.roomListLiveDate.observe(viewLifecycleOwner, { result ->
+            val temp = result.getOrNull()
+            var rooms: ArrayList<RoomInfo>? = null
+            if (temp != null) rooms = temp as ArrayList<RoomInfo>
+            if (rooms != null && rooms.size > 0) {
+                if(refresh_home.isRefreshing) {
+                    viewModel.clearList()
+                }
+                viewModel.roomList.addAll(rooms)
+                adapter.notifyDataSetChanged()
+                progressBar_roomList.isGone = true
+                recyclerView.isVisible = true
+                refresh_home.finishRefresh() //传入false表示刷新失败
+                refresh_home.finishLoadMore() //传入false表示加载失败
+            } else {
+                progressBar_roomList.isGone = true
+                recyclerView.isVisible = true
+                refresh_home.finishLoadMoreWithNoMoreData()
+                if (viewModel.roomList.size == 0) {
+                    state.showEmpty()
+                }
+                result.exceptionOrNull()?.printStackTrace()
+            }
+        })
+        viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+        progressBar_roomList.isVisible = true
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        SunnyWeatherApplication.areaName.removeObservers(viewLifecycleOwner)
+        viewModel.roomListLiveDate.removeObservers(viewLifecycleOwner)
     }
 }

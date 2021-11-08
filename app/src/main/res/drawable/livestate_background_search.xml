@@ -10,5 +10,5 @@
         android:bottomRightRadius="5dp"/>
 
     <solid
-        android:color="#E65A8A" />
+        android:color="#EF5757" />
 </shape>

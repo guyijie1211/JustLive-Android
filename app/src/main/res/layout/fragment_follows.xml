@@ -7,10 +7,10 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_follows"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
-        app:tabIndicatorColor="@color/colorSecondary"
-        app:tabSelectedTextColor="@color/colorSecondary"
-        app:tabTextColor="@color/colorOnPrimary"
+        android:background="?attr/colorPrimary"
+        app:tabIndicatorColor="?attr/colorSecondary"
+        app:tabSelectedTextColor="?attr/colorSecondary"
+        app:tabTextColor="?attr/colorOnPrimary"
         android:paddingTop="5dp"
         android:layout_height="35dp"
         android:paddingBottom="5dp"
@@ -19,7 +19,7 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpage_follows"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:background="@color/colorPrimaryVariant"
+        android:background="?attr/colorPrimaryVariant"
         app:defaultNavHost="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

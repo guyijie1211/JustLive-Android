@@ -14,7 +14,6 @@
         app:tab_indicator_drawable="@drawable/indicator_background"
         app:tab_indicator_color="?attr/colorSecondary"
         app:tab_indicator_width="WRAP_CONTENT"
-        app:tab_indicator_enable_flow="true"
         app:tab_indicator_width_offset="-20dp"
         app:tab_indicator_style="STYLE_BOTTOM"
         app:tab_item_is_equ_width="true"

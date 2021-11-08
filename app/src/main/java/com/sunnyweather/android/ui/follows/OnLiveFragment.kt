@@ -53,36 +53,41 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
             viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         }
 
-        if (viewModel.roomList.size < 1) {
-            SunnyWeatherApplication.isLogin.observe(viewLifecycleOwner, {result ->
-                if (result){
-                    progressBar_roomList.isVisible = true
-                    viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
-                } else {
-                    viewModel.clearRoomList()
-                    adapterOn.notifyDataSetChanged()
-                }
-            })
-            viewModel.userRoomListLiveDate.observe(viewLifecycleOwner, { result ->
-                val rooms = result.getOrNull()
-                if (rooms is ArrayList<*>) {
-                    viewModel.clearRoomList()
-                    sortRooms(rooms as List<RoomInfo>)
-                    adapterOn.notifyDataSetChanged()
-                    progressBar_roomList.isGone = true
-                    refresh_home.finishRefresh() //传入false表示刷新失败
-                    refresh_home.finishLoadMoreWithNoMoreData()
-                    (this.parentFragment as FollowsFragment).enableInput()
-                } else if (rooms is String) {
-                    Toast.makeText(context, rooms, Toast.LENGTH_SHORT).show()
-                    result.exceptionOrNull()?.printStackTrace()
-                }
-            })
-        }
+        SunnyWeatherApplication.isLogin.observe(viewLifecycleOwner, {result ->
+            if (result){
+                progressBar_roomList.isVisible = true
+                viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
+            } else {
+                viewModel.clearRoomList()
+                adapterOn.notifyDataSetChanged()
+            }
+        })
+        viewModel.userRoomListLiveDate.observe(viewLifecycleOwner, { result ->
+            val rooms = result.getOrNull()
+            if (rooms is ArrayList<*>) {
+                viewModel.clearRoomList()
+                sortRooms(rooms as List<RoomInfo>)
+                adapterOn.notifyDataSetChanged()
+                progressBar_roomList.isGone = true
+                refresh_home.finishRefresh() //传入false表示刷新失败
+                refresh_home.finishLoadMoreWithNoMoreData()
+                (this.parentFragment as FollowsFragment).enableInput()
+            } else if (rooms is String) {
+                Toast.makeText(context, rooms, Toast.LENGTH_SHORT).show()
+                result.exceptionOrNull()?.printStackTrace()
+            }
+        })
+
         viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         if (SunnyWeatherApplication.isLogin.value!!){
             progressBar_roomList.isVisible = true
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        SunnyWeatherApplication.isLogin.removeObservers(viewLifecycleOwner)
+        viewModel.userRoomListLiveDate.removeObservers(viewLifecycleOwner)
     }
 
     private fun sortRooms(roomList: List<RoomInfo>) {

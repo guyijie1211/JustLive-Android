@@ -5,7 +5,7 @@
     android:id="@+id/search_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryVariant"
+    android:background="?attr/colorPrimaryVariant"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:clickable="true">
@@ -38,7 +38,7 @@
             android:layout_marginTop="10dp"
             android:textSize="25dp"
             android:textStyle="bold"
-            android:textColor="@color/secondaryTextColor"
+            android:textColor="?attr/colorOnPrimary"
             android:text="搜索主播"/>
 
     </LinearLayout>
@@ -68,12 +68,12 @@
         android:paddingEnd="4dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
-        app:cardBackgroundColor="@color/colorOnPrimary"
+        app:cardBackgroundColor="?attr/colorPrimary"
         app:leftButtonDrawable="@drawable/ic_arrow_left"
         app:rightButtonDrawable="@drawable/ic_filters"
         app:clearInputButtonDrawable="@drawable/ic_close"
-        app:queryInputTextColor="@color/primaryTextColor"
-        app:queryInputHintColor="@color/secondaryTextColor"
+        app:queryInputTextColor="?attr/colorOnPrimary"
+        app:queryInputHintColor="?attr/colorOnSecondary"
         app:queryInputCursorColor="@color/colorAccent"
         app:queryInputBarIconColor="@color/iconColor"
         app:progressBarColor="@color/colorAccent"

@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryVariant"
+    android:background="?attr/colorPrimaryVariant"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/title_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorOnPrimary"
+        android:textColor="?attr/colorOnPrimary"
         android:gravity="center"
         android:text="注册"
         android:layout_marginTop="80dp"
@@ -26,10 +26,10 @@
             android:id="@+id/username_text_register"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorOnPrimary"
-            app:hintTextColor="@color/colorOnPrimary"
-            app:helperTextTextColor="@color/colorOnPrimary"
-            app:counterTextColor="@color/colorOnPrimary"
+            android:textColorHint="?attr/colorOnPrimary"
+            app:hintTextColor="?attr/colorOnPrimary"
+            app:helperTextTextColor="?attr/colorOnPrimary"
+            app:counterTextColor="?attr/colorOnPrimary"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:helperTextEnabled="true"
             app:errorEnabled="true"
@@ -41,7 +41,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/userName_content_register"
                 android:layout_width="match_parent"
-                android:textColor="@color/colorOnPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 android:layout_height="wrap_content"
                 android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -51,10 +51,10 @@
             android:layout_width="350dp"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorOnPrimary"
-            app:hintTextColor="@color/colorOnPrimary"
-            app:helperTextTextColor="@color/colorOnPrimary"
-            app:counterTextColor="@color/colorOnPrimary"
+            android:textColorHint="?attr/colorOnPrimary"
+            app:hintTextColor="?attr/colorOnPrimary"
+            app:helperTextTextColor="?attr/colorOnPrimary"
+            app:counterTextColor="?attr/colorOnPrimary"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:helperTextEnabled="true"
             app:errorEnabled="true"
@@ -67,7 +67,7 @@
                 android:id="@+id/nickName_content_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorOnPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,8 +76,8 @@
             android:layout_width="350dp"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorOnPrimary"
-            app:hintTextColor="@color/colorOnPrimary"
+            android:textColorHint="?attr/colorOnPrimary"
+            app:hintTextColor="?attr/colorOnPrimary"
             app:endIconMode="password_toggle"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:errorEnabled="true"
@@ -87,7 +87,7 @@
                 android:id="@+id/password_content_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorOnPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 android:singleLine="true"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -97,8 +97,8 @@
             android:layout_width="350dp"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/colorOnPrimary"
-            app:hintTextColor="@color/colorOnPrimary"
+            android:textColorHint="?attr/colorOnPrimary"
+            app:hintTextColor="?attr/colorOnPrimary"
             app:endIconMode="password_toggle"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:errorEnabled="true"
@@ -108,7 +108,7 @@
                 android:id="@+id/repassword_content_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorOnPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 android:singleLine="true"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -119,7 +119,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:text="注册"
-            android:textColor="@color/colorOnPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:textStyle="bold"
             android:textSize="25dp"/>
     </LinearLayout>

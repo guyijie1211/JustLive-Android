@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
+import com.blankj.utilcode.util.BarUtils
 import com.google.android.material.textfield.TextInputLayout
 import com.roger.gifloadinglibrary.GifLoadingView
 import com.sunnyweather.android.R
@@ -29,20 +31,17 @@ class RegisterActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //颜色主题
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        var theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        setTheme(theme)
         setContentView(R.layout.activity_register)
-        val window: Window = this.window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.TRANSPARENT
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-
-            val decor: View = this.window.decorView
-            decor.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            SunnyWeatherApplication.MIUISetStatusBarLightMode(this, true)
+        if (theme != R.style.nightTheme) {
+            BarUtils.setStatusBarLightMode(this, true)
+        } else {
+            BarUtils.setStatusBarLightMode(this, false)
         }
+        BarUtils.transparentStatusBar(this)
         viewModel.registerResponseLiveDate.observe(this, { result ->
             val resultData = result.getOrNull()
             if (resultData is UserInfo) {

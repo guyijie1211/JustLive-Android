@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="5dp"
-    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardBackgroundColor="?attr/colorPrimary"
     app:cardElevation="3dp">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/areaPic"
             android:layout_width="match_parent"
-            android:background="@color/colorPrimaryVariant"
+            android:background="?attr/colorPrimary"
             android:layout_height="180dp"
             android:layout_alignParentTop="true"
             android:scaleType="fitXY" />
@@ -21,7 +21,7 @@
             android:id="@+id/areaName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorOnPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:gravity="center"
             android:layout_below="@+id/areaPic"
             android:textStyle="bold"

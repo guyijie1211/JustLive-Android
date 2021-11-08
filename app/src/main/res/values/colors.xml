@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="barColor">?attr/colorPrimary</color>
+
     <color name="colorPrimary_night">#252733</color>
     <color name="colorPrimaryVariant_night">#343947</color>
     <color name="colorOnPrimary_night">#E3E3E5</color>
@@ -8,7 +10,7 @@
     <color name="colorOnSecondary_night">#B5B5B5</color>
 
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryVariant">#DFDFDF</color>
+    <color name="colorPrimaryVariant">#EAEAEA</color>
     <color name="colorOnPrimary">#333333</color>
     <color name="colorSecondary">#272727</color>
     <color name="colorSecondaryVariant">#0F8691</color>

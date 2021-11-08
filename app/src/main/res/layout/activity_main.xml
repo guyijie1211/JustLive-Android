@@ -71,13 +71,14 @@
             app:tab_item_is_equ_width="true"
             app:tab_enable_text_bold="true"
             app:tab_select_color="?attr/colorSecondary"
-            android:background="?attr/colorPrimaryVariant"
+            android:background="?attr/colorPrimary"
             tools:tab_default_index="0">
             <Button
                 android:id="@+id/changeTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="换主题"/>
+                android:text="换主题"
+                android:visibility="gone"/>
             <TextView
                 android:text="推荐"
                 android:textColor="?attr/colorOnPrimary"
