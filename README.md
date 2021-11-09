@@ -3,6 +3,8 @@
 
 网站页面    [live.yj1211.work](http://live.yj1211.work)
 
+qq交流群：645962588
+
 [点击下载app](https://github.com/guyijie1211/JustLive-Android/releases)
 
 #### 功能
