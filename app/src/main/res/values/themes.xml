@@ -1,4 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="MyMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:popupBackground">?attr/colorPrimaryVariant</item>
+    </style>
+    <style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/icon_more</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="SunnyWeather" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -12,6 +25,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
+        <item name="actionOverflowMenuStyle">@style/MyMenu</item>
+        <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
     </style>
 
     <style name="nightTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -23,10 +39,12 @@
         <item name="colorSecondary">@color/colorSecondary_night</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant_night</item>
         <item name="colorOnSecondary">@color/colorOnSecondary_night</item>
-
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
+        <item name="actionOverflowMenuStyle">@style/MyMenu</item>
+        <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
     </style>
     <style name="PreferenceScreen" parent="nightTheme">
         <item name="android:textColor">?attr/colorOnPrimary</item>

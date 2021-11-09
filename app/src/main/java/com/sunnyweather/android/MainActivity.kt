@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         initLogin()
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.baseline_menu_black_24)
+            it.setHomeAsUpIndicator(R.drawable.icon_menu)
             it.setDisplayShowTitleEnabled(false)
         }
         //关闭抽屉滑动打开
@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                         } else {
                             main_toolBar_title.text = title
                         }
-                        val drawable = resources.getDrawable(R.drawable.baseline_arrow_drop_down_black_24)
+                        val drawable = resources.getDrawable(R.drawable.icon_arrow_down)
                         main_toolBar_title.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
                     }
                     1 -> {
