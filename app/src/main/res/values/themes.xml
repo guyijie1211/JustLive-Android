@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="MyMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
         <item name="overlapAnchor">false</item>
-        <item name="android:popupBackground">?attr/colorPrimaryVariant</item>
+        <item name="android:popupBackground">?attr/colorPrimary</item>
     </style>
     <style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
         <item name="android:textColor">?attr/colorOnPrimary</item>
@@ -10,6 +10,13 @@
     </style>
     <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:src">@drawable/icon_more</item>
+    </style>
+    <style name="ThemeOverlay.App.Switch" parent="">
+        <item name="colorOnSurface">#919191</item>
+        <item name="colorSecondary">@color/colorSecondary_night</item>
+    </style>
+    <style name="Widget.App.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
     </style>
 
     <!-- Base application theme. -->

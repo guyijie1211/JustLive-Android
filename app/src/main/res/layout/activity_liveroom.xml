@@ -117,7 +117,7 @@
                 android:layout_marginRight="10dp"
                 android:background="#00FFFFFF"
                 android:scaleType="fitXY"
-                android:src="@drawable/net" />
+                android:src="@drawable/icon_explore" />
 
         </RelativeLayout>
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/controllerContainer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+        android:id="@+id/controllerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/iv_play"
@@ -100,5 +99,4 @@
         android:max="1000"
         android:progressDrawable="@drawable/dkplayer_layer_progress_bar"
         android:visibility="gone" />
-
 </FrameLayout>

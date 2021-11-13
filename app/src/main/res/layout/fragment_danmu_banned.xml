@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="屏蔽开关"
+            style="@style/Widget.App.Switch"
             android:textColor="@color/white" />
 
         <Button
@@ -61,6 +62,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/add_ban_TextField"
             android:text="添加"
+            style="@style/Widget.App.Switch"
             android:textColor="@color/white" />
 
         <TextView

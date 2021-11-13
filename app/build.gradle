@@ -12,7 +12,7 @@ android {
         applicationId "com.yj1211.justlive"
         minSdk 21
         targetSdk 31
-        versionCode 8
+        versionCode 7
         versionName "0.1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -97,6 +97,7 @@ dependencies {
     implementation 'com.blankj:utilcodex:1.30.6' //安卓常用工具
     implementation "com.mikepenz:materialdrawer:8.4.4" //抽屉
     implementation 'com.afollestad.material-dialogs:core:3.3.0' //dialog
+    implementation 'com.billy.android:smart-swipe:1.1.0' //侧滑插件
     // 基础依赖包，必须要依赖
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     // fragment快速实现（可选）

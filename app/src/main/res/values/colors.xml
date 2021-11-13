@@ -7,7 +7,7 @@
     <color name="colorOnPrimary_night">#E3E3E5</color>
     <color name="colorSecondary_night">#14B9C8</color>
     <color name="colorSecondaryVariant_night">#0F8691</color>
-    <color name="colorOnSecondary_night">#B5B5B5</color>
+    <color name="colorOnSecondary_night">#E0E0E0</color>
 
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryVariant">#EAEAEA</color>
@@ -24,10 +24,11 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_200">#14B9C8</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
 
     <color name="blue">#529ecc</color>
     <color name="blue_dark">#4986bc</color>

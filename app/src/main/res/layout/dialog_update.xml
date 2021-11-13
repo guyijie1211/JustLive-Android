@@ -3,18 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorPrimaryVariant"
     android:paddingLeft="20dp"
     android:paddingTop="20dp"
     android:paddingRight="20dp">
+
     <TextView
         android:id="@+id/update_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
         android:gravity="center"
+        android:text="更新提示"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="20dp"
-        android:textStyle="bold"
-        android:text="更新提示"/>
+        android:textStyle="bold" />
     <LinearLayout
         android:id="@+id/update_content"
         android:layout_marginTop="20dp"
@@ -26,22 +28,26 @@
             android:id="@+id/update_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
             android:text="版本: 0.1.0"/>
         <TextView
             android:id="@+id/update_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
             android:text="下载体积: 10.05MB"/>
         <TextView
             android:id="@+id/update_description_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
             android:layout_marginTop="30dp"
             android:text="更新内容："/>
         <TextView
             android:id="@+id/update_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
             android:text="1.去除主页侧边抽屉的滑动打开"/>
     </LinearLayout>
 
@@ -53,8 +59,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-10dp"
         android:text="立即更新"
-        android:textColor="@color/white"
-        app:backgroundTint="@color/colorPrimary" />
+        android:textColor="?attr/colorOnSecondary"
+        app:backgroundTint="?attr/colorSecondary" />
 
     <Button
         android:id="@+id/versionchecklib_version_dialog_cancel"
@@ -62,7 +68,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/versionchecklib_version_dialog_commit"
-        android:text="取消" />
+        android:text="取消"
+        android:textColor="?attr/colorOnSecondary"
+        app:backgroundTint="?attr/colorSecondary" />
 
     <Button
         android:id="@+id/ignore_btn"
@@ -73,7 +81,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="忽略此版本"
-        android:textColor="@color/dark_gray"
+        android:textColor="?attr/colorOnPrimary"
         android:textSize="14dp" />
 
 </RelativeLayout>

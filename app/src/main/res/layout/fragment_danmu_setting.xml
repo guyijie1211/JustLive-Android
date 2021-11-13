@@ -36,15 +36,18 @@
                 android:id="@+id/radio_button_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/Widget.App.Switch"
                 android:textColor="@color/cardBackgroundColor"
                 android:text="正常"/>
             <RadioButton
+                style="@style/Widget.App.Switch"
                 android:id="@+id/radio_button_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/cardBackgroundColor"
                 android:text="铺满"/>
             <RadioButton
+                style="@style/Widget.App.Switch"
                 android:id="@+id/radio_button_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,6 +75,9 @@
             android:text="最大行数"
             android:gravity="center"/>
         <com.google.android.material.slider.Slider
+            app:trackColorActive="#FFFFFF"
+            app:trackColorInactive="#5A5A5A"
+            app:thumbColor="#FFFFFF"
             android:id="@+id/showAreaSlider"
             android:valueFrom="1"
             android:valueTo="20"
@@ -100,6 +106,9 @@
             android:text="不透明度"
             android:gravity="center"/>
         <com.google.android.material.slider.Slider
+            app:trackColorActive="#FFFFFF"
+            app:trackColorInactive="#5A5A5A"
+            app:thumbColor="#FFFFFF"
             android:id="@+id/alphaSlider"
             android:valueFrom="0.20"
             android:valueTo="1"
@@ -127,6 +136,9 @@
             android:text="弹幕速度"
             android:gravity="center"/>
         <com.google.android.material.slider.Slider
+            app:trackColorActive="#FFFFFF"
+            app:trackColorInactive="#5A5A5A"
+            app:thumbColor="#FFFFFF"
             android:id="@+id/speedSlider"
             android:valueFrom="0"
             android:valueTo="4"
@@ -154,6 +166,9 @@
             android:text="弹幕字号"
             android:gravity="center"/>
         <com.google.android.material.slider.Slider
+            app:trackColorActive="#FFFFFF"
+            app:trackColorInactive="#5A5A5A"
+            app:thumbColor="#FFFFFF"
             android:id="@+id/sizeSlider"
             android:valueFrom="0.50"
             android:valueTo="3.00"
@@ -181,6 +196,9 @@
             android:text="描边宽度"
             android:gravity="center"/>
         <com.google.android.material.slider.Slider
+            app:trackColorActive="#FFFFFF"
+            app:trackColorInactive="#5A5A5A"
+            app:thumbColor="#FFFFFF"
             android:id="@+id/borderSlider"
             android:valueFrom="0"
             android:valueTo="25"
@@ -209,7 +227,9 @@
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/merge_select"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            style="@style/Widget.App.Switch"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -224,6 +244,7 @@
             android:gravity="center"/>
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/bold_select"
+            style="@style/Widget.App.Switch"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
     </LinearLayout>

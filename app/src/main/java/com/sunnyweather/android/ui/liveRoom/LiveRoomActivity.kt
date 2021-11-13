@@ -349,7 +349,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         val titleView = TitleView(this)
         mDefinitionControlView = YJLiveControlView(this, this)
         mDefinitionControlView!!.setOnRateSwitchListener(this)
-        val gestureView = GestureView(this)
+        val gestureView = DragGestureView(this)
         controller.addControlComponent(
             completeView,
             errorView,

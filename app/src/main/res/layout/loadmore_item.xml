@@ -7,7 +7,9 @@
         android:id="@+id/loadMore_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorPrimaryVariant"
         android:gravity="center"
+        android:textColor="?attr/colorOnPrimary"
         android:text="加载更多"/>
 
 </RelativeLayout>

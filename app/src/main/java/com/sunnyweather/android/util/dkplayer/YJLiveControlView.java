@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.consumer.DrawerConsumer;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.google.gson.internal.LinkedTreeMap;
 import com.sunnyweather.android.R;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity;
@@ -122,7 +126,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         mPopupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.layout_rate_pop, this, false);
         mPopupWindow.setContentView(mPopLayout);
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xffffffff));
+//        mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xffffffff));
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setClippingEnabled(false);
         mDefinition = findViewById(R.id.tv_definition);
@@ -154,6 +158,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     public void onVisibilityChanged(boolean isVisible, Animation anim) {
         if (isVisible) {
             liveRoomActivity.changeRoomInfoVisible(true);
+//            video_drawer.setVisibility(VISIBLE);
             showBottom();
             mBottomContainer.setVisibility(VISIBLE);
             if (anim != null) {
@@ -163,6 +168,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                 mBottomProgress.setVisibility(GONE);
             }
         } else {
+//            video_drawer.setVisibility(GONE);
             liveRoomActivity.changeRoomInfoVisible(false);
             mPopupWindow.dismiss();
             hideSetting();
@@ -316,7 +322,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                 mPopLayout.addView(rateItem);
                 index++;
             }
-            ((TextView) mPopLayout.getChildAt(mRateStr.indexOf(txt))).setTextColor(ContextCompat.getColor(getContext(), R.color.purple_500));
+            ((TextView) mPopLayout.getChildAt(mRateStr.indexOf(txt))).setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
             mDefinition.setText(txt);
             mCurIndex = mRateStr.indexOf(txt);
         }
@@ -327,8 +333,8 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         public void onClick(View v) {
             int index = (int) v.getTag();
             if (mCurIndex == index) return;
-            ((TextView) mPopLayout.getChildAt(mCurIndex)).setTextColor(Color.BLACK);
-            ((TextView) mPopLayout.getChildAt(index)).setTextColor(ContextCompat.getColor(getContext(), R.color.purple_500));
+            ((TextView) mPopLayout.getChildAt(mCurIndex)).setTextColor(Color.WHITE);
+            ((TextView) mPopLayout.getChildAt(index)).setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
             mDefinition.setText(mRateStr.get(index));
             switchDefinition(mRateStr.get(index));
             mPopupWindow.dismiss();
