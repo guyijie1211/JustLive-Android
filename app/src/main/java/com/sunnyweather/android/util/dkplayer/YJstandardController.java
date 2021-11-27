@@ -9,8 +9,8 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.billy.android.swipe.SmartSwipe;
-import com.billy.android.swipe.consumer.DrawerConsumer;
+//import com.billy.android.swipe.SmartSwipe;
+//import com.billy.android.swipe.consumer.DrawerConsumer;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.sunnyweather.android.R;
 

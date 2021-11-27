@@ -32,9 +32,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
-import com.billy.android.swipe.SmartSwipe;
-import com.billy.android.swipe.consumer.DrawerConsumer;
-import com.blankj.utilcode.util.ScreenUtils;
+//import com.billy.android.swipe.SmartSwipe;
+//import com.billy.android.swipe.consumer.DrawerConsumer;
+//import com.blankj.utilcode.util.ScreenUtils;
 import com.google.gson.internal.LinkedTreeMap;
 import com.sunnyweather.android.R;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity;

@@ -18,8 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.billy.android.swipe.SmartSwipe;
-import com.billy.android.swipe.SmartSwipeWrapper;
+//import com.billy.android.swipe.SmartSwipe;
+//import com.billy.android.swipe.SmartSwipeWrapper;
 import com.sunnyweather.android.R;
 
 import xyz.doikki.videoplayer.controller.ControlWrapper;
@@ -56,11 +56,11 @@ public class DragGestureView  extends FrameLayout implements IGestureComponent {
         mProgressPercent = findViewById(R.id.pro_percent);
         mTextPercent = findViewById(R.id.tv_percent);
         mCenterContainer = findViewById(R.id.center_container);
-        SmartSwipeWrapper wrapper = SmartSwipe.wrap(findViewById(R.id.player_gesture_container));
-//                .addConsumer(new YJSwipeConsumer())
-//                .setLeftDrawerView(findViewById(R.id.player_follow_drawer))
-//                .setScrimColor(0xE6000000)
-//                .enableNestedScrollVertical(false);
+//        SmartSwipeWrapper wrapper = SmartSwipe.wrap(findViewById(R.id.player_gesture_container));
+////                .addConsumer(new YJSwipeConsumer())
+////                .setLeftDrawerView(findViewById(R.id.player_follow_drawer))
+////                .setScrimColor(0xE6000000)
+////                .enableNestedScrollVertical(false);
     }
 
     @Override
