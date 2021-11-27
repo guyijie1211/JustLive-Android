@@ -315,7 +315,11 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                             mMyDanmakuView.stopFloatPrepare()
                         }
                         player_container.addView(videoView)
-                        viewModel.getRealUrl(platform, roomId)
+                        if (platform == "huya" && roomInfo.categoryName == "一起看") {
+                            viewModel.getRealUrl("huyaTest", roomId)
+                        } else {
+                            viewModel.getRealUrl(platform, roomId)
+                        }
                     }
                     Glide.with(this).load(roomInfo.ownerHeadPic).transition(
                         DrawableTransitionOptions.withCrossFade()
