@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.sunnyweather.android.logic.model.UserInfo
-import xyz.doikki.videoplayer.exo.ExoMediaPlayerFactory
 import xyz.doikki.videoplayer.player.VideoViewConfig
 import xyz.doikki.videoplayer.player.VideoViewManager
 import java.lang.Exception

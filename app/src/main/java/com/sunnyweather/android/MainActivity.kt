@@ -25,19 +25,20 @@ import com.sunnyweather.android.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 import android.view.*
+import android.widget.CompoundButton
+import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.blankj.utilcode.util.BarUtils
 import com.gyf.immersionbar.ImmersionBar
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
+import com.mikepenz.materialdrawer.iconics.iconicsIcon
+import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
+import com.mikepenz.materialdrawer.model.*
+import com.mikepenz.materialdrawer.model.interfaces.*
 
-import com.mikepenz.materialdrawer.model.DividerDrawerItem
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.descriptionText
-import com.mikepenz.materialdrawer.model.interfaces.nameRes
-import com.mikepenz.materialdrawer.model.interfaces.nameText
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.sunnyweather.android.logic.model.UpdateInfo
 import com.sunnyweather.android.ui.login.LoginActivity
@@ -52,16 +53,21 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private var isVersionCheck = false
     private lateinit var mMenu: Menu
     private var themeActived = R.style.SunnyWeather
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //颜色主题
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        Log.i("test", "theme:" + themeActived)
         setTheme(themeActived)
         setContentView(R.layout.activity_main)
+        var nightChecked: Boolean
         if (themeActived != R.style.nightTheme) {
+            nightChecked = false
             BarUtils.setStatusBarLightMode(this, true)
         } else {
+            nightChecked = true
             BarUtils.setStatusBarLightMode(this, false)
         }
         setSupportActionBar(main_toolBar)
@@ -71,11 +77,23 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             it.setHomeAsUpIndicator(R.drawable.icon_menu)
             it.setDisplayShowTitleEnabled(false)
         }
+
+        val nightChangeListener = object : OnCheckedChangeListener {
+            override fun onCheckedChanged(drawerItem: IDrawerItem<*>, buttonView: CompoundButton, isChecked: Boolean) {
+            if (isChecked) {
+                    sharedPreferences.edit().putInt("theme", R.style.nightTheme).commit()
+                    nightChecked = false
+                    recreate()
+                } else {
+                    sharedPreferences.edit().putInt("theme", R.style.SunnyWeather).commit()
+                    nightChecked = true
+                    recreate()
+                }
+            }
+        }
         //关闭抽屉滑动打开
-        main_drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+//        main_drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         //if you want to update the items at a later time it is recommended to keep it in a variable
-        val item1 = PrimaryDrawerItem().apply { nameRes = R.string.drawItem1; identifier = 1; isSelectable = false }
-        val item2 = SecondaryDrawerItem().apply { nameRes = R.string.drawItem2; identifier = 2; isSelectable = false }
         AccountHeaderView(this).apply {
             attachToSliderView(slider) // attach to the slider
             addProfiles(
@@ -85,15 +103,24 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         }
         // get the reference to the slider and add the items
         slider.itemAdapter.add(
-            item1,
+            PrimaryDrawerItem().apply { nameRes = R.string.drawItem1; isSelectable = false; identifier = 1; },
             DividerDrawerItem(),
-            item2,
-            SecondaryDrawerItem().apply { nameRes = R.string.drawItem3 }
+            SecondaryDrawerItem().apply { nameRes = R.string.drawItem2; identifier = 2; isSelectable = false },
+            SecondaryDrawerItem().apply { identifier = 3; nameRes = R.string.setting; iconicsIcon = GoogleMaterial.Icon.gmd_settings; isSelectable = false},
+            SwitchDrawerItem().apply { nameText = "夜间模式"; iconicsIcon = GoogleMaterial.Icon.gmd_brightness_4;
+                onCheckedChangeListener = nightChangeListener; isSelectable = false; isChecked = nightChecked}
         )
-
         // specify a click listener
         slider.onDrawerItemClickListener = { v, drawerItem, position ->
             // do something with the clicked item :D
+            var intent: Intent? = null
+            when {
+                drawerItem.identifier == 3L -> intent = Intent(this, SettingActivity::class.java)
+
+            }
+            if (intent != null) {
+                this.startActivity(intent)
+            }
             false
         }
 
@@ -216,10 +243,10 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-//            android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
-            android.R.id.home -> {
-                Toast.makeText(this, "开发中", Toast.LENGTH_SHORT).show()
-            }
+            android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
+//            android.R.id.home -> {
+//                Toast.makeText(this, "开发中", Toast.LENGTH_SHORT).show()
+//            }
             R.id.toolbar_setting -> {
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)

@@ -98,6 +98,9 @@ dependencies {
     implementation 'com.blankj:utilcodex:1.30.6' //安卓常用工具
     implementation "com.mikepenz:materialdrawer:8.4.4" //抽屉
     implementation 'com.afollestad.material-dialogs:core:3.3.0' //dialog
+    implementation "com.mikepenz:materialdrawer:8.4.5" // material drawer
+    implementation "com.mikepenz:materialdrawer-iconics:8.4.5" // material drawer 图标
+    implementation 'com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar' //Google Material Icons
 //    implementation 'com.billy.android:smart-swipe:1.1.0' //侧滑插件
     // 基础依赖包，必须要依赖
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'

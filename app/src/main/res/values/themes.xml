@@ -19,8 +19,28 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
     </style>
 
+    <style name="Widget.MaterialDrawerStyleCustom" parent="Widget.MaterialDrawerStyle">
+        <item name="materialDrawerInsetForeground">#FF0000</item>
+        <!-- MaterialDrawer specific values -->
+        <item name="materialDrawerBackground">?attr/colorPrimary</item>
+        <item name="materialDrawerPrimaryText">?attr/colorOnPrimary</item>
+        <item name="materialDrawerPrimaryIcon">?attr/colorOnPrimary</item>
+        <item name="materialDrawerSecondaryText">?attr/colorOnPrimary</item>
+        <item name="materialDrawerSecondaryIcon">?attr/colorOnPrimary</item>
+        <item name="materialDrawerDividerColor">?attr/colorPrimaryVariant</item>
+<!--        <item name="materialDrawerSelectedBackgroundColor">?colorSecondaryContainer</item>-->
+    </style>
+
+    <style name="Widget.MaterialDrawerHeaderStyleCustom" parent="">
+        <item name="materialDrawerCompactStyle">true</item>
+        <item name="materialDrawerHeaderSelectionText">?attr/colorOnPrimary</item>
+        <item name="materialDrawerHeaderSelectionSubtext">?attr/colorOnPrimary</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="SunnyWeather" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyleCustom</item>
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyleCustom</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
@@ -38,6 +58,8 @@
     </style>
 
     <style name="nightTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyleCustom</item>
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyleCustom</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
