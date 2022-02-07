@@ -27,12 +27,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.view.*
 import android.widget.CompoundButton
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.blankj.utilcode.util.BarUtils
-import com.gyf.immersionbar.ImmersionBar
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.materialdrawer.iconics.iconicsIcon
 import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
@@ -91,24 +88,20 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                 }
             }
         }
-        //关闭抽屉滑动打开
-//        main_drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         //if you want to update the items at a later time it is recommended to keep it in a variable
-        AccountHeaderView(this).apply {
-            attachToSliderView(slider) // attach to the slider
-            addProfiles(
-                ProfileDrawerItem().apply { nameText = "Mike Penz"; descriptionText = "mikepenz@gmail.com"; identifier = 102 }
-            )
-            withSavedInstance(savedInstanceState)
-        }
+//        AccountHeaderView(this).apply {
+//            attachToSliderView(slider) // attach to the slider
+//            addProfiles(
+//                ProfileDrawerItem().apply { nameText = "Hi"; descriptionText = "mikepenz@gmail.com"; identifier = 102 }
+//            )
+//            withSavedInstance(savedInstanceState)
+//        }
         // get the reference to the slider and add the items
         slider.itemAdapter.add(
-            PrimaryDrawerItem().apply { nameRes = R.string.drawItem1; isSelectable = false; identifier = 1; },
-            DividerDrawerItem(),
-            SecondaryDrawerItem().apply { nameRes = R.string.drawItem2; identifier = 2; isSelectable = false },
             SecondaryDrawerItem().apply { identifier = 3; nameRes = R.string.setting; iconicsIcon = GoogleMaterial.Icon.gmd_settings; isSelectable = false},
             SwitchDrawerItem().apply { nameText = "夜间模式"; iconicsIcon = GoogleMaterial.Icon.gmd_brightness_4;
-                onCheckedChangeListener = nightChangeListener; isSelectable = false; isChecked = nightChecked}
+                onCheckedChangeListener = nightChangeListener; isSelectable = false; isChecked = nightChecked},
+//            SecondaryDrawerItem().apply { identifier = 5; nameText = "关于"; iconicsIcon = GoogleMaterial.Icon.gmd_info; isSelectable = false},
         )
         // specify a click listener
         slider.onDrawerItemClickListener = { v, drawerItem, position ->
@@ -116,7 +109,10 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             var intent: Intent? = null
             when {
                 drawerItem.identifier == 3L -> intent = Intent(this, SettingActivity::class.java)
-
+//                drawerItem.identifier == 2L -> {
+//                    AlipayZeroSdk.startAlipayClient(this, "fkx16754nnauj1auovtgd7a")
+//                }
+//                drawerItem.identifier == 5L -> intent = Intent(this, AboutActivity::class.java)
             }
             if (intent != null) {
                 this.startActivity(intent)
@@ -244,9 +240,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
-//            android.R.id.home -> {
-//                Toast.makeText(this, "开发中", Toast.LENGTH_SHORT).show()
-//            }
             R.id.toolbar_setting -> {
                 val intent = Intent(this, SettingActivity::class.java)
                 startActivity(intent)

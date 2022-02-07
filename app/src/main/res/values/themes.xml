@@ -19,6 +19,9 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
     </style>
 
+    <style name="AppTheme.About" parent="nightTheme">
+    </style>
+
     <style name="Widget.MaterialDrawerStyleCustom" parent="Widget.MaterialDrawerStyle">
         <item name="materialDrawerInsetForeground">#FF0000</item>
         <!-- MaterialDrawer specific values -->

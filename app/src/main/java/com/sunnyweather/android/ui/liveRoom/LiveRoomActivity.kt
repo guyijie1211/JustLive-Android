@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_liveroom.*
 import xyz.doikki.videocontroller.StandardVideoController
 import xyz.doikki.videocontroller.component.*
 import xyz.doikki.videoplayer.exo.ExoMediaPlayer
-import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.player.VideoViewManager
 import xyz.doikki.videoplayer.util.PlayerUtils
 import android.util.DisplayMetrics
@@ -40,19 +39,26 @@ import android.view.WindowManager
 
 import android.app.Activity
 import android.net.Uri
+import android.os.CountDownTimer
+import android.util.Log
 import android.view.Window
 import androidx.preference.PreferenceManager
-import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.DeviceUtils
-import com.blankj.utilcode.util.NetworkUtils
+import com.alibaba.fastjson.JSONArray
+import com.alibaba.fastjson.JSONObject
+import com.alibaba.fastjson.TypeReference
+import com.blankj.utilcode.util.*
 import com.blankj.utilcode.util.Utils
-import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils
+import com.drake.net.Get
+import com.drake.net.utils.scopeNetLife
+//import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils
 
 import com.hjq.permissions.XXPermissions
 
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.sunnyweather.android.logic.service.ForegroundService
+import kotlinx.android.synthetic.main.dkplayer_layout_title_view.view.*
+import xyz.doikki.videoplayer.player.VideoView
 
 class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
@@ -62,11 +68,13 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     private var danmuShow = true
     private var controller: YJstandardController? = null
     private var videoView: VideoView<ExoMediaPlayer>? = null
+    private var playerUrl: String = ""
     private lateinit var mMyDanmakuView: MyDanmakuView
     private lateinit var danmuSetting: DanmuSetting
     private lateinit var sharedPref: SharedPreferences
     private var toBottom = true
     private var updateList = true
+    private var countDownTimer: CountDownTimer? = null
 
     private var isFollowed = false
     private var platform = ""
@@ -74,6 +82,10 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     private var isFirstGetInfo = true
     private val definitionArray = arrayOf("清晰", "流畅", "高清", "超清", "原画")
     private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+    open fun getUrl(): String {
+        return playerUrl;
+    }
 
     fun startFullScreen() {
         updateList = false
@@ -101,7 +113,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         if (playBackGround || backTiny) {
             AppUtils.registerAppStatusChangedListener(this)
         }
-
+        startCountdown()
         //设置滑动到底部的动画时间
         val linearLayoutManager: LinearLayoutManager = object : LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
             override fun smoothScrollToPosition(recyclerView: RecyclerView, state: RecyclerView.State, position: Int) {
@@ -169,9 +181,18 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         var uid = ""
         if (SunnyWeatherApplication.userInfo != null) {
             uid = SunnyWeatherApplication.userInfo!!.uid
-            viewModel.startDanmu(platform, roomId, SunnyWeatherApplication.userInfo!!.selectedContent, SunnyWeatherApplication.userInfo!!.isActived == "1")
+            if (!viewModel.isConnecting()) {
+                viewModel.startDanmu(
+                    platform,
+                    roomId,
+                    SunnyWeatherApplication.userInfo!!.selectedContent,
+                    SunnyWeatherApplication.userInfo!!.isActived == "1"
+                )
+            }
         } else {
-            viewModel.startDanmu(platform, roomId, "", false)
+            if (!viewModel.isConnecting()) {
+                viewModel.startDanmu(platform, roomId, "", false)
+            }
         }
         viewModel.getRoomInfo(uid, platform, roomId)
 
@@ -198,7 +219,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             val urls : LinkedTreeMap<String, String> = result.getOrNull() as LinkedTreeMap<String, String>
             if (urls != null && urls.size > 0) {
                 videoView?.setVideoController(controller) //设置控制器
-                var sharedPref = SharedPreferencesUtils.getSharedPreferences(context, "JustLive")
+                var sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
 
                 when (sharedPref.getInt("playerSize", R.id.radio_button_1)) {
                     R.id.radio_button_1 -> {
@@ -217,11 +238,13 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                     val defaultDefinition = sharedPreferences.getString("default_definition_4G", "原画")
                     if (urls.containsKey(defaultDefinition)) {
                         mDefinitionControlView?.setData(urls, defaultDefinition)
+                        playerUrl = urls[defaultDefinition]!!
                         videoView?.setUrl(urls[defaultDefinition]) //设置视频地址
                     } else {
                         for (item in definitionArray) {
                             if (urls.containsKey(item)) {
                                 mDefinitionControlView?.setData(urls, item)
+                                playerUrl = urls[item]!!
                                 videoView?.setUrl(urls[item]) //设置视频地址
                                 break
                             }
@@ -232,11 +255,13 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
 
                     if (urls.containsKey(defaultDefinition)) {
                         mDefinitionControlView?.setData(urls, defaultDefinition)
+                        playerUrl = urls[defaultDefinition]!!
                         videoView?.setUrl(urls[defaultDefinition]) //设置视频地址
                     } else {
                         for (item in definitionArray) {
                             if (urls.containsKey(item)) {
                                 mDefinitionControlView?.setData(urls, item)
+                                playerUrl = urls[item]!!
                                 videoView?.setUrl(urls[item]) //设置视频地址
                                 break
                             }
@@ -345,12 +370,12 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         mMyDanmakuView.resume()
     }
 
-    private fun addControlComponents(controller: StandardVideoController) {
+    private fun addControlComponents(controller: YJstandardController) {
         val completeView = CompleteView(this)
         val errorView = ErrorView(this)
         val prepareView = PrepareView(this)
         prepareView.setClickStart()
-        val titleView = TitleView(this)
+        val titleView = YJTitleView(this)
         mDefinitionControlView = YJLiveControlView(this, this)
         mDefinitionControlView!!.setOnRateSwitchListener(this)
         val gestureView = DragGestureView(this)
@@ -423,12 +448,29 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
 
     override fun onDestroy() {
         super.onDestroy()
+        AppUtils.unregisterAppStatusChangedListener(this)
         mPIPManager!!.reset()
+        if (countDownTimer != null) {
+            countDownTimer?.cancel()
+            ToastUtils.showShort("定时计时结束")
+        }
+    }
+
+    fun setCountDown(countDownTimer: CountDownTimer) {
+        if (this.countDownTimer != null) {
+            this.countDownTimer?.cancel()
+        }
+        this.countDownTimer = countDownTimer
+        this.countDownTimer?.start()
     }
 
     override fun onRateChange(url: String?) {
+        if (url != null) {
+            Log.i("test", url)
+        }
+        playerUrl = url!!
         videoView?.setUrl(url)
-        videoView?.replay(false)
+        videoView?.replay(true)
     }
 
     override fun onDanmuShowChange() {
@@ -564,7 +606,6 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     }
 
     override fun onBackground(activity: Activity?) {
-        AppUtils.unregisterAppStatusChangedListener(this)
         val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
         if (backTiny) {
             startFloatWindow()
@@ -575,5 +616,127 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         intent.putExtra("roomId", roomId)
         intent.putExtra("roomInfo", "${ownerName_roomInfo.text}:${roomName_roomInfo.text}")
         startService(intent)
+    }
+
+    fun pause() {
+        videoView?.release()
+    }
+
+    fun stopCountdown() {
+        ToastUtils.showShort("计时结束")
+        this.countDownTimer?.cancel()
+    }
+
+    fun startCountdown() {
+        val time = sharedPreferences.getInt("closeAppTime", 0)
+        if (sharedPreferences.getBoolean("closeAppOn", false) && time > 0) {
+                val countDownTimer: CountDownTimer =
+                    object : CountDownTimer((time * 60000).toLong(), 10000) {
+                        override fun onTick(millisUntilFinished: Long) {
+                            // 5分钟倒计时
+                            if (millisUntilFinished < 5.5 * 60000 && millisUntilFinished > 4.5 * 60000) {
+                                ToastUtils.showLong("5分钟后关闭app")
+                            }
+                        }
+
+                        override fun onFinish() {
+                            AppUtils.exitApp()
+                        }
+                    }
+                setCountDown(countDownTimer)
+                ToastUtils.showShort("开始计时," +time.toString() + "分钟后退出应用")
+            }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        platform = intent?.getStringExtra("platform")?:""
+        roomId = intent?.getStringExtra("roomId")?:""
+        var uid = SunnyWeatherApplication.userInfo!!.uid
+        viewModel.startDanmu(
+            platform,
+            roomId,
+            SunnyWeatherApplication.userInfo!!.selectedContent,
+            SunnyWeatherApplication.userInfo!!.isActived == "1"
+        )
+        viewModel.getRealUrl(platform, roomId)
+        mMyDanmakuView.clearDanmakusOnScreen()
+
+        viewModel.danmuList.clear()
+        scopeNetLife { // 创建作用域
+            val userInfo = SunnyWeatherApplication.userInfo
+            val url = "https://yj1211.work:8014/api/live/getRoomInfo?uid=" + userInfo!!.uid + "&platform=" + platform + "&roomId=" + roomId
+            val realUrl =
+                "https://yj1211.work:8014/api/live/getRealUrl?platform=$platform&roomId=$roomId"
+            val data = Get<String>(url) // 发起GET请求并返回`String`类型数据
+            val realUrlData = Get<String>(realUrl)
+            var result: JSONObject = JSONObject.parseObject(data.await()).getJSONObject("data")
+            Glide.with(context).load(result.getString("ownerHeadPic")).transition(
+                DrawableTransitionOptions.withCrossFade()
+            ).into(ownerPic_roomInfo)
+            ownerName_roomInfo.text = SunnyWeatherApplication.platformName(result.getString("platForm"))
+            roomName_roomInfo.text = result.getString("ownerName")
+            liveRoom_bar_txt.text = result.getString("roomName")
+            isFollowed = (result.getInteger("isFollowed") == 1)
+            if (isFollowed) follow_roomInfo.text = "已关注"
+
+            var realUrlResult: JSONObject = JSONObject.parseObject(realUrlData.await()).getJSONObject("data")
+            val urls: LinkedTreeMap<String, String> = getRealUrls(realUrlResult)
+            if (urls != null && urls.size > 0) {
+                val isMobileData = NetworkUtils.isMobileData()
+                if (isMobileData) {
+                    val defaultDefinition = sharedPreferences.getString("default_definition_4G", "原画")
+                    if (urls.containsKey(defaultDefinition)) {
+                        mDefinitionControlView?.setData(urls, defaultDefinition)
+                        onRateChange(urls[defaultDefinition]) //设置视频地址
+                    } else {
+                        for (item in definitionArray) {
+                            if (urls.containsKey(item)) {
+                                mDefinitionControlView?.setData(urls, item)
+                                onRateChange(urls[item]) //设置视频地址
+                                break
+                            }
+                        }
+                    }
+                } else {
+                    val defaultDefinition = sharedPreferences.getString("default_definition_wifi", "原画")
+                    if (urls.containsKey(defaultDefinition)) {
+                        mDefinitionControlView?.setData(urls, defaultDefinition)
+                        onRateChange(urls[defaultDefinition]) //设置视频地址
+                    } else {
+                        for (item in definitionArray) {
+                            if (urls.containsKey(item)) {
+                                mDefinitionControlView?.setData(urls, item)
+                                onRateChange(urls[item])
+                                break
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun getRealUrls(jsonObject: JSONObject): LinkedTreeMap<String, String>{
+        val rooms : Map<String, String> = JSONObject.parseObject(
+            jsonObject.toJSONString(),
+            object : TypeReference<Map<String, String>>() {})
+        val resultRooms = LinkedTreeMap<String, String>()
+        if (rooms.containsKey("OD")) {
+            resultRooms["原画"] = rooms["OD"]
+        }
+        if (rooms.containsKey("HD")) {
+            resultRooms["超清"] = rooms["HD"]
+        }
+        if (rooms.containsKey("SD")) {
+            resultRooms["高清"] = rooms["SD"]
+        }
+        if (rooms.containsKey("LD")) {
+            resultRooms["清晰"] = rooms["LD"]
+        }
+        if (rooms.containsKey("FD")) {
+            resultRooms["流畅"] = rooms["FD"]
+        }
+        return resultRooms
     }
 }

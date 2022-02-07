@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils.getSharedPreferences
+//import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils.getSharedPreferences
 import com.google.android.material.slider.Slider
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
@@ -88,7 +88,7 @@ class DanmuSettingFragment : Fragment() {
         bold_select.isChecked = setting.bold
         fps_select.isChecked = setting.fps
 
-        var sharedPref = getSharedPreferences(context, "JustLive")
+        var sharedPref = requireContext().getSharedPreferences("JustLive", Context.MODE_PRIVATE)
 
         when (sharedPref.getInt("playerSize", R.id.radio_button_1)) {
             R.id.radio_button_1 -> {

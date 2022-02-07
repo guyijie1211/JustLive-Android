@@ -11,9 +11,9 @@ android {
     defaultConfig {
         applicationId "com.yj1211.justlive"
         minSdk 21
-        targetSdk 31
-        versionCode 7
-        versionName "0.1.7"
+        targetSdk 30
+        versionCode 12
+        versionName "0.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,16 +39,20 @@ android {
 //    composeOptions {
 //        kotlinCompilerExtensionVersion '1.0.4'
 //    }
+    packagingOptions {
+        exclude 'META-INF/beans.xml'
+    }
     compileSdkVersion 31
     buildToolsVersion '31.0.0'
 }
 
 dependencies {
+
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
@@ -60,7 +64,6 @@ dependencies {
     implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.5'
     implementation 'xyz.doikki.android.dkplayer:dkplayer-ui:3.3.5'
     implementation 'xyz.doikki.android.dkplayer:player-exo:3.3.5'
-    implementation 'xyz.doikki.android.dkplayer:player-ijk:3.3.5'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-alpha06'
@@ -101,6 +104,12 @@ dependencies {
     implementation "com.mikepenz:materialdrawer:8.4.5" // material drawer
     implementation "com.mikepenz:materialdrawer-iconics:8.4.5" // material drawer 图标
     implementation 'com.mikepenz:google-material-typeface:4.0.0.2-kotlin@aar' //Google Material Icons
+    implementation 'com.github.li-xiaojun:XPopup:2.7.5' //弹出框
+    implementation 'com.contrarywind:wheelview:4.1.0' //滚动选择
+    api 'com.github.devin1014.DLNA-Cast:dlna-dmc:V1.0.0' //Dlna
+    implementation 'com.github.liangjingkanji:Net:3.1.2' //刘强东NET
+    implementation 'moe.feng:AlipayZeroSdk:1.1' //支付宝微信捐赠
+    implementation 'com.github.jrvansuita:MaterialAbout:0.2.6'//关于页面
 //    implementation 'com.billy.android:smart-swipe:1.1.0' //侧滑插件
     // 基础依赖包，必须要依赖
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'

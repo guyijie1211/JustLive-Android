@@ -16,7 +16,7 @@ class LiveRoomViewModel : ViewModel() {
     var danmuNum = MutableLiveData<Int>()
     val danmuList = ArrayList<DanmuInfo>()
     var danmuSetting = MutableLiveData<DanmuSetting>()
-    lateinit var danmuService: DanmuService
+    var danmuService: DanmuService? = null
     private val followLiveData = MutableLiveData<FollowRequest>()
 
     val followResponseLiveDate = Transformations.switchMap(followLiveData) {
@@ -38,7 +38,6 @@ class LiveRoomViewModel : ViewModel() {
     }
 
     fun getRealUrl(platform: String, roomId: String) {
-        println("ppp$platform$roomId")
         urlsRequestData.value = UrlRequest(platform, roomId)
     }
 
@@ -47,8 +46,11 @@ class LiveRoomViewModel : ViewModel() {
     }
 
     fun startDanmu(platform: String, roomId: String, banStrings: String?, isActive: Boolean) {
+        if (danmuService != null) {
+            danmuService?.stop()
+        }
         danmuService = DanmuService(platform, roomId)
-        danmuService.changeActive(isActive)
+        danmuService?.changeActive(isActive)
         var isSelectedArray = ArrayList<String>()
         if (banStrings != "" && banStrings != null){
             if (banStrings.contains(";")) {
@@ -58,23 +60,23 @@ class LiveRoomViewModel : ViewModel() {
             }
 
         }
-        danmuService.connect(danmuList, danmuNum, isSelectedArray)
+        danmuService?.connect(danmuList, danmuNum, isSelectedArray)
     }
 
     fun isConnecting(): Boolean {
-        return danmuService.isConnected
+        return danmuService != null && danmuService?.isConnected == true
     }
 
     fun banChanged(isActiveArray: ArrayList<String>) {
-        danmuService.changeBan(isActiveArray)
+        danmuService?.changeBan(isActiveArray)
     }
 
     fun activeChange(isActive: Boolean) {
-        danmuService.changeActive(isActive)
+        danmuService?.changeActive(isActive)
     }
 
     fun stopDanmu(){
-        danmuService.stop()
+        danmuService?.stop()
     }
 
     fun follow(platform: String, roomId: String, uid: String){

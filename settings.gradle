@@ -4,6 +4,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         jcenter()
+        maven {
+            allowInsecureProtocol = true
+            url 'http://4thline.org/m2' }
         maven { url "https://jitpack.io" }// Warning: this repository is going to shut down soon
     }
 }

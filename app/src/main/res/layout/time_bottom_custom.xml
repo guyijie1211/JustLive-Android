@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginStart="10dp"
+                android:text="设置定时关闭"
+                android:textColor="?attr/colorOnPrimary"
+                android:textStyle="bold"
+                android:textSize="18dp" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/time_bottom_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:checked="false"
+                android:text="开关"
+                android:textColor="?attr/colorOnPrimary" />
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimaryVariant">
+        <com.contrarywind.view.WheelView
+            android:layout_alignParentTop="true"
+            android:id="@+id/time_wheelview"
+            android:layout_marginLeft="50dp"
+            android:layout_width="50dp"
+            android:textColor="?attr/colorOnPrimary"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_toRightOf="@+id/time_wheelview"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
+            android:text="分钟后退出app"/>
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/time_bottom_switch_auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:checked="false"
+            android:text="总是开启"
+            android:textColor="?attr/colorOnPrimary" />
+    </RelativeLayout>
+</LinearLayout>

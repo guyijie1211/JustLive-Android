@@ -311,6 +311,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
             if (multiRateData == null) return;
             mRateStr = new ArrayList<>();
             int index = 0;
+            mPopLayout.removeAllViews();
             ListIterator<Map.Entry<String, String>> iterator = new ArrayList<>(multiRateData.entrySet()).listIterator(multiRateData.size());
             while (iterator.hasPrevious()) {//反向遍历
                 Map.Entry<String, String> entry = iterator.previous();
@@ -422,4 +423,5 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                     }
                 }).start();
     }
+
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/roomListCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="?attr/colorPrimary"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="3dp">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="15dp">
+        <TextView
+            android:id="@+id/tv_item_name"
+            android:layout_width="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
+            android:text="客厅的小米盒子"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_item_brand"
+            android:layout_width="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
+            android:text="XiaoMi"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/tv_item_name"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_item_mac"
+            android:layout_width="wrap_content"
+            android:textColor="?attr/colorOnPrimary"
+            android:text="12313kmkjn4i1ni1n4m"
+            android:textSize="14dp"
+            android:layout_below="@+id/tv_item_name"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
