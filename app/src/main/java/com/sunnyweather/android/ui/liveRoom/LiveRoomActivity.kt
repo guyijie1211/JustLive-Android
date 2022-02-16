@@ -340,7 +340,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                             mMyDanmakuView.stopFloatPrepare()
                         }
                         player_container.addView(videoView)
-                        if (platform == "huya" && roomInfo.categoryName == "一起看") {
+                        if (platform == "huya" && (roomInfo.categoryName == "一起看" || roomInfo.categoryName == "原创")) {
                             viewModel.getRealUrl("huyaTest", roomId)
                         } else {
                             viewModel.getRealUrl(platform, roomId)

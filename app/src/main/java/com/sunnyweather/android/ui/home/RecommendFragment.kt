@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.ScreenUtils
-import com.drake.statelayout.state
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.RoomInfo
@@ -45,10 +44,10 @@ class RecommendFragment(val platform: String) : Fragment()  {
         refresh_home_foot.setFinishDuration(0)//设置Footer 的 “加载完成” 显示时间为0
         refresh_home.setOnRefreshListener {
             viewModel.clearPage()
-            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
         }
         refresh_home.setOnLoadMoreListener {
-            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
         }
         //绑定LiveData监听器
         SunnyWeatherApplication.areaName.observe(viewLifecycleOwner, {
@@ -56,7 +55,7 @@ class RecommendFragment(val platform: String) : Fragment()  {
             viewModel.clearList()
             progressBar_roomList.isVisible = true
             recyclerView.isGone = true
-            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
         })
         viewModel.roomListLiveDate.observe(viewLifecycleOwner, { result ->
             val temp = result.getOrNull()
@@ -82,7 +81,7 @@ class RecommendFragment(val platform: String) : Fragment()  {
                 result.exceptionOrNull()?.printStackTrace()
             }
         })
-        viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all")
+        viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
         progressBar_roomList.isVisible = true
     }
 
