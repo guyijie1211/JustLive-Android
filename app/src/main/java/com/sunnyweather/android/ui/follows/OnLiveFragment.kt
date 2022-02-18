@@ -92,8 +92,7 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
 
     private fun sortRooms(roomList: List<RoomInfo>) {
         for (roomInfo in roomList) {
-            if (this.isLive == (roomInfo.isLive == 1)) {
-                val test = roomInfo.isLive
+            if (this.isLive == (roomInfo.isLive == 1) && !roomInfo.roomName.isNullOrEmpty()) {
                 viewModel.roomList.add(roomInfo)
             }
         }

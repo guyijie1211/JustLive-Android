@@ -107,8 +107,10 @@ public class YJTitleView extends FrameLayout implements IControlComponent, View.
                                 switch (position) {
                                     case 0:
                                         playWithSystemPlayers();
+                                        break;
                                     case 1:
                                         closeByTime();
+                                        break;
                                 }
                             }, 0, 0/*, Gravity.LEFT*/)
                     .show();
