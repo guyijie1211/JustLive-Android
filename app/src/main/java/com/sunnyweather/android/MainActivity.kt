@@ -188,7 +188,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                         } else {
                             main_toolBar_title.text = title
                         }
-                        val drawable = resources.getDrawable(R.drawable.icon_arrow_down)
+                        val drawable = getDrawable(R.drawable.icon_arrow_down)
                         main_toolBar_title.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
                     }
                     1 -> {
