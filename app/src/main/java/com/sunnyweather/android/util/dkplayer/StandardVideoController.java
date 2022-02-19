@@ -35,7 +35,7 @@ import xyz.doikki.videoplayer.player.VideoView;
  * Created by Doikki on 2017/4/7.
  */
 
-public class StandardVideoController extends GestureVideoController implements View.OnClickListener {
+public class StandardVideoController extends YJGestureVideoController implements View.OnClickListener {
 
     protected ImageView mLockButton;
     protected ImageView mFavouriteBtn;
@@ -225,7 +225,9 @@ public class StandardVideoController extends GestureVideoController implements V
             return true;
         }
         if (mControlWrapper.isFullScreen()) {
-            return stopFullScreen();
+            if (mActivity == null || mActivity.isFinishing()) return false;
+            toggleFullScreen();
+            return true;
         }
         return super.onBackPressed();
     }

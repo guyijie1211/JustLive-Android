@@ -50,14 +50,12 @@ import com.blankj.utilcode.util.*
 import com.blankj.utilcode.util.Utils
 import com.drake.net.Get
 import com.drake.net.utils.scopeNetLife
-//import com.efs.sdk.base.newsharedpreferences.SharedPreferencesUtils
 
 import com.hjq.permissions.XXPermissions
 
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.sunnyweather.android.logic.service.ForegroundService
-import kotlinx.android.synthetic.main.dkplayer_layout_title_view.view.*
 import xyz.doikki.videoplayer.player.VideoView
 
 class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
@@ -113,6 +111,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         if (playBackGround || backTiny) {
             AppUtils.registerAppStatusChangedListener(this)
         }
+        BarUtils.transparentStatusBar(this)
+        BarUtils.addMarginTopEqualStatusBarHeight(liveRoom_main)
+        BarUtils.setStatusBarColor(this, getResources().getColor(R.color.black))
         startCountdown()
         //设置滑动到底部的动画时间
         val linearLayoutManager: LinearLayoutManager = object : LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
@@ -131,7 +132,6 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                 startSmoothScroll(smoothScroller)
             }
         }
-        setStatusBarColor(this, R.color.black)
         //获取本地弹幕设置
         sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
         danmuSetting = getDanmuSetting()
@@ -159,11 +159,27 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             }
         }
         //设置16:9的高宽
-        val lp = player_container.layoutParams
-        val point = Point()
-        this.windowManager.defaultDisplay.getRealSize(point)
-        lp.height = point.x * 9 / 16
-        player_container.layoutParams = lp
+        if (ScreenUtils.isPortrait()) {
+            //竖屏
+            ScreenUtils.setPortrait(this)
+            val lp = player_container.layoutParams
+            val point = Point()
+            this.windowManager.defaultDisplay.getRealSize(point)
+            lp.height = point.x * 9 / 16
+            player_container.layoutParams = lp
+        } else {
+            //横屏
+            ScreenUtils.setLandscape(this)
+            val lpc = liveRoom_leftContainer.layoutParams
+            val pointc = Point()
+            this.windowManager.defaultDisplay.getRealSize(pointc)
+            if (DeviceUtils.isTablet()) {
+                lpc.width = ScreenUtils.getScreenWidth() * 4 / 5
+            } else {
+                lpc.width = (ScreenUtils.getScreenHeight() - ConvertUtils.dp2px(60f) - BarUtils.getStatusBarHeight()) * 16 / 9
+            }
+            liveRoom_leftContainer.layoutParams = lpc
+        }
 
         controller = YJstandardController(this)
         val display = windowManager.defaultDisplay
@@ -196,8 +212,6 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         }
         viewModel.getRoomInfo(uid, platform, roomId)
 
-
-
         //去网页
         to_web.setOnClickListener {
             toWeb(platform, roomId)
@@ -205,7 +219,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         //弹幕更新
         viewModel.danmuNum.observe(this, {
             if (viewModel.danmuList.size > 0){
-                mMyDanmakuView.addDanmaku(viewModel.danmuList.last().content)
+                mMyDanmakuView.addDanmaku(viewModel.danmuList.last()?.content)
                 if (updateList) {
                     adapter.addData(viewModel.danmuList.last())
                     if (toBottom) {
@@ -291,7 +305,6 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         viewModel.roomInfoResponseData.observe(this, {result ->
             val roomInfo = result.getOrNull()
             if (roomInfo is RoomInfo) {
-//                changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
                 //关注按钮
                 if (isFirstGetInfo) {
                     follow_roomInfo.setOnClickListener {
@@ -349,9 +362,14 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                     Glide.with(this).load(roomInfo.ownerHeadPic).transition(
                         DrawableTransitionOptions.withCrossFade()
                     ).into(ownerPic_roomInfo)
-                    ownerName_roomInfo.text = SunnyWeatherApplication.platformName(roomInfo.platForm)
-                    roomName_roomInfo.text = roomInfo.ownerName
-                    liveRoom_bar_txt.text = roomInfo.roomName
+                    if (ScreenUtils.isLandscape()) {
+                        ownerName_roomInfo.text = SunnyWeatherApplication.platformName(roomInfo.platForm) + "·" + roomInfo.ownerName
+                        roomName_roomInfo.text = roomInfo.roomName
+                    } else {
+                        ownerName_roomInfo.text = SunnyWeatherApplication.platformName(roomInfo.platForm)
+                        roomName_roomInfo.text = roomInfo.ownerName
+                        liveRoom_bar_txt.text = roomInfo.roomName
+                    }
                     isFirstGetInfo = false
                 }
                 isFollowed = (roomInfo.isFollowed == 1)
@@ -392,6 +410,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     }
 
     fun changeRoomInfoVisible(isVisible: Boolean) {
+        if (ScreenUtils.isLandscape()) {
+            return
+        }
         val height = PlayerUtils.dp2px(context, 60f)
         var va: ValueAnimator = if(isVisible){
             ValueAnimator.ofInt(0,height)

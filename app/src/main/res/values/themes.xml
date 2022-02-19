@@ -23,7 +23,7 @@
     </style>
 
     <style name="Widget.MaterialDrawerStyleCustom" parent="Widget.MaterialDrawerStyle">
-        <item name="materialDrawerInsetForeground">#FF0000</item>
+        <item name="materialDrawerInsetForeground">?attr/colorPrimary</item>
         <!-- MaterialDrawer specific values -->
         <item name="materialDrawerBackground">?attr/colorPrimary</item>
         <item name="materialDrawerPrimaryText">?attr/colorOnPrimary</item>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/liveRoom_main"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/liveRoom_leftContainer"
+        android:layout_width="400dp"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/player_container"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_above="@+id/roomInfo_liveRoom"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/black">
+            <TextView
+                android:id="@+id/liveRoom_not_live"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:gravity="center"
+                android:text="未开播"
+                android:textColor="#8C8C8C"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/roomInfo_liveRoom"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_alignStart="@+id/player_container"
+            android:layout_alignEnd="@+id/player_container"
+            android:layout_alignParentBottom="true"
+            android:animateLayoutChanges="true"
+            android:background="?attr/colorPrimaryVariant">
+
+            <ImageView
+                android:id="@+id/ownerPic_roomInfo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:id="@+id/ownerName_roomInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/ownerPic_roomInfo"
+                android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/to_web"
+                android:layout_toRightOf="@+id/ownerPic_roomInfo"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/roomName_roomInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ownerName_roomInfo"
+                android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/to_web"
+                android:layout_toRightOf="@+id/ownerPic_roomInfo"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="标题"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="18dp"
+                android:textStyle="normal" />
+
+            <ImageButton
+                android:id="@+id/to_web"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@+id/follow_roomInfo"
+                android:background="#00FFFFFF"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_explore" />
+
+            <Button
+                android:id="@+id/follow_roomInfo"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="关注"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="18dp"
+                app:strokeColor="?attr/colorOnPrimary" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/danMu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/liveRoom_leftContainer"
+        android:background="?attr/colorPrimaryVariant">
+        <RelativeLayout
+            android:id="@+id/room_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary">
+
+            <TextView
+                android:id="@+id/liveRoom_bar_txt"
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_height="40dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:text="弹幕"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/danmu_not_support"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14dp"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/danMu_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/room_head" />
+    </RelativeLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/to_bottom_danmu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        app:fabSize="normal"
+        android:visibility="gone"
+        app:srcCompat="@drawable/to_bottom"/>
+</RelativeLayout>

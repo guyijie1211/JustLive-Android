@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -117,8 +118,7 @@ public class YJTitleView extends FrameLayout implements IControlComponent, View.
         } else if (id == R.id.back) {
             Activity activity = PlayerUtils.scanForActivity(getContext());
             if (activity != null && mControlWrapper.isFullScreen()) {
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                mControlWrapper.stopFullScreen();
+                mControlWrapper.toggleFullScreen(activity);
             } else if (activity != null){
                 activity.onBackPressed();
             }

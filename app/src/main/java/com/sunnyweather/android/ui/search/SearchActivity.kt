@@ -36,6 +36,7 @@ import androidx.preference.PreferenceManager
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.blankj.utilcode.util.BarUtils
 import com.sunnyweather.android.SunnyWeatherApplication
+import kotlinx.android.synthetic.main.activity_setting.*
 import java.lang.Exception
 import java.lang.reflect.Method
 
@@ -51,12 +52,12 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         val themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
         setTheme(themeActived)
         setContentView(R.layout.activity_search)
+        BarUtils.transparentStatusBar(this)
         if (themeActived != R.style.nightTheme) {
             BarUtils.setStatusBarLightMode(this, true)
         } else {
             BarUtils.setStatusBarLightMode(this, false)
         }
-        BarUtils.transparentStatusBar(this)
         init()
 //        val window: Window = this.window
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

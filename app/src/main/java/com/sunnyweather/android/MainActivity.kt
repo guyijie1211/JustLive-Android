@@ -29,18 +29,18 @@ import android.widget.CompoundButton
 import androidx.core.view.GravityCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
-import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.*
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.materialdrawer.iconics.iconicsIcon
 import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
 import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.*
 
-import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.sunnyweather.android.logic.model.UpdateInfo
 import com.sunnyweather.android.ui.login.LoginActivity
 import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
+import kotlinx.android.synthetic.main.activity_liveroom.*
 import kotlinx.android.synthetic.main.dialog_update.*
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
@@ -56,16 +56,19 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         //颜色主题
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
-        Log.i("test", "theme:" + themeActived)
         setTheme(themeActived)
         setContentView(R.layout.activity_main)
+        BarUtils.transparentStatusBar(this)
+        BarUtils.addMarginTopEqualStatusBarHeight(main_container)
         var nightChecked: Boolean
         if (themeActived != R.style.nightTheme) {
             nightChecked = false
             BarUtils.setStatusBarLightMode(this, true)
+            BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimary))
         } else {
             nightChecked = true
             BarUtils.setStatusBarLightMode(this, false)
+            BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimary_night))
         }
         setSupportActionBar(main_toolBar)
         initLogin()

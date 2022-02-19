@@ -9,10 +9,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,9 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
-//import com.billy.android.swipe.SmartSwipe;
-//import com.billy.android.swipe.consumer.DrawerConsumer;
-//import com.blankj.utilcode.util.ScreenUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.google.gson.internal.LinkedTreeMap;
 import com.sunnyweather.android.R;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity;
@@ -47,7 +42,6 @@ import java.util.Map;
 import xyz.doikki.videoplayer.controller.ControlWrapper;
 import xyz.doikki.videoplayer.controller.IControlComponent;
 import xyz.doikki.videoplayer.player.VideoView;
-import xyz.doikki.videoplayer.util.L;
 import xyz.doikki.videoplayer.util.PlayerUtils;
 
 public class YJLiveControlView extends FrameLayout implements IControlComponent, View.OnClickListener {
@@ -56,6 +50,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     private Boolean showDanmu = true;
     private TextView mDefinition;
     private LiveRoomActivity liveRoomActivity;
+    private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
     private PopupWindow mPopupWindow;
     private List<String> mRateStr;
