@@ -34,4 +34,8 @@ public class YJstandardController extends StandardVideoController {
         }
         return true;
     }
+
+    public void changeFullScreen() {
+        toggleFullScreen();
+    }
 }

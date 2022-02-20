@@ -283,9 +283,9 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         } else if (id == R.id.danmu_setting) {
             handleSetting();
         } else if (id == R.id.startFloat) {
-            if (mControlWrapper.isFullScreen()) {
-                toggleFullScreen();
-            }
+//            if (mControlWrapper.isFullScreen()) {
+//                toggleFullScreen();
+//            }
             onRateSwitchListener.startFloat();
         }
     }
@@ -293,7 +293,7 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     /**
      * 横竖屏切换
      */
-    private void toggleFullScreen() {
+    public void toggleFullScreen() {
         Activity activity = PlayerUtils.scanForActivity(getContext());
         mControlWrapper.toggleFullScreen(activity);
         // 下面方法会根据适配宽高决定是否旋转屏幕

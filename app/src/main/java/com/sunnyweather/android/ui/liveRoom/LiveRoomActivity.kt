@@ -47,6 +47,7 @@ import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.TypeReference
 import com.blankj.utilcode.util.*
+import com.blankj.utilcode.util.ScreenUtils.toggleFullScreen
 import com.blankj.utilcode.util.Utils
 import com.drake.net.Get
 import com.drake.net.utils.scopeNetLife
@@ -527,6 +528,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             .request(object : OnPermissionCallback {
                 override fun onGranted(permissions: List<String>, all: Boolean) {
                     if (all) {
+                        if (videoView!!.isFullScreen) {
+                            controller!!.changeFullScreen()
+                        }
                         mPIPManager.startFloatWindow()
                         mPIPManager.resume()
                         finish()
@@ -627,6 +631,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     }
 
     override fun onBackground(activity: Activity?) {
+        Log.i("test","onBackground")
         val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
         if (backTiny) {
             startFloatWindow()
