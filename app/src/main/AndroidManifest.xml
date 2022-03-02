@@ -75,6 +75,9 @@
             android:name=".ui.login.RegisterActivity"
             android:label="注册" />
         <activity
+            android:name=".ui.about.AboutActvity"
+            android:label="关于" />
+        <activity
             android:name=".ui.search.SearchActivity"
             android:exported="true">
             <intent-filter>
