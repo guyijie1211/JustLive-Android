@@ -12,24 +12,124 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@color/black" />
+        android:layout_marginTop="20dp" />
+
     <TextView
         android:id="@+id/about_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/about_pic"
         android:layout_centerHorizontal="true"
-        android:textSize="12dp"
         android:layout_marginTop="5dp"
+        android:text="版本号:0.2.4"
         android:textColor="?attr/colorOnPrimary"
-        android:text="版本号:0.2.4"/>
+        android:textSize="12dp" />
+
+
+    <TextView
+        android:id="@+id/about_platform"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about_version"
+        android:layout_alignStart="@+id/about_platform_card"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="其他平台"
+        android:textColor="?attr/colorOnPrimary" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/about_platform_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about_platform"
+        app:cardCornerRadius="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="15dp"
+        app:cardBackgroundColor="?attr/colorPrimary">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:divider="?attr/colorPrimaryVariant"
+            android:paddingHorizontal="30dp"
+            android:showDividers="middle">
+            <RelativeLayout
+                android:id="@+id/about_web"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <ImageView
+                    android:id="@+id/about_logo_web"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/logo_chrome"/>
+                <TextView
+                    android:layout_toRightOf="@+id/about_logo_web"
+                    android:layout_alignTop="@+id/about_logo_web"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:text="网页端"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/about_arrow_web"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:layout_centerVertical="true"
+                    android:text="live.yj1211.work"/>
+                <ImageView
+                    android:id="@+id/about_arrow_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_chevron_right_24"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/about_apple"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <ImageView
+                    android:id="@+id/about_logo_apple"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/logo_apple"/>
+                <TextView
+                    android:layout_toRightOf="@+id/about_logo_apple"
+                    android:layout_alignTop="@+id/about_logo_apple"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:text="ios端"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/about_arrow_apple"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:layout_centerVertical="true"
+                    android:text="开发中"/>
+                <ImageView
+                    android:id="@+id/about_arrow_apple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_chevron_right_24"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/about_follow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/about_version"
+        android:layout_below="@+id/about_platform_card"
         android:layout_alignStart="@+id/about_follow_card"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"

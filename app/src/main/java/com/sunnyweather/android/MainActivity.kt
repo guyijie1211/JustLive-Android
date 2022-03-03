@@ -42,6 +42,7 @@ import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.activity_liveroom.*
 import kotlinx.android.synthetic.main.dialog_update.*
+import moe.feng.alipay.zerosdk.AlipayZeroSdk
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
@@ -104,7 +105,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             SecondaryDrawerItem().apply { identifier = 3; nameRes = R.string.setting; iconicsIcon = GoogleMaterial.Icon.gmd_settings; isSelectable = false},
             SwitchDrawerItem().apply { nameText = "夜间模式"; iconicsIcon = GoogleMaterial.Icon.gmd_brightness_4;
                 onCheckedChangeListener = nightChangeListener; isSelectable = false; isChecked = nightChecked},
-//            SecondaryDrawerItem().apply { identifier = 5; nameText = "关于"; iconicsIcon = GoogleMaterial.Icon.gmd_info; isSelectable = false},
+            SecondaryDrawerItem().apply { identifier = 2; nameText = "关于"; iconicsIcon = GoogleMaterial.Icon.gmd_info; isSelectable = false},
         )
         // specify a click listener
         slider.onDrawerItemClickListener = { v, drawerItem, position ->
@@ -112,9 +113,14 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             var intent: Intent? = null
             when {
                 drawerItem.identifier == 3L -> intent = Intent(this, SettingActivity::class.java)
-//                drawerItem.identifier == 2L -> {
-//                    AlipayZeroSdk.startAlipayClient(this, "fkx16754nnauj1auovtgd7a")
-//                }
+                drawerItem.identifier == 2L -> {
+                    var sucess = AlipayZeroSdk.startAlipayClient(this, "fkx16754nnauj1auovtgd7a")
+                    if (sucess) {
+                        ToastUtils.showShort("成功")
+                    } else {
+                        ToastUtils.showShort("失败")
+                    }
+                }
 //                drawerItem.identifier == 5L -> intent = Intent(this, AboutActivity::class.java)
             }
             if (intent != null) {
