@@ -49,4 +49,18 @@
             app:entryValues="@array/start_page_value"
             app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
+    <PreferenceCategory
+        android:key="about_setting"
+        android:title="关于">
+        <Preference
+            android:key="version"
+            android:icon="@drawable/ic_baseline_system_update_24"
+            app:summary="111"
+            android:title="版本检查"/>
+        <Preference
+            android:key="about_activity"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="关于"/>
+
+    </PreferenceCategory>
 </PreferenceScreen>

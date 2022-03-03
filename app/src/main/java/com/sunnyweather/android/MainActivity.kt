@@ -243,10 +243,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
-            R.id.toolbar_setting -> {
-                val intent = Intent(this, SettingActivity::class.java)
-                startActivity(intent)
-            }
             R.id.menu_search -> {
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
@@ -254,10 +250,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             R.id.toolbar_login -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-            }
-            R.id.toolbar_update -> {
-                isVersionCheck = true
-                viewModel.checkVersion()
             }
             R.id.toolbar_logout -> {
                 SunnyWeatherApplication.clearLoginInfo(this)
