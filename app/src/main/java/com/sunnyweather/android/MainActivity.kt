@@ -287,7 +287,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
 
     /**
      * 动态创建shortcuts
-     * 现在只创建了一个设置
+     * 设置,搜索
      */
     @TargetApi(Build.VERSION_CODES.N_MR1)
     private fun createDynamicShortcut(themeActived:Int) {
@@ -313,8 +313,13 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         //搜索
         val searchIntent = Intent(this, SearchActivity::class.java)
         searchIntent.action = "android.intent.action.VIEW"
+        val searchIcon:Icon = if (themeActived != R.style.nightTheme) {
+            Icon.createWithResource(this, R.drawable.shortcut_search)
+        }else{
+            Icon.createWithResource(this, R.drawable.shortcut_search_night)
+        }
         val searchShortcut = ShortcutInfo.Builder(this, "search")
-            .setIcon(Icon.createWithResource(this,R.drawable.ic_search))
+            .setIcon(searchIcon)
             .setShortLabel(getString(R.string.shortcuts_search))
             .setLongLabel(getString(R.string.shortcuts_search))
             .setIntent(searchIntent)
