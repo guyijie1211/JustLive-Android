@@ -1,47 +1,49 @@
 package com.sunnyweather.android
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
+import android.view.*
+import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.angcyo.tablayout.delegate2.ViewPager2Delegate
-import com.sunnyweather.android.logic.model.UserInfo
-import com.sunnyweather.android.ui.area.AreaFragment
-import com.sunnyweather.android.ui.area.AreaSingleFragment
-import com.sunnyweather.android.ui.follows.FollowsFragment
-import com.sunnyweather.android.ui.home.HomeFragment
-import com.sunnyweather.android.ui.login.LoginViewModel
-import com.sunnyweather.android.ui.search.SearchActivity
-import kotlinx.android.synthetic.main.activity_main.*
-
-import android.view.*
-import android.widget.CompoundButton
-import androidx.core.view.GravityCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
+import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.blankj.utilcode.util.*
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.materialdrawer.iconics.iconicsIcon
 import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
 import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.*
-
 import com.sunnyweather.android.logic.model.UpdateInfo
+import com.sunnyweather.android.logic.model.UserInfo
+import com.sunnyweather.android.ui.area.AreaFragment
+import com.sunnyweather.android.ui.area.AreaSingleFragment
+import com.sunnyweather.android.ui.follows.FollowsFragment
+import com.sunnyweather.android.ui.home.HomeFragment
 import com.sunnyweather.android.ui.login.LoginActivity
+import com.sunnyweather.android.ui.login.LoginViewModel
+import com.sunnyweather.android.ui.search.SearchActivity
 import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
-import kotlinx.android.synthetic.main.activity_liveroom.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_update.*
+
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
@@ -50,6 +52,8 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private var isVersionCheck = false
     private lateinit var mMenu: Menu
     private var themeActived = R.style.SunnyWeather
+
+    private  var mShortcutManager:ShortcutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -212,6 +216,8 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             areaFragment = AreaFragment()
             areaFragment.show(fragmentManager, "areaFragment")
         }
+
+        createDynamicShortcut(themeActived)
     }
 
     override fun onResume() {
@@ -277,6 +283,27 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     }
     fun toFirst(){
         viewPager.currentItem = 0
+    }
+
+    @TargetApi(Build.VERSION_CODES.N_MR1)
+    private fun createDynamicShortcut(themeActived:Int) {
+        if (mShortcutManager == null) {
+            mShortcutManager = getSystemService(ShortcutManager::class.java)
+        }
+        val settingIntent = Intent(this, SettingActivity::class.java)
+        settingIntent.action = "android.intent.action.VIEW"
+        val settingIcon:Icon = if (themeActived != R.style.nightTheme) {
+            Icon.createWithResource(this, R.drawable.shortcut_settings_24)
+        }else{
+            Icon.createWithResource(this, R.drawable.shortcut_settings_night_24)
+        }
+        val callShortcut = ShortcutInfo.Builder(this, "setting")
+            .setIcon(settingIcon)
+            .setShortLabel(getString(R.string.shortcuts_setting))
+            .setLongLabel(getString(R.string.shortcuts_setting))
+            .setIntent(settingIntent)
+            .build()
+        mShortcutManager!!.dynamicShortcuts = arrayOf(callShortcut).toMutableList()
     }
 
     private fun initLogin(){
