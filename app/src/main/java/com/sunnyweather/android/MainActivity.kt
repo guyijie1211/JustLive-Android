@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private var isVersionCheck = false
     private lateinit var mMenu: Menu
     private var themeActived = R.style.SunnyWeather
-
     private  var mShortcutManager:ShortcutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -217,6 +216,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             areaFragment.show(fragmentManager, "areaFragment")
         }
 
+        //动态创建shortcuts
         createDynamicShortcut(themeActived)
     }
 
@@ -285,6 +285,10 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         viewPager.currentItem = 0
     }
 
+    /**
+     * 动态创建shortcuts
+     * 现在只创建了一个设置
+     */
     @TargetApi(Build.VERSION_CODES.N_MR1)
     private fun createDynamicShortcut(themeActived:Int) {
         if (mShortcutManager == null) {
