@@ -49,7 +49,7 @@ class FollowDrawer(context: Context): DrawerPopupView(context) {
             // 这个大括号内就属于作用域内部
             if (SunnyWeatherApplication.isLogin!!.value == true) {
                 val userInfo = SunnyWeatherApplication.userInfo
-                val url = "https://yj1211.work:8014/api/live/getRoomsOn?uid=" + userInfo!!.uid
+                val url = "http://yj1211.work:8013/api/live/getRoomsOn?uid=" + userInfo!!.uid
                 val data = Get<String>(url).await() // 发起GET请求并返回`String`类型数据
                 var result: JSONArray = JSONObject.parseObject(data).getJSONArray("data")
                 for (item in result) {
