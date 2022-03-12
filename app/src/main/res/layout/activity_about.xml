@@ -12,7 +12,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/ic_launcher_round"/>
 
     <TextView
         android:id="@+id/about_version"
@@ -133,7 +134,7 @@
         android:layout_alignStart="@+id/about_follow_card"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="关注我"
+        android:text="联系我"
         android:textColor="?attr/colorOnPrimary" />
     <androidx.cardview.widget.CardView
         android:id="@+id/about_follow_card"
@@ -146,11 +147,46 @@
         app:cardBackgroundColor="?attr/colorPrimary">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="300dp"
             android:orientation="vertical"
             android:divider="?attr/colorPrimaryVariant"
             android:paddingHorizontal="30dp"
             android:showDividers="middle">
+            <RelativeLayout
+                android:id="@+id/about_forum"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <ImageView
+                    android:id="@+id/about_logo_forum"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:background="@color/colorBackground"/>
+                <TextView
+                    android:layout_toRightOf="@+id/about_logo_forum"
+                    android:layout_alignTop="@+id/about_logo_forum"
+                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:text="论坛"
+                    android:textSize="15dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/about_arrow_forum"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:layout_centerVertical="true"
+                    android:text="XXXXXXX"/>
+                <ImageView
+                    android:id="@+id/about_arrow_forum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_chevron_right_24"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/about_kuan"
                 android:layout_width="match_parent"
