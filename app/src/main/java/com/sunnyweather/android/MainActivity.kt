@@ -1,47 +1,50 @@
 package com.sunnyweather.android
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
+import android.view.*
+import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.angcyo.tablayout.delegate2.ViewPager2Delegate
-import com.sunnyweather.android.logic.model.UserInfo
-import com.sunnyweather.android.ui.area.AreaFragment
-import com.sunnyweather.android.ui.area.AreaSingleFragment
-import com.sunnyweather.android.ui.follows.FollowsFragment
-import com.sunnyweather.android.ui.home.HomeFragment
-import com.sunnyweather.android.ui.login.LoginViewModel
-import com.sunnyweather.android.ui.search.SearchActivity
-import kotlinx.android.synthetic.main.activity_main.*
-
-import android.view.*
-import android.widget.CompoundButton
-import androidx.core.view.GravityCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
+import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.blankj.utilcode.util.*
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
 import com.mikepenz.materialdrawer.iconics.iconicsIcon
 import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
 import com.mikepenz.materialdrawer.model.*
 import com.mikepenz.materialdrawer.model.interfaces.*
-
 import com.sunnyweather.android.logic.model.UpdateInfo
+import com.sunnyweather.android.logic.model.UserInfo
+import com.sunnyweather.android.ui.area.AreaFragment
+import com.sunnyweather.android.ui.area.AreaSingleFragment
+import com.sunnyweather.android.ui.follows.FollowsFragment
+import com.sunnyweather.android.ui.home.HomeFragment
 import com.sunnyweather.android.ui.login.LoginActivity
+import com.sunnyweather.android.ui.login.LoginViewModel
+import com.sunnyweather.android.ui.search.SearchActivity
 import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
-import kotlinx.android.synthetic.main.activity_liveroom.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_update.*
+import moe.feng.alipay.zerosdk.AlipayZeroSdk
+
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
@@ -50,6 +53,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private var isVersionCheck = false
     private lateinit var mMenu: Menu
     private var themeActived = R.style.SunnyWeather
+    private  var mShortcutManager:ShortcutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +108,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             SecondaryDrawerItem().apply { identifier = 3; nameRes = R.string.setting; iconicsIcon = GoogleMaterial.Icon.gmd_settings; isSelectable = false},
             SwitchDrawerItem().apply { nameText = "夜间模式"; iconicsIcon = GoogleMaterial.Icon.gmd_brightness_4;
                 onCheckedChangeListener = nightChangeListener; isSelectable = false; isChecked = nightChecked},
-//            SecondaryDrawerItem().apply { identifier = 5; nameText = "关于"; iconicsIcon = GoogleMaterial.Icon.gmd_info; isSelectable = false},
+            SecondaryDrawerItem().apply { identifier = 2; nameText = "关于"; iconicsIcon = GoogleMaterial.Icon.gmd_info; isSelectable = false},
         )
         // specify a click listener
         slider.onDrawerItemClickListener = { v, drawerItem, position ->
@@ -112,9 +116,14 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             var intent: Intent? = null
             when {
                 drawerItem.identifier == 3L -> intent = Intent(this, SettingActivity::class.java)
-//                drawerItem.identifier == 2L -> {
-//                    AlipayZeroSdk.startAlipayClient(this, "fkx16754nnauj1auovtgd7a")
-//                }
+                drawerItem.identifier == 2L -> {
+                    var sucess = AlipayZeroSdk.startAlipayClient(this, "fkx16754nnauj1auovtgd7a")
+                    if (sucess) {
+                        ToastUtils.showShort("成功")
+                    } else {
+                        ToastUtils.showShort("失败")
+                    }
+                }
 //                drawerItem.identifier == 5L -> intent = Intent(this, AboutActivity::class.java)
             }
             if (intent != null) {
@@ -212,6 +221,9 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             areaFragment = AreaFragment()
             areaFragment.show(fragmentManager, "areaFragment")
         }
+
+        //动态创建shortcuts
+        createDynamicShortcut(themeActived)
     }
 
     override fun onResume() {
@@ -243,10 +255,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> main_drawerLayout.openDrawer(GravityCompat.START)
-            R.id.toolbar_setting -> {
-                val intent = Intent(this, SettingActivity::class.java)
-                startActivity(intent)
-            }
             R.id.menu_search -> {
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
@@ -254,10 +262,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             R.id.toolbar_login -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-            }
-            R.id.toolbar_update -> {
-                isVersionCheck = true
-                viewModel.checkVersion()
             }
             R.id.toolbar_logout -> {
                 SunnyWeatherApplication.clearLoginInfo(this)
@@ -285,6 +289,48 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     }
     fun toFirst(){
         viewPager.currentItem = 0
+    }
+
+    /**
+     * 动态创建shortcuts
+     * 设置,搜索
+     */
+    @TargetApi(Build.VERSION_CODES.N_MR1)
+    private fun createDynamicShortcut(themeActived:Int) {
+        if (mShortcutManager == null) {
+            mShortcutManager = getSystemService(ShortcutManager::class.java)
+        }
+
+        //设置
+        val settingIntent = Intent(this, SettingActivity::class.java)
+        settingIntent.action = "android.intent.action.VIEW"
+        val settingIcon:Icon = if (themeActived != R.style.nightTheme) {
+            Icon.createWithResource(this, R.drawable.shortcut_settings_24)
+        }else{
+            Icon.createWithResource(this, R.drawable.shortcut_settings_night_24)
+        }
+        val settingShortcut = ShortcutInfo.Builder(this, "setting")
+            .setIcon(settingIcon)
+            .setShortLabel(getString(R.string.shortcuts_setting))
+            .setLongLabel(getString(R.string.shortcuts_setting))
+            .setIntent(settingIntent)
+            .build()
+
+        //搜索
+        val searchIntent = Intent(this, SearchActivity::class.java)
+        searchIntent.action = "android.intent.action.VIEW"
+        val searchIcon:Icon = if (themeActived != R.style.nightTheme) {
+            Icon.createWithResource(this, R.drawable.shortcut_search)
+        }else{
+            Icon.createWithResource(this, R.drawable.shortcut_search_night)
+        }
+        val searchShortcut = ShortcutInfo.Builder(this, "search")
+            .setIcon(searchIcon)
+            .setShortLabel(getString(R.string.shortcuts_search))
+            .setLongLabel(getString(R.string.shortcuts_search))
+            .setIntent(searchIntent)
+            .build()
+        mShortcutManager!!.dynamicShortcuts = arrayOf(settingShortcut,searchShortcut).toMutableList()
     }
 
     private fun initLogin(){
