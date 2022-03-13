@@ -283,9 +283,6 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         } else if (id == R.id.danmu_setting) {
             handleSetting();
         } else if (id == R.id.startFloat) {
-//            if (mControlWrapper.isFullScreen()) {
-//                toggleFullScreen();
-//            }
             onRateSwitchListener.startFloat();
         }
     }
