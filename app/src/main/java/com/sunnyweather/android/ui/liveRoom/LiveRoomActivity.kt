@@ -450,7 +450,6 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     }
 
     override fun onBackPressed() {
-        viewModel.stopDanmu()
         if (mPIPManager.onBackPress()) return
         val playBackGround = sharedPreferences.getBoolean("play_background", false)
         val backTiny = sharedPreferences.getBoolean("tiny_when_back", false)
@@ -461,6 +460,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             startFloatWindow()
             return
         }
+        viewModel.stopDanmu()
         super.onBackPressed()
     }
 
