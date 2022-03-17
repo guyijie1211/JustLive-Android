@@ -44,6 +44,11 @@ import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_update.*
 import moe.feng.alipay.zerosdk.AlipayZeroSdk
+import android.app.UiModeManager
+
+import android.R.string.no
+import android.content.res.Configuration
+import com.sunnyweather.android.ui.about.AboutActvity
 
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
@@ -53,13 +58,25 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private var isVersionCheck = false
     private lateinit var mMenu: Menu
     private var themeActived = R.style.SunnyWeather
+    private var autoDark = true
     private  var mShortcutManager:ShortcutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //颜色主题
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        autoDark = sharedPreferences.getBoolean("autoDark", true)
+        if (autoDark) {
+            if(SunnyWeatherApplication.isNightMode(this)){
+                themeActived = R.style.nightTheme
+                sharedPreferences.edit().putInt("theme", themeActived).commit()
+            } else {
+                themeActived = R.style.SunnyWeather
+                sharedPreferences.edit().putInt("theme", themeActived).commit()
+            }
+        } else {
+            themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        }
         setTheme(themeActived)
         setContentView(R.layout.activity_main)
         BarUtils.transparentStatusBar(this)
@@ -108,7 +125,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             SecondaryDrawerItem().apply { identifier = 3; nameRes = R.string.setting; iconicsIcon = GoogleMaterial.Icon.gmd_settings; isSelectable = false},
             SwitchDrawerItem().apply { nameText = "夜间模式"; iconicsIcon = GoogleMaterial.Icon.gmd_brightness_4;
                 onCheckedChangeListener = nightChangeListener; isSelectable = false; isChecked = nightChecked},
-            SecondaryDrawerItem().apply { identifier = 2; nameText = "关于"; iconicsIcon = GoogleMaterial.Icon.gmd_info; isSelectable = false},
+            SecondaryDrawerItem().apply { identifier = 5; nameText = "关于"; iconicsIcon = GoogleMaterial.Icon.gmd_info; isSelectable = false},
         )
         // specify a click listener
         slider.onDrawerItemClickListener = { v, drawerItem, position ->
@@ -124,7 +141,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                         ToastUtils.showShort("失败")
                     }
                 }
-//                drawerItem.identifier == 5L -> intent = Intent(this, AboutActivity::class.java)
+                drawerItem.identifier == 5L -> intent = Intent(this, AboutActvity::class.java)
             }
             if (intent != null) {
                 this.startActivity(intent)

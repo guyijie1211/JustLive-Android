@@ -3,6 +3,7 @@ package com.sunnyweather.android
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.view.View
 import android.widget.Toast
@@ -26,6 +27,11 @@ class SunnyWeatherApplication : Application() {
         var areaType = MutableLiveData<String>()
         var userInfo: UserInfo? = null
         var isLogin = MutableLiveData(false)
+
+        fun isNightMode(context: Context): Boolean {
+            val uiMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            return uiMode == Configuration.UI_MODE_NIGHT_YES
+        }
 
         fun clearLoginInfo(activity: Activity) {
             if (!isLogin.value!!) {

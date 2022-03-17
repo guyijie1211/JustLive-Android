@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication
 import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.main_container
@@ -18,7 +19,19 @@ class AboutActvity: AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        val themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        var themeActived: Int
+        val autoDark = sharedPreferences.getBoolean("autoDark", true)
+        if (autoDark) {
+            if(SunnyWeatherApplication.isNightMode(this)){
+                themeActived = R.style.nightTheme
+                sharedPreferences.edit().putInt("theme", themeActived).commit()
+            } else {
+                themeActived = R.style.SunnyWeather
+                sharedPreferences.edit().putInt("theme", themeActived).commit()
+            }
+        } else {
+            themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        }
         setTheme(themeActived)
         setContentView(R.layout.activity_about)
         BarUtils.transparentStatusBar(this)

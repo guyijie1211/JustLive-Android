@@ -41,6 +41,9 @@
             app:key="dayNight"
             app:icon="@drawable/ic_baseline_brightness_medium_24"
             app:title="深色主题"/>
+        <SwitchPreferenceCompat
+            app:key="autoDark"
+            app:title="深色跟随系统"/>
         <ListPreference
             app:key="start_page"
             app:title="启动时进入界面"

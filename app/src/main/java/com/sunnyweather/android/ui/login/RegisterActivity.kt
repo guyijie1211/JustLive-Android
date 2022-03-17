@@ -28,7 +28,19 @@ class RegisterActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //颜色主题
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        var theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        var theme: Int
+        val autoDark = sharedPreferences.getBoolean("autoDark", true)
+        if (autoDark) {
+            if(SunnyWeatherApplication.isNightMode(this)){
+                theme = R.style.nightTheme
+                sharedPreferences.edit().putInt("theme", theme).commit()
+            } else {
+                theme = R.style.SunnyWeather
+                sharedPreferences.edit().putInt("theme", theme).commit()
+            }
+        } else {
+            theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        }
         setTheme(theme)
         setContentView(R.layout.activity_register)
         if (theme != R.style.nightTheme) {
