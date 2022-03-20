@@ -347,6 +347,10 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                         danmu_not_support.visibility = View.VISIBLE
                         danmu_not_support.text = "暂不支持${SunnyWeatherApplication.platformName(roomInfo.platForm)}弹幕"
                     }
+                    if (roomInfo.platForm == "huya" && DeviceUtils.getSDKVersionCode() < 26) {
+                        danmu_not_support.visibility = View.VISIBLE
+                        danmu_not_support.text = "安卓8.0以下暂时不支持虎牙弹幕"
+                    }
                     //未开播
                     if (roomInfo.isLive == 0) {
                         liveRoom_not_live.visibility = View.VISIBLE

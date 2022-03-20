@@ -50,6 +50,9 @@ public class DanmuService {
         if (platform.equals("egame") || platform.equals("cc")) {
             return;
         }
+        if (platform.equals("huya") && DeviceUtils.getSDKVersionCode() < 26) {
+            return;
+        }
         //开始连接
         request = DanmuUtils.getRequest(platform, roomId);
         webSocket = mClient.newWebSocket(request, new WebSocketListener() {
@@ -98,7 +101,7 @@ public class DanmuService {
 
     //停止接受消息
     public void stop() {
-        if (!platform.equals("egame") && !platform.equals("cc")) {
+        if (!platform.equals("egame") && !platform.equals("cc") && (!platform.equals("huya") || DeviceUtils.getSDKVersionCode() >= 26)) {
             webSocket.cancel();
         }
         myTimer.cancel();
