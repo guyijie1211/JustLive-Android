@@ -43,14 +43,16 @@
                 android:text="版本号:0.2.4"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="12dp" />
+
             <TextView
                 android:id="@+id/about_about"
-                android:layout_below="@+id/about_version"
-                android:layout_marginHorizontal="20dp"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="\u3000\u3000如果本项目侵犯了你的权利，请通过以下方式联系我，我会及时处理。"/>
+                android:layout_below="@+id/about_version"
+                android:layout_marginHorizontal="20dp"
+                android:textColor="?attr/colorOnPrimary"
+                android:padding="10dp"
+                android:text="\u3000\u3000如果本项目侵犯了你的权利，请通过以下方式联系我，我会及时处理。" />
             <TextView
                 android:layout_below="@+id/about_about"
                 android:id="@+id/about_platform"
