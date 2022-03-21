@@ -8,360 +8,377 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:id="@+id/about_pic"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher_round"/>
-
-    <TextView
-        android:id="@+id/about_version"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_pic"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:text="版本号:0.2.4"
-        android:textColor="?attr/colorOnPrimary"
-        android:textSize="12dp" />
+        android:id="@+id/about_back"
+        android:layout_margin="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_arrow_back_black_24dp"/>
 
 
-    <TextView
-        android:id="@+id/about_platform"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_version"
-        android:layout_alignStart="@+id/about_platform_card"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:text="其他平台"
-        android:textColor="?attr/colorOnPrimary" />
-    <androidx.cardview.widget.CardView
-        android:id="@+id/about_platform_card"
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_below="@+id/about_back"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_platform"
-        app:cardCornerRadius="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="15dp"
-        app:cardBackgroundColor="?attr/colorPrimary">
-        <LinearLayout
+        android:scrollbars="vertical"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="vertical"
-            android:divider="?attr/colorPrimaryVariant"
-            android:paddingHorizontal="30dp"
-            android:showDividers="middle">
-            <RelativeLayout
-                android:id="@+id/about_web"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/about_pic"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/ic_launcher_round"/>
+            <TextView
+                android:id="@+id/about_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/about_pic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="版本号:0.2.4"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="12dp" />
+            <TextView
+                android:id="@+id/about_about"
+                android:layout_below="@+id/about_version"
+                android:layout_marginHorizontal="20dp"
+                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <ImageView
-                    android:id="@+id/about_logo_web"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/logo_chrome"/>
-                <TextView
-                    android:layout_toRightOf="@+id/about_logo_web"
-                    android:layout_alignTop="@+id/about_logo_web"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="网页端"
-                    android:textSize="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/about_arrow_web"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:layout_centerVertical="true"
-                    android:text="live.yj1211.work"/>
-                <ImageView
-                    android:id="@+id/about_arrow_web"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_chevron_right_24"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/about_apple"
+                android:layout_height="wrap_content"
+                android:text="\u3000\u3000如果本项目侵犯了你的权利，请通过以下方式联系我，我会及时处理。"/>
+            <TextView
+                android:layout_below="@+id/about_about"
+                android:id="@+id/about_platform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/about_platform_card"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="其他平台"
+                android:textColor="?attr/colorOnPrimary" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/about_platform_card"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <ImageView
-                    android:id="@+id/about_logo_apple"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/logo_apple"/>
-                <TextView
-                    android:layout_toRightOf="@+id/about_logo_apple"
-                    android:layout_alignTop="@+id/about_logo_apple"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="ios端"
-                    android:textSize="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/about_arrow_apple"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:layout_centerVertical="true"
-                    android:text="开发中"/>
-                <ImageView
-                    android:id="@+id/about_arrow_apple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_chevron_right_24"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    android:visibility="invisible"/>
-            </RelativeLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/about_platform"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="20dp">
 
-    <TextView
-        android:id="@+id/about_follow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_platform_card"
-        android:layout_alignStart="@+id/about_follow_card"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:text="联系我"
-        android:textColor="?attr/colorOnPrimary" />
-    <androidx.cardview.widget.CardView
-        android:id="@+id/about_follow_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/about_follow"
-        app:cardCornerRadius="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginHorizontal="15dp"
-        app:cardBackgroundColor="?attr/colorPrimary">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:orientation="vertical"
-            android:divider="?attr/colorPrimaryVariant"
-            android:paddingHorizontal="30dp"
-            android:showDividers="middle">
-<!--            <RelativeLayout-->
-<!--                android:id="@+id/about_forum"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="50dp">-->
-<!--                <ImageView-->
-<!--                    android:id="@+id/about_logo_forum"-->
-<!--                    android:layout_width="20dp"-->
-<!--                    android:layout_height="20dp"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:background="@color/colorBackground"/>-->
-<!--                <TextView-->
-<!--                    android:layout_toRightOf="@+id/about_logo_forum"-->
-<!--                    android:layout_alignTop="@+id/about_logo_forum"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:textColor="?attr/colorOnPrimary"-->
-<!--                    android:text="论坛"-->
-<!--                    android:textSize="15dp"/>-->
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_toLeftOf="@+id/about_arrow_forum"-->
-<!--                    android:textColor="?attr/colorOnPrimary"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:text="XXXXXXX"/>-->
-<!--                <ImageView-->
-<!--                    android:id="@+id/about_arrow_forum"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:src="@drawable/ic_baseline_chevron_right_24"-->
-<!--                    android:layout_centerVertical="true"-->
-<!--                    android:layout_alignParentEnd="true"/>-->
-<!--            </RelativeLayout>-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:divider="?attr/colorPrimaryVariant"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="30dp"
+                    android:showDividers="middle">
 
-            <RelativeLayout
-                android:id="@+id/about_kuan"
+                    <RelativeLayout
+                        android:id="@+id/about_web"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:id="@+id/about_logo_web"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/logo_chrome" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/about_logo_web"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/about_logo_web"
+                            android:text="网页端"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/about_arrow_web"
+                            android:text="live.yj1211.work"
+                            android:textColor="?attr/colorOnPrimary" />
+
+                        <ImageView
+                            android:id="@+id/about_arrow_web"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_baseline_chevron_right_24" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/about_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/about_platform_card"
+                android:layout_alignStart="@+id/about_follow_card"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:text="联系我"
+                android:textColor="?attr/colorOnPrimary" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/about_follow_card"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <ImageView
-                    android:id="@+id/about_logo_kuan"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/logo_kuan"/>
-                <TextView
-                    android:layout_toRightOf="@+id/about_logo_kuan"
-                    android:layout_alignTop="@+id/about_logo_kuan"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="酷安"
-                    android:textSize="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/about_arrow_kuan"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:layout_centerVertical="true"
-                    android:text="\@YJ1211"/>
-                <ImageView
-                    android:id="@+id/about_arrow_kuan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_chevron_right_24"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/about_follow"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="20dp">
 
-            <RelativeLayout
-                android:id="@+id/about_weibo"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <ImageView
-                    android:id="@+id/about_logo_weibo"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/logo_weibo"/>
-                <TextView
-                    android:layout_toRightOf="@+id/about_logo_weibo"
-                    android:layout_alignTop="@+id/about_logo_weibo"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="微博"
-                    android:textSize="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/about_arrow_weibo"
-                    android:layout_centerVertical="true"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="\@YJ顾"/>
-                <ImageView
-                    android:id="@+id/about_arrow_weibo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_chevron_right_24"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:divider="?attr/colorPrimaryVariant"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="30dp"
+                    android:showDividers="middle">
+                    <RelativeLayout
+                        android:id="@+id/about_kuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
 
-            <RelativeLayout
-                android:id="@+id/about_qq"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <ImageView
-                    android:id="@+id/about_logo_qq"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/logo_qq"/>
-                <TextView
-                    android:layout_toRightOf="@+id/about_logo_qq"
-                    android:layout_alignTop="@+id/about_logo_qq"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="QQ群"
-                    android:textSize="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/about_arrow_qq"
-                    android:layout_centerVertical="true"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="今天服务器崩了没"/>
-                <ImageView
-                    android:id="@+id/about_arrow_qq"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_chevron_right_24"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/about_logo_kuan"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/logo_kuan" />
 
-            <RelativeLayout
-                android:id="@+id/about_telegram"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <ImageView
-                    android:id="@+id/about_logo_telegram"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/logo_telegram"/>
-                <TextView
-                    android:layout_toRightOf="@+id/about_logo_telegram"
-                    android:layout_alignTop="@+id/about_logo_telegram"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="Telegram"
-                    android:textSize="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/about_arrow_telegram"
-                    android:layout_centerVertical="true"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="JustLive"/>
-                <ImageView
-                    android:id="@+id/about_arrow_telegram"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_chevron_right_24"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/about_logo_kuan"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/about_logo_kuan"
+                            android:text="酷安"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="15dp" />
 
-            <RelativeLayout
-                android:id="@+id/about_github"
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-                <ImageView
-                    android:id="@+id/about_logo_github"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/logo_github"/>
-                <TextView
-                    android:layout_toRightOf="@+id/about_logo_github"
-                    android:layout_alignTop="@+id/about_logo_github"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="Github"
-                    android:textSize="15dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/about_arrow_github"
-                    android:layout_centerVertical="true"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:text="\@guyijie1211"/>
-                <ImageView
-                    android:id="@+id/about_arrow_github"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_chevron_right_24"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"/>
-            </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/about_arrow_kuan"
+                            android:text="\@YJ1211"
+                            android:textColor="?attr/colorOnPrimary" />
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                        <ImageView
+                            android:id="@+id/about_arrow_kuan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_baseline_chevron_right_24" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/about_weibo"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:id="@+id/about_logo_weibo"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/logo_weibo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/about_logo_weibo"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/about_logo_weibo"
+                            android:text="微博"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/about_arrow_weibo"
+                            android:text="\@YJ顾"
+                            android:textColor="?attr/colorOnPrimary" />
+
+                        <ImageView
+                            android:id="@+id/about_arrow_weibo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_baseline_chevron_right_24" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/about_qq"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:id="@+id/about_logo_qq"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/logo_qq" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/about_logo_qq"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/about_logo_qq"
+                            android:text="QQ群"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/about_arrow_qq"
+                            android:text="今天服务器崩了没"
+                            android:textColor="?attr/colorOnPrimary" />
+
+                        <ImageView
+                            android:id="@+id/about_arrow_qq"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_baseline_chevron_right_24" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/about_telegram"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:id="@+id/about_logo_telegram"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/logo_telegram" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/about_logo_telegram"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/about_logo_telegram"
+                            android:text="Telegram"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/about_arrow_telegram"
+                            android:text="JustLive"
+                            android:textColor="?attr/colorOnPrimary" />
+
+                        <ImageView
+                            android:id="@+id/about_arrow_telegram"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_baseline_chevron_right_24" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/about_github"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:id="@+id/about_logo_github"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/logo_github" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/about_logo_github"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/about_logo_github"
+                            android:text="Github"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/about_arrow_github"
+                            android:text="\@guyijie1211"
+                            android:textColor="?attr/colorOnPrimary" />
+
+                        <ImageView
+                            android:id="@+id/about_arrow_github"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_baseline_chevron_right_24" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/about_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:id="@+id/about_logo_email"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/logo_email" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/about_logo_email"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/about_logo_email"
+                            android:text="邮箱"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/about_arrow_email"
+                            android:text="1056025931@qq.com"
+                            android:textColor="?attr/colorOnPrimary" />
+
+                        <ImageView
+                            android:id="@+id/about_arrow_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_baseline_chevron_right_24" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.*
-import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -25,11 +24,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.blankj.utilcode.util.*
-import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial
-import com.mikepenz.materialdrawer.iconics.iconicsIcon
-import com.mikepenz.materialdrawer.interfaces.OnCheckedChangeListener
-import com.mikepenz.materialdrawer.model.*
-import com.mikepenz.materialdrawer.model.interfaces.*
 import com.sunnyweather.android.logic.model.UpdateInfo
 import com.sunnyweather.android.logic.model.UserInfo
 import com.sunnyweather.android.ui.area.AreaFragment
@@ -43,12 +37,12 @@ import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_update.*
-import moe.feng.alipay.zerosdk.AlipayZeroSdk
-import android.app.UiModeManager
-
-import android.R.string.no
-import android.content.res.Configuration
 import com.sunnyweather.android.ui.about.AboutActvity
+import com.blankj.utilcode.util.ToastUtils
+
+import android.graphics.Bitmap
+import moe.feng.alipay.zerosdk.AlipayZeroSdk
+import kotlinx.android.synthetic.main.dialog_donate.*
 
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
@@ -59,7 +53,8 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private lateinit var mMenu: Menu
     private var themeActived = R.style.SunnyWeather
     private var autoDark = true
-    private  var mShortcutManager:ShortcutManager? = null
+    private var mShortcutManager:ShortcutManager? = null
+    private var activityMain = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,18 +74,10 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         }
         setTheme(themeActived)
         setContentView(R.layout.activity_main)
+        drawer_dark_switch.isChecked = (themeActived == R.style.nightTheme)
+        BarUtils.addMarginTopEqualStatusBarHeight(drawer_nick)
         BarUtils.transparentStatusBar(this)
-        BarUtils.addMarginTopEqualStatusBarHeight(main_container)
-        var nightChecked: Boolean
-        if (themeActived != R.style.nightTheme) {
-            nightChecked = false
-            BarUtils.setStatusBarLightMode(this, true)
-            BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimary))
-        } else {
-            nightChecked = true
-            BarUtils.setStatusBarLightMode(this, false)
-            BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimary_night))
-        }
+        BarUtils.setStatusBarLightMode(this, themeActived != R.style.nightTheme)
         setSupportActionBar(main_toolBar)
         initLogin()
         supportActionBar?.let {
@@ -99,56 +86,77 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             it.setDisplayShowTitleEnabled(false)
         }
 
-        val nightChangeListener = object : OnCheckedChangeListener {
-            override fun onCheckedChanged(drawerItem: IDrawerItem<*>, buttonView: CompoundButton, isChecked: Boolean) {
-            if (isChecked) {
-                    sharedPreferences.edit().putInt("theme", R.style.nightTheme).commit()
-                    nightChecked = false
-                    recreate()
-                } else {
-                    sharedPreferences.edit().putInt("theme", R.style.SunnyWeather).commit()
-                    nightChecked = true
-                    recreate()
-                }
+        //Drawer
+        drawer_dark_switch.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                sharedPreferences.edit().putInt("theme", R.style.nightTheme).commit()
+                drawer_dark_switch.isChecked = true
+            } else {
+                sharedPreferences.edit().putInt("theme", R.style.SunnyWeather).commit()
+                drawer_dark_switch.isChecked = false
             }
+            recreate()
         }
-        //if you want to update the items at a later time it is recommended to keep it in a variable
-//        AccountHeaderView(this).apply {
-//            attachToSliderView(slider) // attach to the slider
-//            addProfiles(
-//                ProfileDrawerItem().apply { nameText = "Hi"; descriptionText = "mikepenz@gmail.com"; identifier = 102 }
-//            )
-//            withSavedInstance(savedInstanceState)
-//        }
-        // get the reference to the slider and add the items
-        slider.itemAdapter.add(
-            SecondaryDrawerItem().apply { identifier = 3; nameRes = R.string.setting; iconicsIcon = GoogleMaterial.Icon.gmd_settings; isSelectable = false},
-            SwitchDrawerItem().apply { nameText = "夜间模式"; iconicsIcon = GoogleMaterial.Icon.gmd_brightness_4;
-                onCheckedChangeListener = nightChangeListener; isSelectable = false; isChecked = nightChecked},
-            SecondaryDrawerItem().apply { identifier = 5; nameText = "关于"; iconicsIcon = GoogleMaterial.Icon.gmd_info; isSelectable = false},
-        )
-        // specify a click listener
-        slider.onDrawerItemClickListener = { v, drawerItem, position ->
-            // do something with the clicked item :D
-            var intent: Intent? = null
-            when {
-                drawerItem.identifier == 3L -> intent = Intent(this, SettingActivity::class.java)
-                drawerItem.identifier == 2L -> {
-                    var sucess = AlipayZeroSdk.startAlipayClient(this, "fkx16754nnauj1auovtgd7a")
-                    if (sucess) {
-                        ToastUtils.showShort("成功")
+        drawer_dark_switch.setOnClickListener {
+            sharedPreferences.edit().putBoolean("autoDark",false).commit()
+        }
+        drawer_logout.setOnClickListener {
+            SunnyWeatherApplication.clearLoginInfo(this)
+            main_fragment.currentItem = 0
+        }
+        drawer_login.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+        drawer_setting.setOnClickListener {
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
+        }
+        drawer_support.setOnClickListener {
+            MaterialDialog(this).show {
+                customView(R.layout.dialog_donate)
+                var payPlatform = "zfb"
+                donate_cancel.setOnClickListener {
+                    dismiss()
+                }
+                donate_save_cancel.setOnClickListener {
+                    donate_contain.visibility = View.VISIBLE
+                    donate_pic_contain.visibility = View.GONE
+                }
+                donate_zfb.setOnClickListener {
+                    if (AlipayZeroSdk.hasInstalledAlipayClient(context)) {
+                        AlipayZeroSdk.startAlipayClient(activityMain, "fkx19479mrxqi6tzhgw0bd0")
                     } else {
-                        ToastUtils.showShort("失败")
+                        payPlatform = "zfb"
+                        donate_pic.setImageDrawable(resources.getDrawable(R.drawable.zfb_pic))
+                        donate_contain.visibility = View.GONE
+                        donate_pic_contain.visibility = View.VISIBLE
+                        donate_save_zfb.visibility = View.VISIBLE
+                        donate_save_wx.visibility = View.INVISIBLE
                     }
                 }
-                drawerItem.identifier == 5L -> intent = Intent(this, AboutActvity::class.java)
+                donate_wx.setOnClickListener {
+                    payPlatform = "wx"
+                    donate_pic.setImageDrawable(resources.getDrawable(R.drawable.wx_pic))
+                    donate_contain.visibility = View.GONE
+                    donate_pic_contain.visibility = View.VISIBLE
+                    donate_save_zfb.visibility = View.INVISIBLE
+                    donate_save_wx.visibility = View.VISIBLE
+                }
+                donate_save_zfb.setOnClickListener {
+                    ImageUtils.save2Album(ImageUtils.drawable2Bitmap(resources.getDrawable(R.drawable.zfb_pic)),Bitmap.CompressFormat.JPEG)
+                    ToastUtils.showLong("二维码已保存到相册,请打开支付宝扫码使用")
+                }
+                donate_save_wx.setOnClickListener {
+                    ImageUtils.save2Album(ImageUtils.drawable2Bitmap(resources.getDrawable(R.drawable.wx_pic)),Bitmap.CompressFormat.JPEG)
+                    ToastUtils.showLong("二维码已保存到相册,请打开微信扫码使用")
+                }
             }
-            if (intent != null) {
-                this.startActivity(intent)
-            }
-            false
         }
-
+        drawer_report.setOnClickListener {
+            val intent = Intent(this, AboutActvity::class.java)
+            startActivity(intent)
+        }
 
         //ViewPager2
         viewPager = main_fragment
@@ -247,6 +255,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         super.onResume()
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val newTheme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        drawer_dark_switch.isChecked = (themeActived == R.style.nightTheme)
         if (newTheme != themeActived){
             recreate()
         }
@@ -259,11 +268,15 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         mMenu = menu
         SunnyWeatherApplication.isLogin.observe(this, {result ->
             if (result) {
-                mMenu.findItem(R.id.toolbar_login).isVisible = false
-                mMenu.findItem(R.id.toolbar_logout).isVisible = true
+                drawer_nick.text = SunnyWeatherApplication.userInfo?.nickName
+                drawer_username.text = SunnyWeatherApplication.userInfo?.userName
+                drawer_logout.visibility = View.VISIBLE
+                drawer_login.visibility = View.INVISIBLE
             } else {
-                mMenu.findItem(R.id.toolbar_login).isVisible = true
-                mMenu.findItem(R.id.toolbar_logout).isVisible = false
+                drawer_nick.text = "未登录"
+                drawer_username.text = ""
+                drawer_logout.visibility = View.INVISIBLE
+                drawer_login.visibility = View.VISIBLE
             }
         })
         return true
@@ -275,14 +288,6 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
             R.id.menu_search -> {
                 val intent = Intent(this, SearchActivity::class.java)
                 startActivity(intent)
-            }
-            R.id.toolbar_login -> {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            }
-            R.id.toolbar_logout -> {
-                SunnyWeatherApplication.clearLoginInfo(this)
-                main_fragment.currentItem = 0
             }
         }
         return true

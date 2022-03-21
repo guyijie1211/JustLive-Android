@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorPrimaryVariant"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp">
+    <TextView
+        android:id="@+id/donate_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="感谢支持"
+        android:textColor="?attr/colorOnPrimary"
+        android:layout_marginBottom="10dp"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+    <RelativeLayout
+        android:id="@+id/donate_contain"
+        android:layout_below="@+id/donate_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/donate_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/donate_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorOnPrimary"
+                android:text="\u3000\u3000JustLive目前拥有Android端和网页端，基本由我一个人开发和维护，如果你觉得这个项目对你有用的话，欢迎赏我一杯咖啡☕️。\n\u3000\u3000捐赠不会获得额外功能，但请在备注中注明你的JustLive账号，谢谢老板！"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/donate_zfb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donate_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="支付宝"
+            android:textColor="@color/cardBackgroundColor"
+            app:backgroundTint="@color/blue_dark" />
+
+        <Button
+            android:id="@+id/donate_wx"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donate_zfb"
+            android:text="微信"
+            android:textColor="@color/cardBackgroundColor"
+            app:backgroundTint="#45A33E" />
+        <Button
+            android:id="@+id/donate_cancel"
+            android:layout_width="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donate_wx"
+            android:layout_marginBottom="-10dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="?attr/colorOnPrimary" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/donate_pic_contain"
+        android:layout_below="@+id/donate_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/donate_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:src="@drawable/zfb_mini"/>
+        <Button
+            android:id="@+id/donate_save_zfb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donate_pic"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="保存二维码到相册"
+            android:textColor="@color/cardBackgroundColor"
+            app:backgroundTint="@color/blue_dark" />
+        <Button
+            android:id="@+id/donate_save_wx"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donate_pic"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="保存二维码到相册"
+            android:textColor="@color/cardBackgroundColor"
+            app:backgroundTint="#45A33E" />
+        <Button
+            android:id="@+id/donate_save_cancel"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donate_save_wx"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="?attr/colorOnPrimary" />
+    </RelativeLayout>
+
+</RelativeLayout>

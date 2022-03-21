@@ -3,6 +3,7 @@
     android:id="@+id/main_drawerLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:forceDarkAllowed="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
@@ -10,12 +11,13 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
         android:orientation="vertical">
         <View
             android:id="@+id/statueBar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="?attr/colorPrimary" />
+            android:layout_height="0dp" />
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/main_coordinatorLayout"
             android:layout_width="match_parent"
@@ -99,17 +101,177 @@
         </com.angcyo.tablayout.DslTabLayout>
     </LinearLayout>
 
-    <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
-        android:id="@+id/slider"
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true" >
-<!--            <fragment-->
-<!--                android:id="@+id/area_fragment"-->
-<!--                android:name="com.sunnyweather.android.ui.setting.SettingFragment"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent" />-->
-    </com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView>
+        android:fitsSystemWindows="true"
+        app:insetForeground="@android:color/transparent"
+        android:layout_gravity="start">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary">
+            <RelativeLayout
+                android:id="@+id/drawer_top"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimaryVariant"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/drawer_nick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="未登录"
+                    android:textSize="28dp"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/drawer_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="点击登录"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="?attr/colorOnPrimarySurface"
+                    android:layout_below="@+id/drawer_nick"
+                    android:textSize="20dp"/>
+            </RelativeLayout>
+                <androidx.core.widget.NestedScrollView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_below="@+id/drawer_top"
+                    android:layout_width="match_parent"
+                    android:scrollbars="vertical"
+                    android:layout_height="0dp"
+                    android:layout_above="@+id/drawer_logout">
+                <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <ImageView
+                            android:id="@+id/drawer_icon_dark"
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_outline_brightness_6_24"/>
+                        <TextView
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:textColor="?attr/colorOnPrimarySurface"
+                            android:layout_toRightOf="@+id/drawer_icon_dark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="深色模式"
+                            android:textSize="18dp"
+                            android:textStyle="bold"/>
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/drawer_dark_switch"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:checked="false"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/drawer_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <ImageView
+                            android:id="@+id/drawer_icon_setting"
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_baseline_settings_24"/>
+                        <TextView
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/drawer_icon_setting"
+                            android:textColor="?attr/colorOnPrimarySurface"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="设置"
+                            android:textSize="18dp"
+                            android:textStyle="bold"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/drawer_support"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <ImageView
+                            android:id="@+id/drawer_icon_money"
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_outline_insert_emoticon_24"/>
+                        <TextView
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/drawer_icon_money"
+                            android:textColor="?attr/colorOnPrimarySurface"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="支持"
+                            android:textSize="18dp"
+                            android:textStyle="bold"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/drawer_report"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+                        <ImageView
+                            android:id="@+id/drawer_icon_about"
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_outline_email_24"/>
+                        <TextView
+                            android:layout_marginLeft="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/drawer_icon_about"
+                            android:textColor="?attr/colorOnPrimarySurface"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="问题反馈"
+                            android:textSize="18dp"
+                            android:textStyle="bold"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+            <Button
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/drawer_logout"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorError"
+                android:textColor="@color/colorOnError"
+                android:text="退出登录"/>
+            <Button
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/drawer_login"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorSecondary"
+                android:textColor="@color/colorOnError"
+                android:text="登录"/>
+        </RelativeLayout>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
 

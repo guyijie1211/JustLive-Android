@@ -1,12 +1,9 @@
 package com.sunnyweather.android.ui.customerUIs.bottomPop
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.drake.net.Get
@@ -16,16 +13,7 @@ import com.lxj.xpopup.util.XPopupUtils
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.RoomInfo
-import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
 import kotlinx.android.synthetic.main.custom_follow_drawer.view.*
-import org.fourthline.cling.model.meta.Device
-import java.util.ArrayList
-import androidx.annotation.NonNull
-import com.blankj.utilcode.util.ToastUtils
-
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
-
 
 class FollowDrawer(context: Context): DrawerPopupView(context) {
 
@@ -48,6 +36,7 @@ class FollowDrawer(context: Context): DrawerPopupView(context) {
         scopeNetLife { // 创建作用域
             // 这个大括号内就属于作用域内部
             if (SunnyWeatherApplication.isLogin!!.value == true) {
+                player_follow_progressBar.visibility = View.VISIBLE
                 val userInfo = SunnyWeatherApplication.userInfo
                 val url = "http://yj1211.work:8013/api/live/getRoomsOn?uid=" + userInfo!!.uid
                 val data = Get<String>(url).await() // 发起GET请求并返回`String`类型数据
@@ -62,6 +51,7 @@ class FollowDrawer(context: Context): DrawerPopupView(context) {
                         adapterFollow.addData(roomInfo)
                     }
                 }
+                player_follow_progressBar.visibility = View.GONE
             }
         }
     }

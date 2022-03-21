@@ -61,6 +61,10 @@
             app:summary="111"
             android:title="版本检查"/>
         <Preference
+            android:key="donate"
+            android:icon="@drawable/ic_baseline_insert_emoticon_24"
+            android:title="支持作者"/>
+        <Preference
             android:key="about_activity"
             android:icon="@drawable/ic_baseline_info_24"
             android:title="关于"/>

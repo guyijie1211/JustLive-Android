@@ -1,54 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="MyMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="overlapAnchor">false</item>
-        <item name="android:popupBackground">?attr/colorPrimary</item>
-    </style>
-    <style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:layout_centerHorizontal">true</item>
-    </style>
-    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:src">@drawable/icon_more</item>
-    </style>
-    <style name="ThemeOverlay.App.Switch" parent="">
-        <item name="colorOnSurface">#919191</item>
-        <item name="colorSecondary">@color/colorSecondary_night</item>
-    </style>
-    <style name="Widget.App.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
-    </style>
 
-    <style name="AppTheme.About" parent="nightTheme">
-    </style>
-
-    <!-- Base application theme. -->
     <style name="SunnyWeather" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorOnPrimarySurface">@color/colorSecondary</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="colorError">@color/colorError</item>
-        <item name="android:forceDarkAllowed" tools:targetApi="q" >false</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
         <item name="actionOverflowMenuStyle">@style/MyMenu</item>
         <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
         <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+        <item name="android:forceDarkAllowed">false</item>
     </style>
 
     <style name="nightTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
-        <item name="colorOnPrimarySurface">@color/colorOnPrimary_night</item>
-        <item name="android:forceDarkAllowed" tools:targetApi="q" >false</item>
         <item name="colorOnPrimary">@color/colorOnPrimary_night</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorSecondary_night</item>
@@ -61,9 +36,6 @@
         <item name="actionOverflowMenuStyle">@style/MyMenu</item>
         <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
         <item name="actionOverflowButtonStyle">@style/OverFlow</item>
-    </style>
-    <style name="PreferenceScreen" parent="nightTheme">
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:background">?attr/colorPrimaryVariant</item>
+        <item name="android:forceDarkAllowed">false</item>
     </style>
 </resources>

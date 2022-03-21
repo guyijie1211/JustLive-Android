@@ -703,9 +703,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         viewModel.danmuList.clear()
         scopeNetLife { // 创建作用域
             val userInfo = SunnyWeatherApplication.userInfo
-            val url = "https://yj1211.work:8014/api/live/getRoomInfo?uid=" + userInfo!!.uid + "&platform=" + platform + "&roomId=" + roomId
+            val url = "http://yj1211.work:8013/api/live/getRoomInfo?uid=" + userInfo!!.uid + "&platform=" + platform + "&roomId=" + roomId
             val realUrl =
-                "https://yj1211.work:8014/api/live/getRealUrl?platform=$platform&roomId=$roomId"
+                "http://yj1211.work:8013/api/live/getRealUrl?platform=$platform&roomId=$roomId"
             val data = Get<String>(url) // 发起GET请求并返回`String`类型数据
             val realUrlData = Get<String>(realUrl)
             var result: JSONObject = JSONObject.parseObject(data.await()).getJSONObject("data")

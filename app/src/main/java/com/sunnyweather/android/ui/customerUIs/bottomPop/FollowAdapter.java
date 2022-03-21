@@ -35,7 +35,6 @@ public class FollowAdapter extends BaseQuickAdapter<RoomInfo, BaseViewHolder> {
             Intent intent = new Intent(getContext(), LiveRoomActivity.class);
             intent.putExtra("platform", item.getPlatForm());
             intent.putExtra("roomId", item.getRoomId());
-//            ((Activity)getContext()).finish();
             ((Activity)getContext()).startActivity(intent);
         });
     }
