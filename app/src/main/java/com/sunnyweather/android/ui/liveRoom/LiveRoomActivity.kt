@@ -460,7 +460,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         }
         viewModel.getRoomInfo(uid, platform, roomId)
         if (!isFirstGetInfo && !viewModel.isConnecting()) {
-            viewModel.startDanmu(platform, roomId, SunnyWeatherApplication.userInfo!!.selectedContent, SunnyWeatherApplication.userInfo!!.isActived == "1")
+            viewModel.startDanmu(platform, roomId, SunnyWeatherApplication.userInfo?.selectedContent, SunnyWeatherApplication.userInfo?.isActived == "1")
         }
         mPIPManager.resume()
     }
