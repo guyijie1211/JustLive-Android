@@ -319,40 +319,42 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
      */
     @TargetApi(Build.VERSION_CODES.N_MR1)
     private fun createDynamicShortcut(themeActived:Int) {
-        if (mShortcutManager == null) {
-            mShortcutManager = getSystemService(ShortcutManager::class.java)
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            if (mShortcutManager == null) {
+                mShortcutManager = getSystemService(ShortcutManager::class.java)
+            }
 
-        //设置
-        val settingIntent = Intent(this, SettingActivity::class.java)
-        settingIntent.action = "android.intent.action.VIEW"
-        val settingIcon:Icon = if (themeActived != R.style.nightTheme) {
-            Icon.createWithResource(this, R.drawable.shortcut_settings_24)
-        }else{
-            Icon.createWithResource(this, R.drawable.shortcut_settings_night_24)
-        }
-        val settingShortcut = ShortcutInfo.Builder(this, "setting")
-            .setIcon(settingIcon)
-            .setShortLabel(getString(R.string.shortcuts_setting))
-            .setLongLabel(getString(R.string.shortcuts_setting))
-            .setIntent(settingIntent)
-            .build()
+            //设置
+            val settingIntent = Intent(this, SettingActivity::class.java)
+            settingIntent.action = "android.intent.action.VIEW"
+            val settingIcon:Icon = if (themeActived != R.style.nightTheme) {
+                Icon.createWithResource(this, R.drawable.shortcut_settings_24)
+            }else{
+                Icon.createWithResource(this, R.drawable.shortcut_settings_night_24)
+            }
+            val settingShortcut = ShortcutInfo.Builder(this, "setting")
+                .setIcon(settingIcon)
+                .setShortLabel(getString(R.string.shortcuts_setting))
+                .setLongLabel(getString(R.string.shortcuts_setting))
+                .setIntent(settingIntent)
+                .build()
 
-        //搜索
-        val searchIntent = Intent(this, SearchActivity::class.java)
-        searchIntent.action = "android.intent.action.VIEW"
-        val searchIcon:Icon = if (themeActived != R.style.nightTheme) {
-            Icon.createWithResource(this, R.drawable.shortcut_search)
-        }else{
-            Icon.createWithResource(this, R.drawable.shortcut_search_night)
+            //搜索
+            val searchIntent = Intent(this, SearchActivity::class.java)
+            searchIntent.action = "android.intent.action.VIEW"
+            val searchIcon:Icon = if (themeActived != R.style.nightTheme) {
+                Icon.createWithResource(this, R.drawable.shortcut_search)
+            }else{
+                Icon.createWithResource(this, R.drawable.shortcut_search_night)
+            }
+            val searchShortcut = ShortcutInfo.Builder(this, "search")
+                .setIcon(searchIcon)
+                .setShortLabel(getString(R.string.shortcuts_search))
+                .setLongLabel(getString(R.string.shortcuts_search))
+                .setIntent(searchIntent)
+                .build()
+            mShortcutManager!!.dynamicShortcuts = arrayOf(settingShortcut,searchShortcut).toMutableList()
         }
-        val searchShortcut = ShortcutInfo.Builder(this, "search")
-            .setIcon(searchIcon)
-            .setShortLabel(getString(R.string.shortcuts_search))
-            .setLongLabel(getString(R.string.shortcuts_search))
-            .setIntent(searchIntent)
-            .build()
-        mShortcutManager!!.dynamicShortcuts = arrayOf(settingShortcut,searchShortcut).toMutableList()
     }
 
     private fun initLogin(){
