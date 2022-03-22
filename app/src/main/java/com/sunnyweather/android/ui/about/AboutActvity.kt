@@ -45,6 +45,8 @@ class AboutActvity: AppCompatActivity(){
             BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimaryVariant_night))
         }
 
+        about_version.text = AppUtils.getAppVersionName()
+
         about_pic.setImageDrawable(AppUtils.getAppIcon())
 
         about_kuan.setOnClickListener {
