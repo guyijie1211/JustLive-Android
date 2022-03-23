@@ -91,8 +91,11 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.1.72.android'                //fastJson
     implementation 'com.roger.gifloadinglibrary:gifloadinglibrary:1.1.1'//加载动画
     implementation 'com.github.liangjingkanji:StateLayout:1.2.0'        //缺省页
-    implementation 'com.auth0:java-jwt:3.18.2'                          //虎牙JWT
-    //implementation 'com.auth0.android:jwtdecode:2.0.0'
+    api 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly('io.jsonwebtoken:jjwt-orgjson:0.11.2') {
+        exclude group: 'org.json', module: 'json' //provided by Android natively
+    }
     implementation 'com.github.AlexLiuSheng:CheckVersionLib:2.4.1_androidx' //版本更新
     implementation  'com.umeng.umsdk:common:9.4.4'// 友盟统计
     implementation  'com.umeng.umsdk:asms:1.4.1'// 友盟统计
