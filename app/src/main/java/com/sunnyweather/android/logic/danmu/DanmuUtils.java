@@ -1,13 +1,13 @@
 package com.sunnyweather.android.logic.danmu;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomViewModel;
 
 import java.io.ByteArrayInputStream;
@@ -29,6 +29,9 @@ import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 import okio.ByteString;
@@ -146,14 +149,13 @@ public class DanmuUtils {
             header.put("typ", "JWT");
 
             //生成JWT凭证
-            Algorithm algorithm = Algorithm.HMAC256(secret);   //开发者密钥
-            String sToken = JWT.create()
-                    .withHeader(header)                    //JWT声明
-                    .withIssuedAt(iat)                     //jwt凭证生成时间
-                    .withExpiresAt(exp)                    //jwt凭证超时时间
-                    .withClaim("appId", appId)             //开发者ID
-                    .sign(algorithm);
-
+            String sToken = Jwts.builder()
+                    .setHeader(header)
+                    .setIssuedAt(iat)
+                    .setExpiration(exp)
+                    .claim("appId", appId)
+                    .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)))
+                    .compact();
 
             Map<String, Object> authMap = new HashMap<String, Object>();
             authMap.put("iat", currentTimeMillis / 1000);    //jwt凭证生成时间戳（秒）
