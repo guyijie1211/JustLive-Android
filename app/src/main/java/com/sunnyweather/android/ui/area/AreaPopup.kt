@@ -182,7 +182,7 @@ class AreaPopup(context: Context) : BottomPopupView(context), View.OnClickListen
         isClearInputButtonEnabled = true
         setSuggestionsDisabled(false)
         setQueryInputGravity(Gravity.START or Gravity.CENTER)
-        setQueryInputHint("分类搜索")
+        setQueryInputHint("分区搜索(长按分区可收藏)")
     }
 
     private val mOnSearchConfirmedListener = OnSearchConfirmedListener { searchView, query ->
