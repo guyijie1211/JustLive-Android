@@ -29,7 +29,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
-import com.blankj.utilcode.util.ScreenUtils;
 import com.google.gson.internal.LinkedTreeMap;
 import com.sunnyweather.android.R;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity;
@@ -275,7 +274,8 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         } else if (id == xyz.doikki.videocontroller.R.id.iv_play) {
             mControlWrapper.togglePlay();
         } else if (id == R.id.iv_refresh) {
-            mControlWrapper.replay(true);
+            LiveRoomActivity activity = (LiveRoomActivity)getContext();
+            activity.refreshUrl();
         } else if (id == R.id.danmu_show) {
             danmu_show.setSelected(showDanmu);
             showDanmu = !showDanmu;

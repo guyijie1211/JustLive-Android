@@ -751,6 +751,49 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         }
     }
 
+    fun refreshUrl() {
+        scopeNetLife { // 创建作用域
+            val realUrl =
+                "http://yj1211.work:8013/api/live/getRealUrl?platform=$platform&roomId=$roomId"
+            val realUrlData = Get<String>(realUrl)
+            var realUrlResult: JSONObject = JSONObject.parseObject(realUrlData.await()).getJSONObject("data")
+            val urls: LinkedTreeMap<String, String> = getRealUrls(realUrlResult)
+            if (urls != null && urls.size > 0) {
+                val isMobileData = NetworkUtils.isMobileData()
+                if (isMobileData) {
+                    val defaultDefinition = sharedPreferences.getString("default_definition_4G", "原画")
+                    if (urls.containsKey(defaultDefinition)) {
+                        mDefinitionControlView?.setData(urls, defaultDefinition)
+                        onRateChange(urls[defaultDefinition]) //设置视频地址
+                    } else {
+                        for (item in definitionArray) {
+                            if (urls.containsKey(item)) {
+                                mDefinitionControlView?.setData(urls, item)
+                                onRateChange(urls[item]) //设置视频地址
+                                break
+                            }
+                        }
+                    }
+                } else {
+                    val defaultDefinition = sharedPreferences.getString("default_definition_wifi", "原画")
+                    if (urls.containsKey(defaultDefinition)) {
+                        mDefinitionControlView?.setData(urls, defaultDefinition)
+                        onRateChange(urls[defaultDefinition]) //设置视频地址
+                    } else {
+                        for (item in definitionArray) {
+                            if (urls.containsKey(item)) {
+                                mDefinitionControlView?.setData(urls, item)
+                                onRateChange(urls[item])
+                                break
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
     fun getRealUrls(jsonObject: JSONObject): LinkedTreeMap<String, String>{
         val rooms : Map<String, String> = JSONObject.parseObject(
             jsonObject.toJSONString(),
