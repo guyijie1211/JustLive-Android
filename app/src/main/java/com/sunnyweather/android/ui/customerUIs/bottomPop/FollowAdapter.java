@@ -2,10 +2,8 @@ package com.sunnyweather.android.ui.customerUIs.bottomPop;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;

@@ -91,9 +91,9 @@
             android:layout_below="@+id/ownerName"
             android:layout_alignStart="@+id/ownerName"
             android:ellipsize="end"
-            android:textColor="?attr/colorOnPrimary"
             android:singleLine="true"
             android:text="直播间标题测试直播间标题测试直播间标题测试直播间标题测试"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="12dp" />
 
     </RelativeLayout>

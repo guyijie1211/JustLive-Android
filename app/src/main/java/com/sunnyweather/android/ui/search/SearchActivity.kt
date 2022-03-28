@@ -2,8 +2,6 @@ package com.sunnyweather.android.ui.search
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.view.animation.LinearInterpolator
@@ -71,20 +69,6 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
             BarUtils.setStatusBarLightMode(this, false)
         }
         init()
-//        val window: Window = this.window
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//            window.statusBarColor = Color.TRANSPARENT
-//            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-//
-//            val decor: View = this.window.decorView
-//                decor.systemUiVisibility =
-//                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//            SunnyWeatherApplication.MIUISetStatusBarLightMode(this, true)
-//        }
-        //****************************
         recyclerView_search.addItemDecoration(SpaceItemDecoration(10))
         searchAdapter = SearchAdapter(this, viewModel.ownersList as List<Owner>)
         recyclerView_search.adapter = searchAdapter

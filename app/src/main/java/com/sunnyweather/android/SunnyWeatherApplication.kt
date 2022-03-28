@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.drake.brv.utils.BRV
 import com.sunnyweather.android.logic.model.UserInfo
 import xyz.doikki.videoplayer.player.VideoViewConfig
 import xyz.doikki.videoplayer.player.VideoViewManager
@@ -100,6 +101,7 @@ class SunnyWeatherApplication : Application() {
         UMConfigure.preInit(this, "6159ddaf14e22b6a4f146772", "QQ群")
         UMConfigure.init(this,"6159ddaf14e22b6a4f146772","QQ群",UMConfigure.DEVICE_TYPE_PHONE, "")
         context = applicationContext
+        BRV.modelId = BR.areaFollow
         VideoViewManager.setConfig(
             VideoViewConfig.newBuilder()
             //使用ExoPlayer解码

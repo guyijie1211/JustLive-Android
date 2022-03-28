@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="areaFollow"
+            type="com.sunnyweather.android.logic.model.AreaFollow" />
+    </data>
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/area_follow_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardBackgroundColor="?attr/colorPrimary"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="3dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/area_follow_name"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:gravity="center"
+                android:layout_alignParentStart="true"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:text="@{String.valueOf(areaFollow.areaName)}"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:id="@+id/area_follow_sort"
+                android:layout_toRightOf="@+id/area_follow_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_outline_dehaze_24"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

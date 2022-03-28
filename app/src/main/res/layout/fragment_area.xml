@@ -5,8 +5,41 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <com.paulrybitskyi.persistentsearchview.PersistentSearchView
+        android:id="@+id/area_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingStart="4dp"
+        android:paddingRight="4dp"
+        android:paddingEnd="4dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="?attr/colorPrimary"
+        app:rightButtonDrawable="@drawable/ic_filters"
+        app:clearInputButtonDrawable="@drawable/ic_close"
+        app:queryInputTextColor="?attr/colorOnPrimary"
+        app:queryInputHintColor="?attr/colorOnSecondary"
+        app:queryInputCursorColor="@color/colorAccent"
+        app:queryInputBarIconColor="@color/iconColor"
+        app:progressBarColor="@color/colorAccent"
+        app:dividerColor="@color/dividerColor"
+        app:suggestionIconColor="@color/suggestionIconColor"
+        app:suggestionRecentSearchIconColor="@color/suggestionIconColor"
+        app:suggestionSearchSuggestionIconColor="@color/suggestionIconColor"
+        app:suggestionTextColor="@color/suggestionTextColor"
+        app:suggestionSelectedTextColor="@color/suggestionSelectedTextColor"
+        app:isDismissableOnTouchOutside="true"
+        app:isVoiceInputButtonEnabled="false"
+        app:isProgressBarEnabled="true"
+        app:isClearInputButtonEnabled="true"
+        app:areSuggestionsDisabled="false"
+        app:shouldDimBehind="true"/>
+
     <com.angcyo.tablayout.DslTabLayout
         android:id="@+id/tab_area"
+        android:layout_marginTop="70dp"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_gravity="center"
@@ -32,15 +65,35 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tab_area"
         app:defaultNavHost="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_search_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimaryVariant"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="10dp"
+        android:paddingStart="2dp"
+        android:paddingLeft="2dp"
+        android:layout_marginTop="70dp"
+        android:paddingEnd="2dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="4dp"
+        android:scrollbars="none" />
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extended_fab"
+        android:id="@+id/area_follow_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
-        android:text="收藏"
-        app:icon="@drawable/ic_baseline_favorite_border_24"
-        android:visibility="gone"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="已收藏"
+        app:icon="@drawable/ic_baseline_star_outline_24"/>
 
 </RelativeLayout>

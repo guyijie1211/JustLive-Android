@@ -99,6 +99,7 @@ public class StandardVideoController extends YJGestureVideoController implements
         }
         if (i == R.id.tv_favourite) {
             new XPopup.Builder(getContext())
+                    .hasStatusBar(false)
                     .popupPosition(PopupPosition.Right)//右边
                     .hasShadowBg(false)
                     .asCustom(new FollowDrawer(getContext()))

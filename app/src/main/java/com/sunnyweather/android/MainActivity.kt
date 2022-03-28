@@ -26,7 +26,7 @@ import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.blankj.utilcode.util.*
 import com.sunnyweather.android.logic.model.UpdateInfo
 import com.sunnyweather.android.logic.model.UserInfo
-import com.sunnyweather.android.ui.area.AreaFragment
+import com.sunnyweather.android.ui.area.AreaPopup
 import com.sunnyweather.android.ui.area.AreaSingleFragment
 import com.sunnyweather.android.ui.follows.FollowsFragment
 import com.sunnyweather.android.ui.home.HomeFragment
@@ -41,13 +41,14 @@ import com.sunnyweather.android.ui.about.AboutActvity
 import com.blankj.utilcode.util.ToastUtils
 
 import android.graphics.Bitmap
+import com.lxj.xpopup.XPopup
 import moe.feng.alipay.zerosdk.AlipayZeroSdk
 import kotlinx.android.synthetic.main.dialog_donate.*
 
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LoginViewModel::class.java) }
-    private lateinit var areaFragment: AreaFragment
+    private lateinit var areaPopup : AreaPopup
     private lateinit var viewPager: ViewPager2
     private var isVersionCheck = false
     private lateinit var mMenu: Menu
@@ -80,6 +81,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         BarUtils.setStatusBarLightMode(this, themeActived != R.style.nightTheme)
         setSupportActionBar(main_toolBar)
         initLogin()
+        areaPopup = AreaPopup(this)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.icon_menu)
@@ -242,9 +244,15 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         }
         //标题栏的标题click事件
         main_toolBar_title.setOnClickListener {
-            val fragmentManager = supportFragmentManager
-            areaFragment = AreaFragment()
-            areaFragment.show(fragmentManager, "areaFragment")
+            areaPopup = AreaPopup(this)
+            XPopup.Builder(this)
+                .isDestroyOnDismiss(true)
+                .autoFocusEditText(false)
+                .moveUpToKeyboard(false)
+                .popupHeight(ScreenUtils.getAppScreenHeight() * 4 / 5)
+                .isViewMode(true)
+                .asCustom(areaPopup)
+                .show();
         }
 
         //动态创建shortcuts
@@ -296,8 +304,8 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     override fun onFragment(areaType: String, areaName:String) {
         main_toolBar_title.text = areaName
         SunnyWeatherApplication.areaType.value = areaType
-        SunnyWeatherApplication.areaName.value = areaName
-        areaFragment.dismiss()
+        SunnyWeatherApplication.areaName.value = if (areaName == "全部推荐") "all" else areaName
+        areaPopup.dismiss()
     }
 
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
