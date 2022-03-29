@@ -36,7 +36,6 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
         super.onActivityCreated(savedInstanceState)
         if (!viewModel.inited) {
             viewModel.isLive = this.isLive
-            viewModel.inited = true
         }
         var cardNum = ScreenUtils.getAppScreenWidth()/ ConvertUtils.dp2px(195F)
         if (cardNum < 2) cardNum = 2
@@ -60,11 +59,13 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
 
         SunnyWeatherApplication.isLogin.observe(viewLifecycleOwner, {result ->
             if (!viewModel.inited && result){
+                viewModel.inited = true
                 progressBar_roomList.isVisible = true
                 viewModel.clearRoomList()
                 adapterOn.notifyDataSetChanged()
                 viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
-            } else if (!viewModel.inited) {
+            } else if (!result){
+                viewModel.inited = false
                 viewModel.clearRoomList()
                 adapterOn.notifyDataSetChanged()
             }
@@ -85,7 +86,6 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
             }
         })
 
-        viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         if (SunnyWeatherApplication.isLogin.value!!){
             progressBar_roomList.isVisible = true
         }
