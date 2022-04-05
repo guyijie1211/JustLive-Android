@@ -272,7 +272,7 @@ class AreaPopup(context: Context) : BottomPopupView(context), View.OnClickListen
         area_search.showLeftButton()
         areaMap.values.forEach { list ->
             list.forEach { area ->
-                if (area.getString("areaName").contains(query)) {
+                if (area.getString("areaName").lowercase().contains(query.lowercase())) {
                     var areaInfo = AreaInfo(
                         area.getString("platform"),
                         area.getString("areaType"),
