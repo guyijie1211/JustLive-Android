@@ -22,6 +22,7 @@ class AboutActvity: AppCompatActivity(){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         var themeActived: Int
         val autoDark = sharedPreferences.getBoolean("autoDark", true)
+        val pureDark = sharedPreferences.getBoolean("pureDark", false)
         if (autoDark) {
             if(SunnyWeatherApplication.isNightMode(this)){
                 themeActived = R.style.nightTheme
@@ -33,17 +34,15 @@ class AboutActvity: AppCompatActivity(){
         } else {
             themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
         }
-        setTheme(themeActived)
+        if (pureDark && themeActived == R.style.nightTheme) {
+            setTheme(R.style.nightTheme_dark)
+        } else {
+            setTheme(themeActived)
+        }
         setContentView(R.layout.activity_about)
         BarUtils.transparentStatusBar(this)
-        BarUtils.addMarginTopEqualStatusBarHeight(about_container)
-        if (themeActived != R.style.nightTheme) {
-            BarUtils.setStatusBarLightMode(this, true)
-            BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimaryVariant))
-        } else {
-            BarUtils.setStatusBarLightMode(this, false)
-            BarUtils.setStatusBarColor(this, resources.getColor(R.color.colorPrimaryVariant_night))
-        }
+        BarUtils.addMarginTopEqualStatusBarHeight(about_back)
+        BarUtils.setStatusBarLightMode(this, themeActived != R.style.nightTheme)
 
         about_version.text = AppUtils.getAppVersionName()
 
@@ -71,10 +70,6 @@ class AboutActvity: AppCompatActivity(){
             var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://qm.qq.com/cgi-bin/qm/qr?k=_2KootdkU0ikLiFhBCQMJKW7PjHzySZ8&authKey=2dGp04G04G/+a1KHiIjqjpg1Se+/TgpQ5yzpEbMkzP9Y6lkrFdReKdtBtg6xC+Cs&noverify=0"))
             this.startActivity(intent)
         }
-        about_telegram.setOnClickListener {
-            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/+4r0VneskqvY1NWNl"))
-            this.startActivity(intent)
-        }
         about_github.setOnClickListener {
             var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/guyijie1211"))
             this.startActivity(intent)
@@ -86,11 +81,17 @@ class AboutActvity: AppCompatActivity(){
         about_back.setOnClickListener {
             this.onBackPressed()
         }
-        about_email.setOnClickListener {
-            val email = Intent(Intent.ACTION_SEND)
-            email.type = "text/plain"
-            email.putExtra(Intent.EXTRA_EMAIL, arrayOf("1056025931@qq.com"))
-            startActivity(Intent.createChooser(email, "选择邮件APP"))
+        about_bug.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.wolai.com/f/PjHjXcBVzyMs237mDLbrh"))
+            this.startActivity(intent)
+        }
+        about_new.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.wolai.com/f/eR8bqaBKPQeCDzyJWhBTNC"))
+            this.startActivity(intent)
+        }
+        about_progress.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.wolai.com/fpajKKnFwFiiai92UHd1Kk"))
+            this.startActivity(intent)
         }
 //        about_apple.setOnClickListener {
 //            ToastUtils.showShort("开发中")

@@ -38,6 +38,7 @@ class SettingFragment : PreferenceFragmentCompat() {
         val versionPreferences = findPreference<Preference>("version")
         val aboutPreferences = findPreference<Preference>("about_activity")
         val donatePreferences = findPreference<Preference>("donate")
+        val pureDarkPreference: SwitchPreferenceCompat? = findPreference("pureDark")
         signaturePreference?.isChecked =
             sharedPreferences.getInt("theme", R.style.SunnyWeather) != R.style.SunnyWeather
         signaturePreference?.setOnPreferenceChangeListener { _, newValue  ->
@@ -50,6 +51,10 @@ class SettingFragment : PreferenceFragmentCompat() {
                 signaturePreference.isChecked = false
                 activity?.recreate()
             }
+            true
+        }
+        pureDarkPreference?.setOnPreferenceChangeListener { _, _ ->
+            activity?.recreate()
             true
         }
         autoDark?.setOnPreferenceChangeListener { _, newValue ->

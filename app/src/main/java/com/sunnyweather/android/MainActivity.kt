@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
     private lateinit var mMenu: Menu
     private var themeActived = R.style.SunnyWeather
     private var autoDark = true
+    private var pureDark = false
     private var mShortcutManager:ShortcutManager? = null
     private var activityMain = this
 
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         //颜色主题
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         autoDark = sharedPreferences.getBoolean("autoDark", true)
+        pureDark = sharedPreferences.getBoolean("pureDark", false)
         if (autoDark) {
             if(SunnyWeatherApplication.isNightMode(this)){
                 themeActived = R.style.nightTheme
@@ -73,7 +75,11 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         } else {
             themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
         }
-        setTheme(themeActived)
+        if (pureDark && themeActived == R.style.nightTheme) {
+            setTheme(R.style.nightTheme_dark)
+        } else {
+            setTheme(themeActived)
+        }
         setContentView(R.layout.activity_main)
         drawer_dark_switch.isChecked = (themeActived == R.style.nightTheme)
         BarUtils.addMarginTopEqualStatusBarHeight(drawer_nick)
@@ -263,8 +269,9 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         super.onResume()
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val newTheme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
+        val newPureDark = sharedPreferences.getBoolean("pureDark", false)
         drawer_dark_switch.isChecked = (themeActived == R.style.nightTheme)
-        if (newTheme != themeActived){
+        if (newTheme != themeActived || newPureDark != pureDark){
             recreate()
         }
     }
