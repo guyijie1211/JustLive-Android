@@ -44,7 +44,7 @@ class AboutActvity: AppCompatActivity(){
         BarUtils.addMarginTopEqualStatusBarHeight(about_back)
         BarUtils.setStatusBarLightMode(this, themeActived != R.style.nightTheme)
 
-        about_version.text = AppUtils.getAppVersionName()
+        about_version.text = "版本号:" + AppUtils.getAppVersionName()
 
         about_pic.setImageDrawable(AppUtils.getAppIcon())
 

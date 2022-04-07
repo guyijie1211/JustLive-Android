@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                 var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
                 val ignoreVersion = sharedPref.getInt("ignoreVersion",0)
                 val versionNum = SunnyWeatherApplication.getVersionCode(SunnyWeatherApplication.context)
-                if (versionNum == updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
+                if (versionNum >= updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
                     if (isVersionCheck) {
                         Toast.makeText(SunnyWeatherApplication.context, "当前已是最新版本^_^", Toast.LENGTH_SHORT).show()
                     }

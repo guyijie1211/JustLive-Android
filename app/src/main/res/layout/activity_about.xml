@@ -221,7 +221,7 @@
                             android:layout_alignTop="@+id/about_logo_web"
                             android:layout_marginStart="10dp"
                             android:layout_toRightOf="@+id/about_logo_web"
-                            android:text="网页端"
+                            android:text="网页端(PC用)"
                             android:textColor="?attr/colorOnPrimary"
                             android:textSize="15dp" />
 
