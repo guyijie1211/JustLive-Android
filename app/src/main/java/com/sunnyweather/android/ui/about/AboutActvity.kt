@@ -93,8 +93,9 @@ class AboutActvity: AppCompatActivity(){
             var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.wolai.com/fpajKKnFwFiiai92UHd1Kk"))
             this.startActivity(intent)
         }
-//        about_apple.setOnClickListener {
-//            ToastUtils.showShort("开发中")
-//        }
+        about_forum.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.9rai.com"))
+            this.startActivity(intent)
+        }
     }
 }

@@ -268,7 +268,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:divider="?attr/colorPrimaryVariant"
                     android:orientation="vertical"
                     android:paddingHorizontal="30dp"
@@ -419,6 +419,44 @@
 
                         <ImageView
                             android:id="@+id/about_arrow_github"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_baseline_chevron_right_24" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/about_forum"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <ImageView
+                            android:id="@+id/about_logo_forum"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/logo_forums" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@+id/about_logo_forum"
+                            android:layout_marginStart="10dp"
+                            android:layout_toRightOf="@+id/about_logo_forum"
+                            android:text="论坛"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/about_arrow_forum"
+                            android:text="由\@小优 提供"
+                            android:textColor="?attr/colorOnPrimary" />
+
+                        <ImageView
+                            android:id="@+id/about_arrow_forum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
