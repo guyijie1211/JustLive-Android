@@ -42,6 +42,9 @@
             app:icon="@drawable/ic_baseline_brightness_medium_24"
             app:title="深色主题"/>
         <SwitchPreferenceCompat
+            app:key="pureDark"
+            app:title="纯黑深色模式"/>
+        <SwitchPreferenceCompat
             app:key="autoDark"
             app:title="深色跟随系统"/>
         <ListPreference

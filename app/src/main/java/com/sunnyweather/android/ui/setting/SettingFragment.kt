@@ -38,6 +38,7 @@ class SettingFragment : PreferenceFragmentCompat() {
         val versionPreferences = findPreference<Preference>("version")
         val aboutPreferences = findPreference<Preference>("about_activity")
         val donatePreferences = findPreference<Preference>("donate")
+        val pureDarkPreference: SwitchPreferenceCompat? = findPreference("pureDark")
         signaturePreference?.isChecked =
             sharedPreferences.getInt("theme", R.style.SunnyWeather) != R.style.SunnyWeather
         signaturePreference?.setOnPreferenceChangeListener { _, newValue  ->
@@ -50,6 +51,10 @@ class SettingFragment : PreferenceFragmentCompat() {
                 signaturePreference.isChecked = false
                 activity?.recreate()
             }
+            true
+        }
+        pureDarkPreference?.setOnPreferenceChangeListener { _, _ ->
+            activity?.recreate()
             true
         }
         autoDark?.setOnPreferenceChangeListener { _, newValue ->
@@ -135,7 +140,7 @@ class SettingFragment : PreferenceFragmentCompat() {
                 var sharedPref = getSharedPreferences(requireContext(), "JustLive")
                 val ignoreVersion = sharedPref.getInt("ignoreVersion",0)
                 val versionNum = SunnyWeatherApplication.getVersionCode(SunnyWeatherApplication.context)
-                if (versionNum == updateInfo.versionNum) {
+                if (versionNum >= updateInfo.versionNum) {
                     Toast.makeText(SunnyWeatherApplication.context, "当前已是最新版本^_^", Toast.LENGTH_SHORT).show()
                     return@observe
                 }

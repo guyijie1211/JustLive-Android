@@ -17,7 +17,7 @@ import xyz.doikki.videoplayer.controller.MediaPlayerControl;
  * 并对部分api做了封装，方便使用
  */
 public class YJControlWrapper extends ControlWrapper {
-    private Boolean isLandscape = false;
+    private Boolean isLandscape = ScreenUtils.isLandscape();
 
     public YJControlWrapper(@NonNull MediaPlayerControl playerControl, @NonNull IVideoController controller) {
         super(playerControl, controller);

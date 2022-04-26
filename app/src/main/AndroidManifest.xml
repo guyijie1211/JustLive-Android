@@ -69,7 +69,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.setting.SettingActivity"
-            android:theme="@style/PreferenceScreen"
             android:label="设置" />
         <activity
             android:name=".ui.login.LoginActivity"

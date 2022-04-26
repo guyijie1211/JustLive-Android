@@ -49,6 +49,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         var themeActived: Int
         val autoDark = sharedPreferences.getBoolean("autoDark", true)
+        val pureDark = sharedPreferences.getBoolean("pureDark", false)
         if (autoDark) {
             if(SunnyWeatherApplication.isNightMode(this)){
                 themeActived = R.style.nightTheme
@@ -60,7 +61,11 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         } else {
             themeActived = sharedPreferences.getInt("theme", R.style.SunnyWeather)
         }
-        setTheme(themeActived)
+        if (pureDark && themeActived == R.style.nightTheme) {
+            setTheme(R.style.nightTheme_dark)
+        } else {
+            setTheme(themeActived)
+        }
         setContentView(R.layout.activity_search)
         BarUtils.transparentStatusBar(this)
         if (themeActived != R.style.nightTheme) {

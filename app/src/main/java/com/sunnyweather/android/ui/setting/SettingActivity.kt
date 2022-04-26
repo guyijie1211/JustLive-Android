@@ -17,6 +17,7 @@ class SettingActivity : AppCompatActivity() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         var theme: Int
         val autoDark = sharedPreferences.getBoolean("autoDark", true)
+        val pureDark = sharedPreferences.getBoolean("pureDark", false)
         if (autoDark) {
             if(SunnyWeatherApplication.isNightMode(this)){
                 theme = R.style.nightTheme
@@ -28,11 +29,18 @@ class SettingActivity : AppCompatActivity() {
         } else {
             theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
         }
+        theme = if (theme == R.style.SunnyWeather) {
+            R.style.PreferenceScreen
+        } else if (pureDark) {
+            R.style.PreferenceScreen_dark
+        } else {
+            R.style.PreferenceScreen_night
+        }
         setTheme(theme)
         setContentView(R.layout.activity_setting)
         BarUtils.transparentStatusBar(this)
         BarUtils.addMarginTopEqualStatusBarHeight(setting_toolbar)
-        if (theme != R.style.nightTheme) {
+        if (theme != R.style.PreferenceScreen_night) {
             BarUtils.setStatusBarLightMode(this, true)
         } else {
             BarUtils.setStatusBarLightMode(this, false)
