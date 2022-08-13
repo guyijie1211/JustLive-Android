@@ -109,19 +109,19 @@ object Repository {
                 val rooms = liveResponse.data
                 val resultRooms = LinkedTreeMap<String, String>()
                 if (rooms.containsKey("OD")) {
-                    resultRooms["原画"] = rooms["OD"]
+                    resultRooms["原画"] = rooms["OD"].replace("&ctype=tars_mobile", "")
                 }
                 if (rooms.containsKey("HD")) {
-                    resultRooms["超清"] = rooms["HD"]
+                    resultRooms["超清"] = rooms["HD"].replace("&ctype=tars_mobile", "")
                 }
                 if (rooms.containsKey("SD")) {
-                    resultRooms["高清"] = rooms["SD"]
+                    resultRooms["高清"] = rooms["SD"].replace("&ctype=tars_mobile", "")
                 }
                 if (rooms.containsKey("LD")) {
-                    resultRooms["清晰"] = rooms["LD"]
+                    resultRooms["清晰"] = rooms["LD"].replace("&ctype=tars_mobile", "")
                 }
                 if (rooms.containsKey("FD")) {
-                    resultRooms["流畅"] = rooms["FD"]
+                    resultRooms["流畅"] = rooms["FD"].replace("&ctype=tars_mobile", "")
                 }
                 Result.success(resultRooms)
             } else if (liveResponse.code == "400") {
