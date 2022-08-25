@@ -2,6 +2,14 @@
 <resources>
     <color name="barColor">?attr/colorPrimary</color>
 
+    <color name="colorPrimary_dark">#000000</color>
+    <color name="colorPrimaryVariant_dark">#000000</color>
+    <color name="colorOnPrimary_dark">#E3E3E5</color>
+    <color name="colorSecondary_dark">#14B9C8</color>
+    <color name="colorSecondaryVariant_dark">#0F8691</color>
+    <color name="colorOnSecondary_dark">#DCDCDC</color>
+    <color name="colorError_dark">#D66868</color>
+
     <color name="colorPrimary_night">#252733</color>
     <color name="colorPrimaryVariant_night">#343947</color>
     <color name="colorOnPrimary_night">#E3E3E5</color>

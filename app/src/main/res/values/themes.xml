@@ -23,7 +23,7 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="SunnyWeather" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="SunnyWeather" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
@@ -43,7 +43,7 @@
         <item name="actionOverflowButtonStyle">@style/OverFlow</item>
     </style>
 
-    <style name="nightTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="nightTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant_night</item>
@@ -62,8 +62,39 @@
         <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
         <item name="actionOverflowButtonStyle">@style/OverFlow</item>
     </style>
-    <style name="PreferenceScreen" parent="nightTheme">
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:background">?attr/colorPrimaryVariant</item>
+    <style name="nightTheme_dark" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary_dark</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant_dark</item>
+        <item name="colorOnPrimarySurface">@color/colorOnPrimary_dark</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q" >false</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary_dark</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecondary_dark</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant_dark</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary_dark</item>
+        <item name="colorError">@color/colorError_dark</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+        <item name="actionOverflowMenuStyle">@style/MyMenu</item>
+        <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+    </style>
+    <style name="PreferenceScreen" parent="SunnyWeather">
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:background">@color/colorPrimaryVariant</item>
+        <item name="android:textColorSecondary">@color/colorOnPrimary</item>
+    </style>
+
+    <style name="PreferenceScreen_night" parent="nightTheme">
+        <item name="android:textColor">@color/colorOnPrimary_night</item>
+        <item name="android:background">@color/colorPrimaryVariant_night</item>
+        <item name="android:textColorSecondary">@color/colorOnPrimary_night</item>
+    </style>
+    <style name="PreferenceScreen_dark" parent="nightTheme_dark">
+        <item name="android:textColor">@color/colorOnPrimary_dark</item>
+        <item name="android:background">@color/colorPrimaryVariant_dark</item>
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 </resources>

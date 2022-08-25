@@ -35,6 +35,7 @@ class LoginActivity: AppCompatActivity() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         var theme: Int
         val autoDark = sharedPreferences.getBoolean("autoDark", true)
+        val pureDark = sharedPreferences.getBoolean("pureDark", false)
         if (autoDark) {
             if(SunnyWeatherApplication.isNightMode(this)){
                 theme = R.style.nightTheme
@@ -46,7 +47,11 @@ class LoginActivity: AppCompatActivity() {
         } else {
             theme = sharedPreferences.getInt("theme", R.style.SunnyWeather)
         }
-        setTheme(theme)
+        if (pureDark && theme == R.style.nightTheme) {
+            setTheme(R.style.nightTheme_dark)
+        } else {
+            setTheme(theme)
+        }
         setContentView(R.layout.activity_login)
         if (theme != R.style.nightTheme) {
             BarUtils.setStatusBarLightMode(this, true)

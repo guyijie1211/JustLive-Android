@@ -53,7 +53,6 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
                 refresh_home.finishLoadMoreWithNoMoreData()
                 return@setOnRefreshListener
             }
-            viewModel.clearRoomList()
             viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         }
 
