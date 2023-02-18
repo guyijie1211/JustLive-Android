@@ -40,8 +40,8 @@ class HomeFragment : Fragment() {
                 1 -> RecommendFragment("douyu")
                 2 -> RecommendFragment("huya")
                 3 -> RecommendFragment("bilibili")
-                4 -> RecommendFragment("egame")
-                5 -> RecommendFragment("cc")
+//                4 -> RecommendFragment("egame")
+                4 -> RecommendFragment("cc")
                 else -> Fragment()
             }
     }

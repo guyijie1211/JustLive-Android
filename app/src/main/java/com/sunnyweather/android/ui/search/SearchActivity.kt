@@ -94,7 +94,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
         intent.getStringExtra("query")?.also { query ->
-            viewModel.search("all", query, "0")
+            SunnyWeatherApplication.userInfo?.uid?.let { viewModel.search("all", query, it) }
         }
 
     }
@@ -160,7 +160,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         isClearInputButtonEnabled = true
         setSuggestionsDisabled(false)
         setQueryInputGravity(Gravity.START or Gravity.CENTER)
-        setQueryInputHint("斗鱼用房间号搜")
+        setQueryInputHint("搜索功能需登录")
     }
     //选择历史记录或删除
     private val mOnSuggestionChangeListener = object : OnSuggestionChangeListener {
@@ -230,7 +230,7 @@ class SearchActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.clearList()
         persistentSearchView.hideProgressBar(false)
         persistentSearchView.showLeftButton()
-        viewModel.search("all", query, "0")
+        SunnyWeatherApplication.userInfo?.uid?.let { viewModel.search("all", query, it) }
     }
 
     //保存历史记录

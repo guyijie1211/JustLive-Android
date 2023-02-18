@@ -19,7 +19,7 @@ object LiveNetwork {
     suspend fun getRealUrl(platform: String, roomId: String) = liveService.getRealUrl(platform, roomId).await()
     suspend fun getRoomInfo(uid: String, platform: String, roomId: String) = liveService.getRoomInfo(uid, platform, roomId).await()
     suspend fun getRoomsOn(uid: String) = liveService.getRoomsOn(uid).await()
-    suspend fun Search(platform: String, keyWords: String, isLive: String) = liveService.search(platform, keyWords, isLive).await()
+    suspend fun Search(platform: String, keyWords: String, uid: String) = liveService.search(platform, keyWords, uid).await()
     suspend fun getAllAreas() = liveService.getAllAreas().await()
     suspend fun login(username: String, password: String) = liveService.login(username, password).await()
     suspend fun register(username: String, nickname: String, password: String) = liveService.register(username, nickname, password).await()

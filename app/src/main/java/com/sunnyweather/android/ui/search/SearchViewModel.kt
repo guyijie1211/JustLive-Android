@@ -7,12 +7,12 @@ import com.sunnyweather.android.logic.Repository
 import com.sunnyweather.android.logic.model.Owner
 
 class SearchViewModel : ViewModel(){
-    class SearchRequest (val platform: String, val keyWords: String, val isLive: String)
+    class SearchRequest (val platform: String, val keyWords: String, val uid: String)
 
     private val searchWordLiveData = MutableLiveData<SearchRequest>()
     var ownersList = ArrayList<Owner>()
     val ownerListLiveData = Transformations.switchMap(searchWordLiveData) {
-        value -> Repository.search(value.platform, value.keyWords, value.isLive)
+        value -> Repository.search(value.platform, value.keyWords, value.uid)
     }
 
     fun search(platform: String, keyWords: String, isLive: String) {

@@ -60,10 +60,7 @@ class AboutActvity: AppCompatActivity(){
             }
         }
         about_weibo.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.addCategory(Intent.CATEGORY_DEFAULT)
-            intent.addCategory(Intent.CATEGORY_BROWSABLE)
-            intent.data = Uri.parse("sinaweibo://userinfo?uid=5211151565")
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://weibo.com/u/5211151565"))
             startActivity(intent)
         }
         about_qq.setOnClickListener {
@@ -80,22 +77,6 @@ class AboutActvity: AppCompatActivity(){
         }
         about_back.setOnClickListener {
             this.onBackPressed()
-        }
-        about_bug.setOnClickListener {
-            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.wolai.com/f/PjHjXcBVzyMs237mDLbrh"))
-            this.startActivity(intent)
-        }
-        about_new.setOnClickListener {
-            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.wolai.com/f/eR8bqaBKPQeCDzyJWhBTNC"))
-            this.startActivity(intent)
-        }
-        about_progress.setOnClickListener {
-            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.wolai.com/fpajKKnFwFiiai92UHd1Kk"))
-            this.startActivity(intent)
-        }
-        about_forum.setOnClickListener {
-            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.9rai.com"))
-            this.startActivity(intent)
         }
     }
 }
