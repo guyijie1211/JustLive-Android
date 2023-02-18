@@ -63,120 +63,9 @@
                 android:layout_marginTop="5dp"
                 android:text="意见反馈"
                 android:textColor="?attr/colorOnPrimary" />
-            <androidx.cardview.widget.CardView
-                android:id="@+id/about_report_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/about_report"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="5dp"
-                app:cardBackgroundColor="?attr/colorPrimary"
-                app:cardCornerRadius="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:divider="?attr/colorPrimaryVariant"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="30dp"
-                    android:showDividers="middle">
-
-                    <RelativeLayout
-                        android:id="@+id/about_bug"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp">
-
-                        <ImageView
-                            android:id="@+id/about_logo_bug"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/logo_wolai" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignTop="@+id/about_logo_bug"
-                            android:layout_marginStart="10dp"
-                            android:layout_toRightOf="@+id/about_logo_bug"
-                            android:text="BUG反馈"
-                            android:textColor="?attr/colorOnPrimary"
-                            android:textSize="15dp" />
-
-                        <ImageView
-                            android:id="@+id/about_arrow_bug"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_baseline_chevron_right_24" />
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:id="@+id/about_new"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp">
-
-                        <ImageView
-                            android:id="@+id/about_logo_new"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/logo_wolai" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignTop="@+id/about_logo_new"
-                            android:layout_marginStart="10dp"
-                            android:layout_toRightOf="@+id/about_logo_new"
-                            android:text="功能建议"
-                            android:textColor="?attr/colorOnPrimary"
-                            android:textSize="15dp" />
-
-                        <ImageView
-                            android:id="@+id/about_arrow_new"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_baseline_chevron_right_24" />
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:id="@+id/about_progress"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp">
-
-                        <ImageView
-                            android:id="@+id/about_logo_progress"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/logo_wolai" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignTop="@+id/about_logo_progress"
-                            android:layout_marginStart="10dp"
-                            android:layout_toRightOf="@+id/about_logo_progress"
-                            android:text="开发进度"
-                            android:textColor="?attr/colorOnPrimary"
-                            android:textSize="15dp" />
-
-                        <ImageView
-                            android:id="@+id/about_arrow_progress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_baseline_chevron_right_24" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
             <TextView
-                android:layout_below="@+id/about_report_card"
+                android:layout_below="@+id/about_about"
                 android:id="@+id/about_platform"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -221,7 +110,7 @@
                             android:layout_alignTop="@+id/about_logo_web"
                             android:layout_marginStart="10dp"
                             android:layout_toRightOf="@+id/about_logo_web"
-                            android:text="网页端(PC用)"
+                            android:text="网页端"
                             android:textColor="?attr/colorOnPrimary"
                             android:textSize="15dp" />
 
@@ -268,7 +157,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="200dp"
                     android:divider="?attr/colorPrimaryVariant"
                     android:orientation="vertical"
                     android:paddingHorizontal="30dp"
@@ -338,7 +227,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toLeftOf="@+id/about_arrow_weibo"
-                            android:text="\@YJ顾"
+                            android:text="\@YJ1211_"
                             android:textColor="?attr/colorOnPrimary" />
 
                         <ImageView
@@ -419,44 +308,6 @@
 
                         <ImageView
                             android:id="@+id/about_arrow_github"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_baseline_chevron_right_24" />
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:id="@+id/about_forum"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp">
-
-                        <ImageView
-                            android:id="@+id/about_logo_forum"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/logo_forums" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignTop="@+id/about_logo_forum"
-                            android:layout_marginStart="10dp"
-                            android:layout_toRightOf="@+id/about_logo_forum"
-                            android:text="论坛"
-                            android:textColor="?attr/colorOnPrimary"
-                            android:textSize="15dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@+id/about_arrow_forum"
-                            android:text="由\@小优 提供"
-                            android:textColor="?attr/colorOnPrimary" />
-
-                        <ImageView
-                            android:id="@+id/about_arrow_forum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"

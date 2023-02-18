@@ -23,7 +23,7 @@ interface LiveService {
     @GET("/api/live/getRoomsOn")
     fun getRoomsOn(@Query("uid") uid: String): Call<LiveRoomResponse>
     @GET("/api/live/search")
-    fun search(@Query("platform") platform: String, @Query("keyWords") keyWords: String, @Query("isLive") isLive: String): Call<SearchResponse>
+    fun search(@Query("platform") platform: String, @Query("keyWords") keyWords: String, @Query("uid") uid: String): Call<SearchResponse>
     @GET("/api/live/getAllAreas")
     fun getAllAreas(): Call<AreaAllResponse>
     @GET("/api/live/follow")

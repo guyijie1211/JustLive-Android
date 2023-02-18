@@ -180,9 +180,9 @@ object Repository {
         }
         emit(result)
     }
-    fun search(platform: String, keyWords: String, isLive: String) = liveData(Dispatchers.IO){
+    fun search(platform: String, keyWords: String, uid: String) = liveData(Dispatchers.IO){
         val result = try {
-            val liveResponse = LiveNetwork.Search(platform, keyWords, isLive)
+            val liveResponse = LiveNetwork.Search(platform, keyWords, uid)
             when (liveResponse.code) {
                 "200" -> {
                     val rooms = liveResponse.data
