@@ -1,11 +1,13 @@
 package com.sunnyweather.android.ui.roomList
 
 import android.content.Intent
-import android.graphics.Point
+import android.graphics.Outline
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -31,11 +33,21 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
         val roomCategory: TextView = view.findViewById(R.id.roomCategory)
         val liveNum: TextView = view.findViewById(R.id.liveNum)
         val notLive: TextView = view.findViewById(R.id.room_not_live)
+        val isRecord: RelativeLayout = view.findViewById(R.id.record)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolder{
         val view = LayoutInflater.from(parent.context).inflate(R.layout.room_item, parent, false)
         val holder = ViewHolder(view)
+        holder.isRecord.background.alpha = 150
+        holder.isRecord.run {
+            outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: Outline) {
+                    outline.setRoundRect(0,0,view.width,view.height, 20f)
+                }
+            }
+            clipToOutline = true
+        }
         holder.itemView.setOnClickListener {
             val position = holder.layoutPosition
             val roomInfo = roomList[position]
@@ -62,6 +74,10 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
             holder.notLive.visibility = View.VISIBLE
             //黑白图
             Glide.with(fragment).load(roomInfo.ownerHeadPic).transforms(BlackWhiteTransformation()).transition(withCrossFade()).into(holder.ownerPic)
+        }
+
+        if (roomInfo.isRecord) {
+            holder.isRecord.visibility = View.VISIBLE
         }
     }
 

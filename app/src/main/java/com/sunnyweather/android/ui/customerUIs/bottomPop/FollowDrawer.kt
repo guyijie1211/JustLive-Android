@@ -47,7 +47,7 @@ class FollowDrawer(context: Context): DrawerPopupView(context) {
                         var roomInfo = RoomInfo(item.getString("roomId"),item.getString("platForm"),
                             "",item.getString("ownerHeadPic"),
                             item.getString("ownerName"),
-                            item.getString("roomName"),"","",0,0,0,"")
+                            item.getString("roomName"),"","",0,0,0,"", item.getBoolean("isRecord"))
                         adapterFollow.addData(roomInfo)
                     }
                 }

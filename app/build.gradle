@@ -13,9 +13,9 @@ android {
     defaultConfig {
         applicationId "com.yj1211.justlive"
         minSdk 21
-        targetSdk 30
-        versionCode 20
-        versionName "0.2.9"
+        targetSdk 31
+        versionCode 22
+        versionName "0.2.10"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -98,7 +98,6 @@ dependencies {
     runtimeOnly('io.jsonwebtoken:jjwt-orgjson:0.11.2') {
         exclude group: 'org.json', module: 'json' //provided by Android natively
     }
-    implementation 'com.github.AlexLiuSheng:CheckVersionLib:2.4.1_androidx' //版本更新
     implementation  'com.umeng.umsdk:common:9.4.4'// 友盟统计
     implementation  'com.umeng.umsdk:asms:1.4.1'// 友盟统计
     implementation 'com.umeng.umsdk:apm:1.4.2' // 错误分析升级为独立SDK，看crash数据请一定集成，可选
