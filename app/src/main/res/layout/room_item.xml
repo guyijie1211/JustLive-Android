@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/roomListCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -41,6 +42,41 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/roomPic"
             android:layout_marginLeft="5dp"/>
+        <RelativeLayout
+            android:id="@+id/record"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/roomPic"
+            android:layout_alignEnd="@+id/roomPic"
+            android:background="@color/black"
+            android:layout_margin="5dp"
+            android:paddingEnd="10dp"
+            android:paddingVertical="3dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:text="录播"
+                android:paddingStart="18dp"/>
+
+            <View
+                android:id="@+id/view_subscribe_point_dot"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:visibility="visible"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintLeft_toRightOf="@+id/tv_subscribe_form"
+                android:background="@drawable/bg_fragment_form_red_dot"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tv_subscribe_form"
+                tools:ignore="UnknownId" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

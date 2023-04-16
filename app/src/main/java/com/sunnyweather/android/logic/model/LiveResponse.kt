@@ -29,7 +29,8 @@ data class RoomInfo(val roomId: String,
                     val online: Int,
                     val isLive: Int,
                     val isFollowed: Int,
-                    val eGameToken: String)
+                    val eGameToken: String,
+                    val isRecord: Boolean)
 data class Owner(val platform: String,
                  val nickName: String,
                  val roomId: String,
