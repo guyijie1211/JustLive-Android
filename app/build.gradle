@@ -124,6 +124,8 @@ dependencies {
     implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
     // kotlin扩展（可选）
     implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
+    // 輪播圖
+    implementation 'com.github.xiaohaibin:XBanner:1.8.9'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

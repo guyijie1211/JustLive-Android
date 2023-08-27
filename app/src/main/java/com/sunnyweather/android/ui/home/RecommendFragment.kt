@@ -1,23 +1,33 @@
 package com.sunnyweather.android.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.ScreenUtils
+import com.bumptech.glide.Glide
+import com.stx.xhb.xbanner.XBanner
+import com.stx.xhb.xbanner.entity.BaseBannerInfo
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.ui.roomList.RoomListAdapter
 import com.sunnyweather.android.ui.roomList.SpaceItemDecoration
-import kotlinx.android.synthetic.main.fragment_roomlist.*
+import kotlinx.android.synthetic.main.ad_head.view.banner
+import kotlinx.android.synthetic.main.fragment_roomlist.progressBar_roomList
+import kotlinx.android.synthetic.main.fragment_roomlist.recyclerView
+import kotlinx.android.synthetic.main.fragment_roomlist.refresh_home
+import kotlinx.android.synthetic.main.fragment_roomlist.refresh_home_foot
+import kotlinx.android.synthetic.main.fragment_roomlist.state
 
 class RecommendFragment(val platform: String) : Fragment()  {
     constructor(): this("all")
@@ -31,15 +41,29 @@ class RecommendFragment(val platform: String) : Fragment()  {
         return inflater.inflate(R.layout.fragment_roomlist, container, false)
     }
 
+    class MySpanSizeLookup(private val layoutManager: GridLayoutManager, val platform: String) : GridLayoutManager.SpanSizeLookup() {
+        override fun getSpanSize(position: Int): Int {
+            return if (position == 0 && platform == "all") layoutManager.spanCount else 1
+        }
+    }
+
+    @SuppressLint("SuspiciousIndentation")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         var cardNum = ScreenUtils.getAppScreenWidth()/ConvertUtils.dp2px(195F)
         if (cardNum < 2) cardNum = 2
         val layoutManager = GridLayoutManager(context, cardNum)
+        layoutManager.spanSizeLookup = MySpanSizeLookup(layoutManager, platform)
         recyclerView.addItemDecoration(SpaceItemDecoration(10))
         recyclerView.layoutManager = layoutManager
         adapter = RoomListAdapter(this, viewModel.roomList)
         recyclerView.adapter = adapter
+        //获取轮播控件
+        // 初始化HeaderView
+        if (platform == "all") {
+            val headerView = View.inflate(context, R.layout.ad_head, null)
+            adapter.setHeaderView(headerView)
+        }
         //下拉刷新，加载更多
         refresh_home_foot.setFinishDuration(0)//设置Footer 的 “加载完成” 显示时间为0
         refresh_home.setOnRefreshListener {
@@ -50,19 +74,23 @@ class RecommendFragment(val platform: String) : Fragment()  {
             viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
         }
         //绑定LiveData监听器
-        SunnyWeatherApplication.areaName.observe(viewLifecycleOwner, {
+        SunnyWeatherApplication.areaName.observe(viewLifecycleOwner) {
             viewModel.clearPage()
             viewModel.clearList()
             progressBar_roomList.isVisible = true
             recyclerView.isGone = true
-            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
-        })
-        viewModel.roomListLiveDate.observe(viewLifecycleOwner, { result ->
+            viewModel.getRecommend(
+                SunnyWeatherApplication.areaType.value ?: "all",
+                SunnyWeatherApplication.areaName.value ?: "all",
+                state
+            )
+        }
+        viewModel.roomListLiveDate.observe(viewLifecycleOwner) { result ->
             val temp = result.getOrNull()
             var rooms: ArrayList<RoomInfo>? = null
             if (temp != null) rooms = temp as ArrayList<RoomInfo>
             if (rooms != null && rooms.size > 0) {
-                if(refresh_home.isRefreshing) {
+                if (refresh_home.isRefreshing) {
                     viewModel.clearList()
                 }
                 viewModel.roomList.addAll(rooms)
@@ -80,7 +108,7 @@ class RecommendFragment(val platform: String) : Fragment()  {
                 }
                 result.exceptionOrNull()?.printStackTrace()
             }
-        })
+        }
         viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
         progressBar_roomList.isVisible = true
     }
