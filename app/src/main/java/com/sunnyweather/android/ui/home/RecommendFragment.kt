@@ -2,27 +2,25 @@ package com.sunnyweather.android.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.ScreenUtils
-import com.bumptech.glide.Glide
 import com.stx.xhb.xbanner.XBanner
-import com.stx.xhb.xbanner.entity.BaseBannerInfo
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.logic.model.BannerInfo
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.ui.roomList.RoomListAdapter
 import com.sunnyweather.android.ui.roomList.SpaceItemDecoration
-import kotlinx.android.synthetic.main.ad_head.view.banner
+import kotlinx.android.synthetic.main.ad_head.banner
 import kotlinx.android.synthetic.main.fragment_roomlist.progressBar_roomList
 import kotlinx.android.synthetic.main.fragment_roomlist.recyclerView
 import kotlinx.android.synthetic.main.fragment_roomlist.refresh_home
@@ -85,6 +83,15 @@ class RecommendFragment(val platform: String) : Fragment()  {
                 state
             )
         }
+        viewModel.bannerInfoListDate.observe(viewLifecycleOwner) { result ->
+            val temp = result.getOrNull()
+            var bannerInfoList: ArrayList<BannerInfo>? = null
+            if (temp != null) bannerInfoList = temp as ArrayList<BannerInfo>
+            Log.i("====>log", bannerInfoList.toString())
+            if (bannerInfoList != null && bannerInfoList.size > 0) {
+                adapter.setBannerInfoList(bannerInfoList)
+            }
+        }
         viewModel.roomListLiveDate.observe(viewLifecycleOwner) { result ->
             val temp = result.getOrNull()
             var rooms: ArrayList<RoomInfo>? = null
@@ -110,6 +117,7 @@ class RecommendFragment(val platform: String) : Fragment()  {
             }
         }
         viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
+        viewModel.getBannerInfo()
         progressBar_roomList.isVisible = true
     }
 

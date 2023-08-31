@@ -356,6 +356,28 @@ object Repository {
         }
         emit(result)
     }
+    fun getBannerInfo() = liveData(Dispatchers.IO){
+        val result = try {
+            val liveResponse = LiveNetwork.getBannerInfo()
+            when (liveResponse.code) {
+                "200" -> {
+                    val rooms = liveResponse.data
+                    Result.success(rooms)
+                }
+                "400" -> {
+                    val rooms = liveResponse.message
+                    Result.success(rooms)
+                }
+                else -> {
+                    "请求异常，请联系作者".showToast(context)
+                    Result.failure(RuntimeException("response status is ${liveResponse.message}"))
+                }
+            }
+        } catch (e: Exception) {
+            Result.failure<List<RoomInfo>>(e)
+        }
+        emit(result)
+    }
     //toast
     private fun String.showToast(context: Context) {
         Toast.makeText(context, this, Toast.LENGTH_SHORT).show()

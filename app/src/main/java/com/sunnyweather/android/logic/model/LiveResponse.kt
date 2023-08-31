@@ -10,6 +10,7 @@ data class AreaAllResponse(val code: String, val message: String, val data: List
 data class UserInfoResponse(val code: String, val message: String, val data: UserInfo)
 data class FollowResponse(val code: String, val message: String, val data: String)
 data class UpdateResponse(val code: String, val message: String, val data: UpdateInfo)
+data class BannerInfoResponse(val code: String, val message: String, val data: List<BannerInfo>)
 
 data class AreaInfo(val platform: String,
                     val areaType: String,

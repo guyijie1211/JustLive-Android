@@ -2,6 +2,7 @@ package com.sunnyweather.android.ui.roomList
 
 import android.content.Intent
 import android.graphics.Outline
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +12,21 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.CollectionUtils
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.stx.xhb.xbanner.XBanner
 import com.stx.xhb.xbanner.entity.BaseBannerInfo
 import com.sunnyweather.android.R
 import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.logic.model.BannerInfo
 import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.ui.customerUIs.BlackWhiteTransformation
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
+
 
 class RoomListAdapter(private val fragment: Fragment, private val roomList: ArrayList<RoomInfo>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), LoadMoreModule{
@@ -29,10 +35,15 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
     private val TYPE_ITEM = 1
 
     private var mHeaderView: View? = null
+    private var bannerInfoList: ArrayList<BannerInfo>? = null
 
     fun setHeaderView(headerView: View) {
         mHeaderView = headerView
         notifyItemInserted(0)
+    }
+
+    fun setBannerInfoList(bannerInfoList: ArrayList<BannerInfo>) {
+        this.bannerInfoList = bannerInfoList
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -94,26 +105,59 @@ class RoomListAdapter(private val fragment: Fragment, private val roomList: Arra
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (isHeadView(position) && mHeaderView != null) {
+        if (isHeadView(position) && mHeaderView != null && CollectionUtils.isNotEmpty(bannerInfoList)) {
             holder as HeadViewHolder
             // 设置XBanner的属性和数据
             holder.banner.loadImage { banner, model, view, position ->
                 model as BaseBannerInfo
+                // 创建圆角转换器，指定圆角半径
+                val roundedCorners = RoundedCorners(26)
+                // 创建 RequestOption 对象，并应用圆角转换器
+                val requestOptions = RequestOptions.bitmapTransform(roundedCorners)
                 Glide.with(fragment.context!!)
                     .load(model.xBannerUrl)
+                    .apply(requestOptions)
                     .into(view as ImageView)
             }
 
+            holder.banner.setOnItemClickListener { banner, model, view, position ->
+                // 在点击事件中执行跳转到浏览器的逻辑
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(bannerInfoList!![position].clickUrl))
+                fragment.startActivity(intent)
+            }
+
+            //刷新数据之后，需要重新设置是否支持自动轮播
+            holder.banner.setAutoPlayAble(true)
+            holder.banner.setIsClipChildrenMode(true)
+            holder.banner.setOverlapStyle(true)
+
             val picList: MutableList<BaseBannerInfo> = mutableListOf()
             // 添加轮播图数据
-            picList.add(object : BaseBannerInfo {
-                override fun getXBannerUrl(): Any {
-                    return "https://lmg.jj20.com/up/allimg/4k/s/02/2109250006343S5-0-lp.jpg"
+            if (CollectionUtils.isNotEmpty(bannerInfoList)) {
+                bannerInfoList!!.forEach { bannerInfo ->
+                    picList.add(object : BaseBannerInfo {
+                        fun getClickUrl(): String {
+                            return bannerInfo.clickUrl
+                        }
+
+                        override fun getXBannerUrl(): Any {
+                            return bannerInfo.imageUrl
+                        }
+                        override fun getXBannerTitle(): String {
+                            return bannerInfo.title
+                        }
+                    })
                 }
-                override fun getXBannerTitle(): String {
-                    return "标题"
-                }
-            })
+            } else {
+                picList.add(object : BaseBannerInfo {
+                    override fun getXBannerUrl(): Any {
+                        return "https://lmg.jj20.com/up/allimg/4k/s/02/2109250006343S5-0-lp.jpg"
+                    }
+                    override fun getXBannerTitle(): String {
+                        return "标题"
+                    }
+                })
+            }
             holder.banner.setBannerData(picList)
         } else {
             holder as ViewHolder

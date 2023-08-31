@@ -27,6 +27,7 @@ object LiveNetwork {
     suspend fun unFollow(platform: String, roomId: String, uid: String) = liveService.unFollow(platform, roomId, uid).await()
     suspend fun changeUserInfo(userInfo: UserInfo) = liveService.changeUserInfo(userInfo).await()
     suspend fun versionUpdate() = liveService.versionUpdate().await()
+    suspend fun getBannerInfo() = liveService.getBannerInfo().await()
 
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine { continuation ->

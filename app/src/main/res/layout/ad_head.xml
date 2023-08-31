@@ -2,22 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="170dp"
     android:orientation="vertical">
-
     <com.stx.xhb.xbanner.XBanner
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:AutoPlayTime="3000"
-        app:pointsContainerBackground="#442e2e2e"
-        app:pointsPosition="RIGHT"
-        app:tipTextSize="12sp"
+        android:layout_height="wrap_content"
+        app:AutoPlayTime="5000"
         app:isAutoPlay="true"
-        app:isShowTips="true"
+        app:isClipChildrenMode="true"
         app:isHandLoop="true"
+        app:isShowIndicatorOnlyOne="true"
         app:isShowNumberIndicator="false"
-        app:isShowIndicatorOnlyOne="false"
-        app:pageChangeDuration="800"/>
-
+        app:isShowTips="true"
+        app:viewpagerMargin="50dp"
+        app:pageChangeDuration="800"
+        app:pointsContainerBackground="@drawable/shape_round_8dp"
+        app:pointsPosition="RIGHT" />
 </LinearLayout>

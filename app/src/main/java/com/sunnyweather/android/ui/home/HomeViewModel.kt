@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.drake.statelayout.StateLayout
 import com.sunnyweather.android.logic.Repository
+import com.sunnyweather.android.logic.model.BannerInfo
 import com.sunnyweather.android.logic.model.RoomInfo
 
 class HomeViewModel(val platform: String) : ViewModel() {
@@ -14,9 +15,15 @@ class HomeViewModel(val platform: String) : ViewModel() {
     private val pageLiveData = MutableLiveData<RecommendInfo>()
     private var page = 0
 
+    private val bannerInfoData = MutableLiveData<BannerInfo>()
+
     val roomList = ArrayList<RoomInfo>()
     val roomListLiveDate = Transformations.switchMap(pageLiveData) {
             value -> getRecommendSelect(value.platform, value.areaType, value.area, value.page, value.size)
+    }
+
+    val bannerInfoListDate = Transformations.switchMap(bannerInfoData) {
+            _ -> Repository.getBannerInfo()
     }
 
     fun clearPage() {
@@ -31,6 +38,10 @@ class HomeViewModel(val platform: String) : ViewModel() {
         state.showContent()
         page ++
         pageLiveData.value = RecommendInfo(platform, areaType, area, page, 20)
+    }
+
+    fun getBannerInfo() {
+        bannerInfoData.value = BannerInfo()
     }
 
     private fun getRecommendSelect(platform: String, areaType: String, area: String, page: Int, size: Int): LiveData<Result<Any>> {
