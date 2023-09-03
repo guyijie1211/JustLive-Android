@@ -11,11 +11,11 @@ android {
     buildFeatures.dataBinding = true
 
     defaultConfig {
-        applicationId "com.yj1211.justlive"
+        applicationId "com.sq.justlive"
         minSdk 21
         targetSdk 31
         versionCode 22
-        versionName "0.2.10"
+        versionName "0.2.10_banner"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
