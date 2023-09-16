@@ -2,6 +2,7 @@ package com.sunnyweather.android.ui.customerUIs.bottomPop
 
 import android.content.Context
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.fastjson.JSONArray
@@ -15,7 +16,7 @@ import com.sunnyweather.android.SunnyWeatherApplication
 import com.sunnyweather.android.logic.model.RoomInfo
 import kotlinx.android.synthetic.main.custom_follow_drawer.view.*
 
-class FollowDrawer(context: Context): DrawerPopupView(context) {
+class FollowDrawer(context: Context, private val lifecycleOwner: LifecycleOwner): DrawerPopupView(context) {
 
     override fun getImplLayoutId(): Int {
         return R.layout.custom_follow_drawer
@@ -33,7 +34,7 @@ class FollowDrawer(context: Context): DrawerPopupView(context) {
         var adapterFollow = FollowAdapter()
 
         recyclerView.adapter = adapterFollow
-        scopeNetLife { // 创建作用域
+        lifecycleOwner.scopeNetLife { // 创建作用域
             // 这个大括号内就属于作用域内部
             if (SunnyWeatherApplication.isLogin!!.value == true) {
                 player_follow_progressBar.visibility = View.VISIBLE

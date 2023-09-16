@@ -50,19 +50,23 @@ class RecommendFragment(val platform: String) : Fragment()  {
             viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
         }
         //绑定LiveData监听器
-        SunnyWeatherApplication.areaName.observe(viewLifecycleOwner, {
+        SunnyWeatherApplication.areaName.observe(viewLifecycleOwner) {
             viewModel.clearPage()
             viewModel.clearList()
             progressBar_roomList.isVisible = true
             recyclerView.isGone = true
-            viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
-        })
-        viewModel.roomListLiveDate.observe(viewLifecycleOwner, { result ->
+            viewModel.getRecommend(
+                SunnyWeatherApplication.areaType.value ?: "all",
+                SunnyWeatherApplication.areaName.value ?: "all",
+                state
+            )
+        }
+        viewModel.roomListLiveDate.observe(viewLifecycleOwner) { result ->
             val temp = result.getOrNull()
             var rooms: ArrayList<RoomInfo>? = null
             if (temp != null) rooms = temp as ArrayList<RoomInfo>
             if (rooms != null && rooms.size > 0) {
-                if(refresh_home.isRefreshing) {
+                if (refresh_home.isRefreshing) {
                     viewModel.clearList()
                 }
                 viewModel.roomList.addAll(rooms)
@@ -80,7 +84,7 @@ class RecommendFragment(val platform: String) : Fragment()  {
                 }
                 result.exceptionOrNull()?.printStackTrace()
             }
-        })
+        }
         viewModel.getRecommend(SunnyWeatherApplication.areaType.value?:"all", SunnyWeatherApplication.areaName.value?:"all", state)
         progressBar_roomList.isVisible = true
     }

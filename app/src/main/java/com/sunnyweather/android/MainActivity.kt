@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         BarUtils.setStatusBarLightMode(this, themeActived != R.style.nightTheme)
         setSupportActionBar(main_toolBar)
         initLogin()
-        areaPopup = AreaPopup(this)
+        areaPopup = AreaPopup(this, this)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.icon_menu)
@@ -250,7 +250,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         }
         //标题栏的标题click事件
         main_toolBar_title.setOnClickListener {
-            areaPopup = AreaPopup(this)
+            areaPopup = AreaPopup(this, this)
             XPopup.Builder(this)
                 .isDestroyOnDismiss(true)
                 .autoFocusEditText(false)

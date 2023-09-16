@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -43,7 +44,9 @@ import com.lxj.xpopup.enums.PopupPosition
 import com.sunnyweather.android.MainActivity
 import com.sunnyweather.android.logic.model.AreaFollow
 
-class AreaPopup(context: Context) : BottomPopupView(context), View.OnClickListener {
+class AreaPopup(context: Context,
+                private val lifecycleOwner: LifecycleOwner
+) : BottomPopupView(context), View.OnClickListener {
     private var areaMap = HashMap<String, ArrayList<JSONObject>>()
     private var areaTypeList = ArrayList<String>()
     private lateinit var viewPager: ViewPager2
@@ -274,12 +277,12 @@ class AreaPopup(context: Context) : BottomPopupView(context), View.OnClickListen
             list.forEach { area ->
                 if (area.getString("areaName").lowercase().contains(query.lowercase())) {
                     var areaInfo = AreaInfo(
-                        area.getString("platform"),
-                        area.getString("areaType"),
+                        "",
+                        "",
                         area.getString("typeName"),
-                        area.getString("areaId"),
+                        "",
                         area.getString("areaName"),
-                        area.getString("areaPic"),
+                        "",
                         ""
                     )
                     searchList.add(areaInfo)

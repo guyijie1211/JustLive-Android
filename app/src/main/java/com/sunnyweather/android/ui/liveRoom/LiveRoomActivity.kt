@@ -199,7 +199,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             liveRoom_leftContainer.layoutParams = lpc
         }
 
-        controller = YJstandardController(this)
+        controller = YJstandardController(this, this)
         val display = windowManager.defaultDisplay
         val refreshRate = display.refreshRate
         mMyDanmakuView = MyDanmakuView(this, danmuSetting, refreshRate)
@@ -235,17 +235,17 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             toWeb(platform, roomId)
         }
         //弹幕更新
-        viewModel.danmuNum.observe(this, {
-            if (viewModel.danmuList.size > 0){
+        viewModel.danmuNum.observe(this) {
+            if (viewModel.danmuList.size > 0) {
                 mMyDanmakuView.addDanmaku(viewModel.danmuList.last()?.content)
                 if (updateList) {
                     adapter.addData(viewModel.danmuList.last())
                     if (toBottom) {
-                        danMu_recyclerView.scrollToPosition(adapter.itemCount-1)
+                        danMu_recyclerView.scrollToPosition(adapter.itemCount - 1)
                     }
                 }
             }
-        })
+        }
         //获取到直播源信息
         viewModel.urlResponseData.observe(this, {result ->
             val urls : LinkedTreeMap<String, String> = result.getOrNull() as LinkedTreeMap<String, String>

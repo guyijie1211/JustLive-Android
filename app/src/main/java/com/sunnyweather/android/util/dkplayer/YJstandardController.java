@@ -6,12 +6,14 @@ import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 
 public class YJstandardController extends StandardVideoController {
     private Boolean doubleTap = false;
 
-    public YJstandardController(@NonNull Context context) {
+    public YJstandardController(@NonNull Context context, LifecycleOwner lifecycleOwner) {
         super(context);
+        this.lifecycleOwner = lifecycleOwner;
     }
 
     public YJstandardController(@NonNull Context context, @Nullable AttributeSet attrs) {

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
@@ -41,6 +42,7 @@ public class StandardVideoController extends YJGestureVideoController implements
     protected ImageView mFavouriteBtn;
 
     protected ProgressBar mLoadingProgress;
+    protected LifecycleOwner lifecycleOwner;
 
     public StandardVideoController(@NonNull Context context) {
         this(context, null);
@@ -102,7 +104,7 @@ public class StandardVideoController extends YJGestureVideoController implements
                     .hasStatusBar(false)
                     .popupPosition(PopupPosition.Right)//右边
                     .hasShadowBg(false)
-                    .asCustom(new FollowDrawer(getContext()))
+                    .asCustom(new FollowDrawer(getContext(), lifecycleOwner))
                     .show();
         }
     }
