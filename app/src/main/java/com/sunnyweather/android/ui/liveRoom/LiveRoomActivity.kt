@@ -247,8 +247,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             }
         }
         //获取到直播源信息
-        viewModel.urlResponseData.observe(this, {result ->
-            val urls : LinkedTreeMap<String, String> = result.getOrNull() as LinkedTreeMap<String, String>
+        viewModel.urlResponseData.observe(this) { result ->
+            val urls: LinkedTreeMap<String, String> =
+                result.getOrNull() as LinkedTreeMap<String, String>
             if (urls != null && urls.size > 0) {
                 videoView?.setVideoController(controller) //设置控制器
                 var sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
@@ -257,9 +258,11 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                     R.id.radio_button_1 -> {
                         changeVideoSize(VideoView.SCREEN_SCALE_DEFAULT)
                     }
+
                     R.id.radio_button_2 -> {
                         changeVideoSize(VideoView.SCREEN_SCALE_MATCH_PARENT)
                     }
+
                     R.id.radio_button_3 -> {
                         changeVideoSize(VideoView.SCREEN_SCALE_CENTER_CROP)
                     }
@@ -267,7 +270,8 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                 val isMobileData = NetworkUtils.isMobileData()
                 if (isMobileData) {
                     Toast.makeText(context, "正在使用流量", Toast.LENGTH_SHORT).show()
-                    val defaultDefinition = sharedPreferences.getString("default_definition_4G", "原画")
+                    val defaultDefinition =
+                        sharedPreferences.getString("default_definition_4G", "原画")
                     if (urls.containsKey(defaultDefinition)) {
                         mDefinitionControlView?.setData(urls, defaultDefinition)
                         playerUrl = urls[defaultDefinition]!!
@@ -283,7 +287,8 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                         }
                     }
                 } else {
-                    val defaultDefinition = sharedPreferences.getString("default_definition_wifi", "原画")
+                    val defaultDefinition =
+                        sharedPreferences.getString("default_definition_wifi", "原画")
 
                     if (urls.containsKey(defaultDefinition)) {
                         mDefinitionControlView?.setData(urls, defaultDefinition)
@@ -302,11 +307,11 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                 }
                 videoView?.start() //开始播放，不调用则不自动播放
             }
-        })
+        }
 //        tinyScreen.setOnClickListener {
 //            videoView!!.startTinyScreen()
 //        }
-        viewModel.followResponseLiveDate.observe(this, {result ->
+        viewModel.followResponseLiveDate.observe(this) { result ->
             val result = result.getOrNull()
             if (result is String) {
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
@@ -318,9 +323,9 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                     isFollowed = false
                 }
             }
-        })
+        }
         //获取到房间信息
-        viewModel.roomInfoResponseData.observe(this, {result ->
+        viewModel.roomInfoResponseData.observe(this) { result ->
             val roomInfo = result.getOrNull()
             if (roomInfo is RoomInfo) {
                 //关注按钮
@@ -328,9 +333,17 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                     follow_roomInfo.setOnClickListener {
                         if (SunnyWeatherApplication.isLogin.value!!) {
                             if (isFollowed) {
-                                viewModel.unFollow(roomInfo.platForm, roomInfo.roomId, SunnyWeatherApplication.userInfo!!.uid)
+                                viewModel.unFollow(
+                                    roomInfo.platForm,
+                                    roomInfo.roomId,
+                                    SunnyWeatherApplication.userInfo!!.uid
+                                )
                             } else {
-                                viewModel.follow(roomInfo.platForm, roomInfo.roomId, SunnyWeatherApplication.userInfo!!.uid)
+                                viewModel.follow(
+                                    roomInfo.platForm,
+                                    roomInfo.roomId,
+                                    SunnyWeatherApplication.userInfo!!.uid
+                                )
                             }
                         } else {
                             MaterialAlertDialogBuilder(this)
@@ -350,7 +363,8 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                     //提示弹幕不支持
                     if (roomInfo.platForm == "egame" || roomInfo.platForm == "cc") {
                         danmu_not_support.visibility = View.VISIBLE
-                        danmu_not_support.text = "暂不支持${SunnyWeatherApplication.platformName(roomInfo.platForm)}弹幕"
+                        danmu_not_support.text =
+                            "暂不支持${SunnyWeatherApplication.platformName(roomInfo.platForm)}弹幕"
                     }
                     //未开播
                     if (roomInfo.isLive == 0) {
@@ -359,28 +373,17 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                         liveRoom_not_live.setOnClickListener {
                             changeRoomInfoVisible(roomInfo_liveRoom.layoutParams.height == 0)
                         }
-                    } else {
-                        videoView = VideoViewManager.instance().get(platform + roomId) as VideoView<ExoMediaPlayer>?
-                        if (mPIPManager.isStartFloatWindow) {
-                            mPIPManager.stopFloatWindow()
-//                            controller?.setPlayerState(videoView!!.currentPlayerState)
-                            mMyDanmakuView.stopFloatPrepare()
-                        }
-                        player_container.addView(videoView)
-                        if (platform == "huya" && (roomInfo.categoryName == "一起看" || roomInfo.categoryName == "原创")) {
-                            viewModel.getRealUrl("huyaTest", roomId)
-                        } else {
-                            viewModel.getRealUrl(platform, roomId)
-                        }
                     }
                     Glide.with(this).load(roomInfo.ownerHeadPic).transition(
                         DrawableTransitionOptions.withCrossFade()
                     ).into(ownerPic_roomInfo)
                     if (ScreenUtils.isLandscape()) {
-                        ownerName_roomInfo.text = SunnyWeatherApplication.platformName(roomInfo.platForm) + "·" + roomInfo.ownerName
+                        ownerName_roomInfo.text =
+                            SunnyWeatherApplication.platformName(roomInfo.platForm) + "·" + roomInfo.ownerName
                         roomName_roomInfo.text = roomInfo.roomName
                     } else {
-                        ownerName_roomInfo.text = SunnyWeatherApplication.platformName(roomInfo.platForm)
+                        ownerName_roomInfo.text =
+                            SunnyWeatherApplication.platformName(roomInfo.platForm)
                         roomName_roomInfo.text = roomInfo.ownerName
                         liveRoom_bar_txt.text = roomInfo.roomName
                     }
@@ -392,7 +395,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                 Toast.makeText(this, roomInfo, Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
             }
-        })
+        }
     }
 
     override fun onStart() {
