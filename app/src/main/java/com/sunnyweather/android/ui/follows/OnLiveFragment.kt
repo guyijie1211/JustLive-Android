@@ -56,20 +56,20 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
             viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
         }
 
-        SunnyWeatherApplication.isLogin.observe(viewLifecycleOwner, {result ->
-            if (!viewModel.inited && result){
+        SunnyWeatherApplication.isLogin.observe(viewLifecycleOwner) { result ->
+            if (!viewModel.inited && result) {
                 viewModel.inited = true
                 progressBar_roomList.isVisible = true
                 viewModel.clearRoomList()
                 adapterOn.notifyDataSetChanged()
                 viewModel.getRoomsOn(SunnyWeatherApplication.userInfo?.uid)
-            } else if (!result){
+            } else if (!result) {
                 viewModel.inited = false
                 viewModel.clearRoomList()
                 adapterOn.notifyDataSetChanged()
             }
-        })
-        viewModel.userRoomListLiveDate.observe(viewLifecycleOwner, { result ->
+        }
+        viewModel.userRoomListLiveDate.observe(viewLifecycleOwner) { result ->
             val rooms = result.getOrNull()
             if (rooms is ArrayList<*>) {
                 viewModel.clearRoomList()
@@ -83,7 +83,7 @@ class OnLiveFragment(private val isLive: Boolean) : Fragment() {
                 Toast.makeText(context, rooms, Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
             }
-        })
+        }
 
         if (SunnyWeatherApplication.isLogin.value!!){
             progressBar_roomList.isVisible = true
