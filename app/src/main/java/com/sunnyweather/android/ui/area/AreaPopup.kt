@@ -43,6 +43,7 @@ import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.enums.PopupPosition
 import com.sunnyweather.android.MainActivity
 import com.sunnyweather.android.logic.model.AreaFollow
+import com.sunnyweather.android.logic.network.ServiceCreator
 
 class AreaPopup(context: Context,
                 private val lifecycleOwner: LifecycleOwner
@@ -129,7 +130,7 @@ class AreaPopup(context: Context,
                 .show()
         }
         lifecycleOwner.scopeNetLife { // 创建作用域
-            val url = "http://192.168.0.103:8013/api/live/getAllAreas"
+            val url = ServiceCreator.getRequestUrl() + "/api/live/getAllAreas"
             val data = Get<String>(url) // 发起GET请求并返回`String`类型数据
             var resultJson: JSONArray = JSONObject.parseObject(data.await()).getJSONArray("data")
             var areas: List<List<*>> = JSON.parseArray(resultJson.toJSONString(), List::class.java)

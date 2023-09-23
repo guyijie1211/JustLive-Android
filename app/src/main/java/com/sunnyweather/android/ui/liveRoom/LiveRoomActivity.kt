@@ -56,6 +56,7 @@ import com.hjq.permissions.XXPermissions
 
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
+import com.sunnyweather.android.logic.network.ServiceCreator
 import com.sunnyweather.android.logic.service.ForegroundService
 import xyz.doikki.videoplayer.player.VideoView
 
@@ -131,7 +132,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         }
         BarUtils.transparentStatusBar(this)
         BarUtils.addMarginTopEqualStatusBarHeight(liveRoom_main)
-        BarUtils.setStatusBarColor(this, getResources().getColor(R.color.black))
+        BarUtils.setStatusBarColor(this, resources.getColor(R.color.black))
         startCountdown()
         //设置滑动到底部的动画时间
         val linearLayoutManager: LinearLayoutManager = object : LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
@@ -229,7 +230,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             }
         }
         viewModel.getRoomInfo(uid, platform, roomId)
-
+        viewModel.getRealUrl(platform, roomId)
         //去网页
         to_web.setOnClickListener {
             toWeb(platform, roomId)
@@ -251,6 +252,13 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             val urls: LinkedTreeMap<String, String> =
                 result.getOrNull() as LinkedTreeMap<String, String>
             if (urls != null && urls.size > 0) {
+                videoView = VideoViewManager.instance().get(platform + roomId) as VideoView<ExoMediaPlayer>?
+                if (mPIPManager.isStartFloatWindow) {
+                    mPIPManager.stopFloatWindow()
+//                            controller?.setPlayerState(videoView!!.currentPlayerState)
+                    mMyDanmakuView.stopFloatPrepare()
+                }
+                player_container.addView(videoView)
                 videoView?.setVideoController(controller) //设置控制器
                 var sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
 
@@ -308,9 +316,6 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                 videoView?.start() //开始播放，不调用则不自动播放
             }
         }
-//        tinyScreen.setOnClickListener {
-//            videoView!!.startTinyScreen()
-//        }
         viewModel.followResponseLiveDate.observe(this) { result ->
             val result = result.getOrNull()
             if (result is String) {
@@ -330,6 +335,16 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             if (roomInfo is RoomInfo) {
                 //关注按钮
                 if (isFirstGetInfo) {
+                    if (ScreenUtils.isLandscape()) {
+                        ownerName_roomInfo.text =
+                            SunnyWeatherApplication.platformName(roomInfo.platForm) + "·" + roomInfo.ownerName
+                        roomName_roomInfo.text = roomInfo.roomName
+                    } else {
+                        ownerName_roomInfo.text =
+                            SunnyWeatherApplication.platformName(roomInfo.platForm)
+                        roomName_roomInfo.text = roomInfo.ownerName
+                        liveRoom_bar_txt.text = roomInfo.roomName
+                    }
                     follow_roomInfo.setOnClickListener {
                         if (SunnyWeatherApplication.isLogin.value!!) {
                             if (isFollowed) {
@@ -361,7 +376,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                         }
                     }
                     //提示弹幕不支持
-                    if (roomInfo.platForm == "egame" || roomInfo.platForm == "cc") {
+                    if (!SunnyWeatherApplication.ifDanmuSupport(platform)) {
                         danmu_not_support.visibility = View.VISIBLE
                         danmu_not_support.text =
                             "暂不支持${SunnyWeatherApplication.platformName(roomInfo.platForm)}弹幕"
@@ -377,16 +392,6 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                     Glide.with(this).load(roomInfo.ownerHeadPic).transition(
                         DrawableTransitionOptions.withCrossFade()
                     ).into(ownerPic_roomInfo)
-                    if (ScreenUtils.isLandscape()) {
-                        ownerName_roomInfo.text =
-                            SunnyWeatherApplication.platformName(roomInfo.platForm) + "·" + roomInfo.ownerName
-                        roomName_roomInfo.text = roomInfo.roomName
-                    } else {
-                        ownerName_roomInfo.text =
-                            SunnyWeatherApplication.platformName(roomInfo.platForm)
-                        roomName_roomInfo.text = roomInfo.ownerName
-                        liveRoom_bar_txt.text = roomInfo.roomName
-                    }
                     isFirstGetInfo = false
                 }
                 isFollowed = (roomInfo.isFollowed == 1)
@@ -707,9 +712,8 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         viewModel.danmuList.clear()
         scopeNetLife { // 创建作用域
             val userInfo = SunnyWeatherApplication.userInfo
-            val url = "http://yj1211.work:8013/api/live/getRoomInfo?uid=" + userInfo!!.uid + "&platform=" + platform + "&roomId=" + roomId
-            val realUrl =
-                "http://yj1211.work:8013/api/live/getRealUrl?platform=$platform&roomId=$roomId"
+            val url = ServiceCreator.getRequestUrl() + "/api/live/getRoomInfo?uid=" + userInfo!!.uid + "&platform=" + platform + "&roomId=" + roomId
+            val realUrl = ServiceCreator.getRequestUrl() + "/api/live/getRealUrl?platform=$platform&roomId=$roomId"
             val data = Get<String>(url) // 发起GET请求并返回`String`类型数据
             val realUrlData = Get<String>(realUrl)
             var result: JSONObject = JSONObject.parseObject(data.await()).getJSONObject("data")
@@ -761,8 +765,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
 
     fun refreshUrl() {
         scopeNetLife { // 创建作用域
-            val realUrl =
-                "http://yj1211.work:8013/api/live/getRealUrl?platform=$platform&roomId=$roomId"
+            val realUrl = ServiceCreator.getRequestUrl() + "/api/live/getRealUrl?platform=$platform&roomId=$roomId"
             val realUrlData = Get<String>(realUrl)
             var realUrlResult: JSONObject = JSONObject.parseObject(realUrlData.await()).getJSONObject("data")
             val urls: LinkedTreeMap<String, String> = getRealUrls(realUrlResult)

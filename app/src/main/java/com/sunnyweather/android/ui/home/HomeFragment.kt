@@ -12,7 +12,8 @@ import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.drake.net.Get
 import com.drake.net.utils.scopeNetLife
 import com.sunnyweather.android.R
-import com.sunnyweather.android.logic.model.RoomInfo
+import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.logic.network.ServiceCreator
 import kotlinx.android.synthetic.main.fragment_home.*
 
 private var NUM_PAGES = 6
@@ -33,11 +34,12 @@ class HomeFragment : Fragment() {
         fragments.add(RecommendFragment("all"))
         scopeNetLife {
             // 大括号内属于作用域
-            val data = Get<String>("http://192.168.0.103:8013/api/live/getAllSupportPlatforms").await() // 发起GET请求并返回`String`
+            val data = Get<String>(ServiceCreator.getRequestUrl() + "/api/live/getAllSupportPlatforms").await() // 发起GET请求并返回`String`
             var result: JSONArray = JSONObject.parseObject(data).getJSONObject("data").getJSONArray("platformList")
             NUM_PAGES = result.size
             for (item in result) {
                 item as JSONObject
+                SunnyWeatherApplication.setPlatformInfo(item.getString("code"), item.getString("name"), item.getBoolean("androidDanmuSupport"))
                 val platformName = item.getString("code")
                 fragments.add(RecommendFragment(platformName))
                 val tabView = TextView(context)

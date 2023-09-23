@@ -24,6 +24,8 @@ class SunnyWeatherApplication : Application() {
         var areaType = MutableLiveData<String>()
         var userInfo: UserInfo? = null
         var isLogin = MutableLiveData(false)
+        private var platformNameMap = mutableMapOf<String, String>()
+        private var platformDanmuSupportMap = mutableMapOf<String, Boolean>()
 
         fun isNightMode(context: Context): Boolean {
             val uiMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -47,14 +49,14 @@ class SunnyWeatherApplication : Application() {
             sharedPref.edit().putString("username", username).putString("password", password).commit()
         }
         fun platformName(platform: String?): String{
-            return when(platform) {
-                "douyu" -> "斗鱼"
-                "huya" -> "虎牙"
-                "bilibili" -> "哔哩哔哩"
-                "egame" -> "企鹅电竞"
-                "cc" -> "网易CC"
-                else -> "未知平台"
-            }
+            return platformNameMap[platform]!!
+        }
+        fun setPlatformInfo(code: String, name: String, danmuSupport: Boolean) {
+            platformNameMap[code] = name
+            platformDanmuSupportMap[code] = danmuSupport
+        }
+        fun ifDanmuSupport(platform: String): Boolean {
+            return platformDanmuSupportMap[platform]!!
         }
         fun encodeMD5(password: String): String {
             try {
