@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
+import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
@@ -24,8 +25,10 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.angcyo.tablayout.delegate2.ViewPager2Delegate
 import com.blankj.utilcode.util.*
+import com.lxj.xpopup.XPopup
 import com.sunnyweather.android.logic.model.UpdateInfo
 import com.sunnyweather.android.logic.model.UserInfo
+import com.sunnyweather.android.ui.about.AboutActvity
 import com.sunnyweather.android.ui.area.AreaPopup
 import com.sunnyweather.android.ui.area.AreaSingleFragment
 import com.sunnyweather.android.ui.follows.FollowsFragment
@@ -36,14 +39,9 @@ import com.sunnyweather.android.ui.search.SearchActivity
 import com.sunnyweather.android.ui.setting.SettingActivity
 import com.umeng.analytics.MobclickAgent
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_update.*
-import com.sunnyweather.android.ui.about.AboutActvity
-import com.blankj.utilcode.util.ToastUtils
-
-import android.graphics.Bitmap
-import com.lxj.xpopup.XPopup
-import moe.feng.alipay.zerosdk.AlipayZeroSdk
 import kotlinx.android.synthetic.main.dialog_donate.*
+import kotlinx.android.synthetic.main.dialog_update.*
+import moe.feng.alipay.zerosdk.AlipayZeroSdk
 
 
 class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
@@ -171,15 +169,20 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
         viewPager.isUserInputEnabled = false
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
-        viewModel.updateResponseLiveData.observe(this, { result ->
+        viewModel.updateResponseLiveData.observe(this) { result ->
             val updateInfo = result.getOrNull()
             if (updateInfo is UpdateInfo) {
                 var sharedPref = getSharedPreferences("JustLive", Context.MODE_PRIVATE)
-                val ignoreVersion = sharedPref.getInt("ignoreVersion",0)
-                val versionNum = SunnyWeatherApplication.getVersionCode(SunnyWeatherApplication.context)
+                val ignoreVersion = sharedPref.getInt("ignoreVersion", 0)
+                val versionNum =
+                    SunnyWeatherApplication.getVersionCode(SunnyWeatherApplication.context)
                 if (versionNum >= updateInfo.versionNum || ignoreVersion == updateInfo.versionNum) {
                     if (isVersionCheck) {
-                        Toast.makeText(SunnyWeatherApplication.context, "当前已是最新版本^_^", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            SunnyWeatherApplication.context,
+                            "当前已是最新版本^_^",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     return@observe
                 }
@@ -196,7 +199,8 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                     update_version.text = "版本: ${updateInfo.latestVersion}"
                     update_size.text = "下载体积: ${updateInfo.apkSize}"
                     ignore_btn.setOnClickListener {
-                        var sharedPref = context.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+                        var sharedPref =
+                            context.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
                         sharedPref.edit().putInt("ignoreVersion", updateInfo.versionNum).commit()
                         Toast.makeText(context, "已忽略", Toast.LENGTH_SHORT).show()
                         cancel()
@@ -207,7 +211,7 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                     versionchecklib_version_dialog_commit.setOnClickListener {
                         val uri = Uri.parse(updateInfo.updateUrl)
                         val intent = Intent(Intent.ACTION_VIEW, uri)
-                        intent.addCategory(Intent. CATEGORY_BROWSABLE)
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     }
@@ -215,11 +219,11 @@ class MainActivity : AppCompatActivity(), AreaSingleFragment.FragmentListener {
                         ignore_btn.visibility = View.GONE
                     }
                 }
-            } else if(updateInfo is String){
+            } else if (updateInfo is String) {
                 Toast.makeText(this, "用户密码已修改，请重新登录", Toast.LENGTH_SHORT).show()
                 result.exceptionOrNull()?.printStackTrace()
             }
-        })
+        }
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when (position) {
