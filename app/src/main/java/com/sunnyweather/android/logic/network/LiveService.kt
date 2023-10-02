@@ -16,7 +16,7 @@ interface LiveService {
     fun getRecommendByPlatformArea(@Query("platform") platform: String, @Query("area") area: String, @Query("page") page: Int, @Query("size") size: Int): Call<LiveRoomResponse>
     @GET("/api/live/getRecommendByAreaAll")
     fun getRecommendByAreaAll(@Query("areaType") areaType: String, @Query("area") area: String, @Query("page") page: Int): Call<LiveRoomResponse>
-    @GET("/api/live/getRealUrl")
+    @GET("/api/live/getRealUrlMultiSource")
     fun getRealUrl(@Query("platform") platform: String, @Query("roomId") roomId: String): Call<UrlsResponse>
     @GET("/api/live/getRoomInfo")
     fun getRoomInfo(@Query("uid") uid: String, @Query("platform") platform: String, @Query("roomId") roomId: String): Call<RoomInfoResponse>

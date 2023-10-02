@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:layout_marginLeft="12dp"
             tools:text="高清" />
 
@@ -84,11 +84,111 @@
         android:orientation="vertical"
         android:translationX="340dp"
         tools:translationX="0dp">
+
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="com.sunnyweather.android.util.dkplayer.DanmuMainFragment"/>
+            android:name="com.sunnyweather.android.util.dkplayer.DanmuMainFragment" />
     </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/multi_rate_layout"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="#99000000"
+        android:orientation="vertical"
+        android:translationX="200dp"
+        tools:translationX="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/rate_source_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentTop="true"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="@color/cardBackgroundColor"
+                android:text="线路" />
+
+            <LinearLayout
+                android:id="@+id/rate_source"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rate_source_title">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="线路1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="线路2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="线路3" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/rate_name_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rate_source"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="@color/cardBackgroundColor"
+                android:text="清晰度" />
+
+            <LinearLayout
+                android:id="@+id/rate_name"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rate_name_title"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="原画" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="高清" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="流畅" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/bottom_progress"
