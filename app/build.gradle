@@ -14,8 +14,8 @@ android {
         applicationId "com.yj1211.justlive"
         minSdk 21
         targetSdk 31
-        versionCode 22
-        versionName "0.2.10"
+        versionCode 30
+        versionName "0.3.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
