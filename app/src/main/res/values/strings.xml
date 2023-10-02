@@ -19,18 +19,14 @@
     </string-array>
 
     <string-array name="default_definition">
-        <item>原画</item>
-        <item>超清</item>
-        <item>高清</item>
-        <item>流畅</item>
-        <item>清晰</item>
+        <item>最高</item>
+        <item>中等</item>
+        <item>最低</item>
     </string-array>
     <string-array name="default_definition_value">
-        <item>原画</item>
-        <item>超清</item>
-        <item>高清</item>
-        <item>流畅</item>
-        <item>清晰</item>
+        <item>最高</item>
+        <item>中等</item>
+        <item>最低</item>
     </string-array>
 
     <string-array name="start_page">

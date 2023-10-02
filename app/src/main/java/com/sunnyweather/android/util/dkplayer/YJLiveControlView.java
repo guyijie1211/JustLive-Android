@@ -9,8 +9,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +20,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,14 +29,14 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
-import com.google.gson.internal.LinkedTreeMap;
+import com.alibaba.fastjson.JSONObject;
 import com.sunnyweather.android.R;
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import xyz.doikki.videoplayer.controller.ControlWrapper;
 import xyz.doikki.videoplayer.controller.IControlComponent;
@@ -50,14 +50,14 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     private TextView mDefinition;
     private LiveRoomActivity liveRoomActivity;
     private SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+    private String currentRateSource;
+    private String currentRate;
 
-    private PopupWindow mPopupWindow;
-    private List<String> mRateStr;
-    private LinearLayout mPopLayout;
+    private TextView currentSourceTextView;
+    private TextView currentRateTextView;
 
-    private int mCurIndex;
-
-    private LinkedTreeMap<String, String> mMultiRateData;
+    private TreeMap<String, ArrayList<JSONObject>> mMultiRateData;
+    private HashMap<String, String> rateMap;
 
     private YJLiveControlView.OnRateSwitchListener mOnRateSwitchListener;
 
@@ -70,6 +70,9 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
     private ImageView danmu_setting;
     private LinearLayout bottom_container;
     private LinearLayout danmu_setting_container;
+    private ScrollView multiRateContainer;
+    private LinearLayout multiRateSourceContainer;
+    private LinearLayout multiRateNameContainer;
 
     private boolean mIsDragging;
 
@@ -115,23 +118,13 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
         ImageView refresh = findViewById(R.id.iv_refresh);
         refresh.setOnClickListener(this);
         danmu_show.setSelected(!context.getSetting().isShow());
-
-        //增加清晰度切换
-        mPopupWindow = new PopupWindow(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.layout_rate_pop, this, false);
-        mPopupWindow.setContentView(mPopLayout);
-//        mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xffffffff));
-        mPopupWindow.setOutsideTouchable(true);
-        mPopupWindow.setClippingEnabled(false);
         mDefinition = findViewById(R.id.tv_definition);
-        mDefinition.setOnClickListener(v -> showRateMenu());
+        mDefinition.setOnClickListener(this);
+        multiRateContainer = findViewById(R.id.multi_rate_layout);
+        multiRateSourceContainer = findViewById(R.id.rate_source);
+        multiRateNameContainer = findViewById(R.id.rate_name);
     }
-    private void showRateMenu() {
-        onRateSwitchListener.onDanmuSettingShowChanged();
-        mPopLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-        mPopupWindow.showAsDropDown(mDefinition, -((mPopLayout.getMeasuredWidth() - mDefinition.getMeasuredWidth()) / 2),
-                -(mPopLayout.getMeasuredHeight() + mDefinition.getMeasuredHeight() + dp2px(getContext(), 10)));
-    }
+
     protected int getLayoutId() {
         return R.layout.layout_definition_control_view;
     }
@@ -162,10 +155,9 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                 mBottomProgress.setVisibility(GONE);
             }
         } else {
-//            video_drawer.setVisibility(GONE);
             liveRoomActivity.changeRoomInfoVisible(false);
-            mPopupWindow.dismiss();
-            hideSetting();
+            hideSetting(multiRateContainer, 200f);
+            hideSetting(danmu_setting_container, 340f);
             hideBottom();
             mBottomContainer.setVisibility(GONE);
             if (anim != null) {
@@ -230,7 +222,6 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
                 danmu_show.setVisibility(INVISIBLE);
                 danmu_setting.setVisibility(INVISIBLE);
                 mFullScreen.setSelected(false);
-                mPopupWindow.dismiss();
                 break;
             case VideoView.PLAYER_FULL_SCREEN:
                 context.startFullScreen();
@@ -284,6 +275,14 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
             handleSetting();
         } else if (id == R.id.startFloat) {
             onRateSwitchListener.startFloat();
+        } else if (id == R.id.tv_definition) {
+            if (multiRateContainer.getVisibility() == INVISIBLE) {
+                onRateSwitchListener.onMultiRateShowChanged();
+                showSetting(multiRateContainer);
+                hideBottom();
+            } else {
+                hideSetting(multiRateContainer, 200f);
+            }
         }
     }
 
@@ -297,98 +296,148 @@ public class YJLiveControlView extends FrameLayout implements IControlComponent,
 //        mControlWrapper.toggleFullScreenByVideoSize(activity);
     }
 
-    public void setData(LinkedTreeMap<String, String> multiRateData, String txt) {
-        mMultiRateData = multiRateData;
-        if (mDefinition != null && TextUtils.isEmpty(mDefinition.getText())) {
-            if (multiRateData == null) return;
-            mRateStr = new ArrayList<>();
-            int index = 0;
-            mPopLayout.removeAllViews();
-            ListIterator<Map.Entry<String, String>> iterator = new ArrayList<>(multiRateData.entrySet()).listIterator(multiRateData.size());
-            while (iterator.hasPrevious()) {//反向遍历
-                Map.Entry<String, String> entry = iterator.previous();
-                mRateStr.add(entry.getKey());
-                TextView rateItem = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.layout_rate_item, null);
-                rateItem.setText(entry.getKey());
-                rateItem.setTag(index);
-                rateItem.setOnClickListener(rateOnClickListener);
-                mPopLayout.addView(rateItem);
-                index++;
+    public void updateRateSelection(TreeMap<String, ArrayList<JSONObject>> multiRateData, String selectRateName) {
+        rateMap = new HashMap<>();
+        boolean isFirstSource = true;
+        mDefinition.setText(selectRateName);
+        multiRateSourceContainer.removeAllViews();
+        multiRateNameContainer.removeAllViews();
+        for (Map.Entry<String, ArrayList<JSONObject>> entry : multiRateData.entrySet()) {
+            String sourceName = entry.getKey();
+            ArrayList<JSONObject> rateObjList = entry.getValue();
+            // 处理线路
+            TextView sourceTextView = getNewRateTextView(sourceName);
+            sourceTextView.setOnClickListener(textView -> {
+                // 如果当前线路已经选中了, 就不操作
+                if (currentSourceTextView == textView) return;
+                // 切换选中效果
+                currentSourceTextView.setTextColor(Color.WHITE);
+                sourceTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
+                // 设置当前选中线路
+                currentSourceTextView = sourceTextView;
+                currentRateSource = sourceName;
+                // 切换url
+                switchDefinition(sourceName, currentRate);
+            });
+            // 当前选中线路
+            if (isFirstSource) {
+                currentSourceTextView = sourceTextView;
+                currentRateSource = sourceName;
+                sourceTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
+                isFirstSource = false;
             }
-            ((TextView) mPopLayout.getChildAt(mRateStr.indexOf(txt))).setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
-            mDefinition.setText(txt);
-            mCurIndex = mRateStr.indexOf(txt);
+            multiRateSourceContainer.addView(sourceTextView);
+
+            // 处理清晰度
+            for (JSONObject rateObj : rateObjList) {
+                String qualityName = rateObj.getString("qualityName");
+                String playUrl = rateObj.getString("playUrl");
+                String rateSource = rateObj.getString("sourceName");
+
+                rateMap.put(rateSource + qualityName, playUrl);
+                // 只渲染当前线路的 清晰度view
+                if (currentRateSource.equalsIgnoreCase(rateSource)) {
+                    TextView rateTextView = getNewRateTextView(qualityName);
+                    rateTextView.setOnClickListener(textView -> {
+                        if (currentRateTextView == rateTextView) return;
+                        // 切换选中效果
+                        currentRateTextView.setTextColor(Color.WHITE);
+                        rateTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
+                        // 设置当前选中信息
+                        currentRateTextView = rateTextView;
+                        currentRate = qualityName;
+                        // 切换url
+                        switchDefinition(currentRateSource, qualityName);
+                    });
+                    // 当前选中的清晰度
+                    if (selectRateName.equalsIgnoreCase(qualityName)) {
+                        currentRateTextView = rateTextView;
+                        currentRate = qualityName;
+                        rateTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
+                    }
+                    multiRateNameContainer.addView(rateTextView);
+                }
+            }
         }
     }
 
-    private OnClickListener rateOnClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int index = (int) v.getTag();
-            if (mCurIndex == index) return;
-            ((TextView) mPopLayout.getChildAt(mCurIndex)).setTextColor(Color.WHITE);
-            ((TextView) mPopLayout.getChildAt(index)).setTextColor(ContextCompat.getColor(getContext(), R.color.teal_200));
-            mDefinition.setText(mRateStr.get(index));
-            switchDefinition(mRateStr.get(index));
-            mPopupWindow.dismiss();
-            mCurIndex = index;
-        }
-    };
+    private TextView getNewRateTextView(String text) {
+        TextView rateTextView = new TextView(getContext());
+        rateTextView.setText(text);
+        rateTextView.setTextColor(Color.WHITE);
+        rateTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 
-    private void switchDefinition(String s) {
+        // margin
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(35, 30, 0, 0);//4个参数按顺序分别是左上右下
+        rateTextView.setLayoutParams(layoutParams);
+
+        return rateTextView;
+    }
+
+    private void switchDefinition(String sourceName, String rateName) {
         mControlWrapper.hide();
         mControlWrapper.stopProgress();
-        String url = mMultiRateData.get(s);
-        if (mOnRateSwitchListener != null)
-            mOnRateSwitchListener.onRateChange(url);
+        mDefinition.setText(rateName);
+        String playUrl = rateMap.get(sourceName + rateName);
+        mOnRateSwitchListener.onRateChange(playUrl, false);
+        hideSetting(multiRateContainer, 200f);
     }
 
     public interface OnRateSwitchListener {
-        void onRateChange(String url);
+        void onRateChange(String url, Boolean isInit);
+
         void onDanmuShowChange();
         void onDanmuSettingShowChanged();
+
         void startFloat();
+
+        void onMultiRateShowChanged();
     }
 
     public void setOnRateSwitchListener(YJLiveControlView.OnRateSwitchListener onRateSwitchListener) {
         mOnRateSwitchListener = onRateSwitchListener;
     }
+
     //处理设置页面的显示
     private void handleSetting() {
         if (danmu_setting_container.getVisibility() == INVISIBLE) {
             onRateSwitchListener.onDanmuSettingShowChanged();
-            showSetting();
+            showSetting(danmu_setting_container);
         } else {
-            hideSetting();
+            hideSetting(danmu_setting_container, 340f);
         }
     }
+
     //显示设置页面
-    private void showSetting() {
-        danmu_setting_container.animate()
+    private void showSetting(View view) {
+        view.animate()
                 .translationX(0f)
                 .setDuration(300)
                 .setInterpolator(new DecelerateInterpolator())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animation) {
-                        danmu_setting_container.setVisibility(VISIBLE);
+                        view.setVisibility(VISIBLE);
                     }
                 }).start();
         hideBottom();
     }
+
     //隐藏设置
-    private void hideSetting() {
-        danmu_setting_container.animate()
-                .translationX(dp2px(getContext(), 340f))
+    private void hideSetting(View view, float dpValue) {
+        view.animate()
+                .translationX(dp2px(getContext(), dpValue))
                 .setDuration(300)
                 .setInterpolator(new DecelerateInterpolator())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        danmu_setting_container.setVisibility(INVISIBLE);
+                        view.setVisibility(INVISIBLE);
                     }
                 }).start();
     }
+
     //隐藏底部
     private void hideBottom(){
         bottom_container.animate()

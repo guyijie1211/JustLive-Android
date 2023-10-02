@@ -1,64 +1,84 @@
 package com.sunnyweather.android.ui.liveRoom
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Point
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.google.gson.internal.LinkedTreeMap
-import com.sunnyweather.android.R
-import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
-import com.sunnyweather.android.logic.model.RoomInfo
-import kotlinx.android.synthetic.main.activity_liveroom.*
-import xyz.doikki.videocontroller.StandardVideoController
-import xyz.doikki.videocontroller.component.*
-import xyz.doikki.videoplayer.exo.ExoMediaPlayer
-import xyz.doikki.videoplayer.player.VideoViewManager
-import xyz.doikki.videoplayer.util.PlayerUtils
-import android.util.DisplayMetrics
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.sunnyweather.android.logic.model.DanmuSetting
-import com.sunnyweather.android.util.dkplayer.*
-import com.google.gson.Gson
-import com.google.gson.JsonParser
-import com.sunnyweather.android.SunnyWeatherApplication
-import com.sunnyweather.android.ui.login.LoginActivity
-import java.lang.Exception
-import android.view.WindowManager
-
-import android.app.Activity
-import android.net.Uri
-import android.os.CountDownTimer
-import android.util.Log
-import android.view.Window
-import androidx.preference.PreferenceManager
-import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.TypeReference
-import com.blankj.utilcode.util.*
-import com.blankj.utilcode.util.ScreenUtils.toggleFullScreen
+import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.ConvertUtils
+import com.blankj.utilcode.util.DeviceUtils
+import com.blankj.utilcode.util.NetworkUtils
+import com.blankj.utilcode.util.ScreenUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.Utils
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.drake.net.Get
 import com.drake.net.utils.scopeNetLife
-
-import com.hjq.permissions.XXPermissions
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
+import com.hjq.permissions.XXPermissions
+import com.sunnyweather.android.R
+import com.sunnyweather.android.SunnyWeatherApplication
+import com.sunnyweather.android.SunnyWeatherApplication.Companion.context
+import com.sunnyweather.android.logic.model.DanmuSetting
+import com.sunnyweather.android.logic.model.RoomInfo
 import com.sunnyweather.android.logic.network.ServiceCreator
 import com.sunnyweather.android.logic.service.ForegroundService
+import com.sunnyweather.android.ui.login.LoginActivity
+import com.sunnyweather.android.util.dkplayer.DanmuSettingFragment
+import com.sunnyweather.android.util.dkplayer.DragGestureView
+import com.sunnyweather.android.util.dkplayer.MyDanmakuView
+import com.sunnyweather.android.util.dkplayer.PIPManager
+import com.sunnyweather.android.util.dkplayer.YJLiveControlView
+import com.sunnyweather.android.util.dkplayer.YJTitleView
+import com.sunnyweather.android.util.dkplayer.YJstandardController
+import kotlinx.android.synthetic.main.activity_liveroom.danMu_recyclerView
+import kotlinx.android.synthetic.main.activity_liveroom.danmu_not_support
+import kotlinx.android.synthetic.main.activity_liveroom.follow_roomInfo
+import kotlinx.android.synthetic.main.activity_liveroom.liveRoom_bar_txt
+import kotlinx.android.synthetic.main.activity_liveroom.liveRoom_leftContainer
+import kotlinx.android.synthetic.main.activity_liveroom.liveRoom_main
+import kotlinx.android.synthetic.main.activity_liveroom.liveRoom_not_live
+import kotlinx.android.synthetic.main.activity_liveroom.ownerName_roomInfo
+import kotlinx.android.synthetic.main.activity_liveroom.ownerPic_roomInfo
+import kotlinx.android.synthetic.main.activity_liveroom.player_container
+import kotlinx.android.synthetic.main.activity_liveroom.roomInfo_liveRoom
+import kotlinx.android.synthetic.main.activity_liveroom.roomName_roomInfo
+import kotlinx.android.synthetic.main.activity_liveroom.to_bottom_danmu
+import kotlinx.android.synthetic.main.activity_liveroom.to_web
+import xyz.doikki.videocontroller.component.CompleteView
+import xyz.doikki.videocontroller.component.ErrorView
+import xyz.doikki.videocontroller.component.PrepareView
+import xyz.doikki.videoplayer.exo.ExoMediaPlayer
 import xyz.doikki.videoplayer.player.VideoView
+import xyz.doikki.videoplayer.player.VideoViewManager
+import xyz.doikki.videoplayer.util.PlayerUtils
+import java.util.TreeMap
 
 class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, YJLiveControlView.OnRateSwitchListener, DanmuSettingFragment.OnDanmuSettingChangedListener {
     private val viewModel by lazy { ViewModelProvider(this).get(LiveRoomViewModel::class.java) }
@@ -249,10 +269,11 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         }
         //获取到直播源信息
         viewModel.urlResponseData.observe(this) { result ->
-            val urls: LinkedTreeMap<String, String> =
-                result.getOrNull() as LinkedTreeMap<String, String>
-            if (urls != null && urls.size > 0) {
-                videoView = VideoViewManager.instance().get(platform + roomId) as VideoView<ExoMediaPlayer>?
+            val urls: TreeMap<String, ArrayList<JSONObject>> =
+                result.getOrNull() as TreeMap<String, ArrayList<JSONObject>>
+            if (urls.size > 0) {
+                videoView =
+                    VideoViewManager.instance().get(platform + roomId) as VideoView<ExoMediaPlayer>?
                 if (mPIPManager.isStartFloatWindow) {
                     mPIPManager.stopFloatWindow()
 //                            controller?.setPlayerState(videoView!!.currentPlayerState)
@@ -260,7 +281,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                 }
                 player_container.addView(videoView)
                 videoView?.setVideoController(controller) //设置控制器
-                var sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
+                val sharedPref = this.getSharedPreferences("JustLive", Context.MODE_PRIVATE)
 
                 when (sharedPref.getInt("playerSize", R.id.radio_button_1)) {
                     R.id.radio_button_1 -> {
@@ -275,44 +296,7 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
                         changeVideoSize(VideoView.SCREEN_SCALE_CENTER_CROP)
                     }
                 }
-                val isMobileData = NetworkUtils.isMobileData()
-                if (isMobileData) {
-                    Toast.makeText(context, "正在使用流量", Toast.LENGTH_SHORT).show()
-                    val defaultDefinition =
-                        sharedPreferences.getString("default_definition_4G", "原画")
-                    if (urls.containsKey(defaultDefinition)) {
-                        mDefinitionControlView?.setData(urls, defaultDefinition)
-                        playerUrl = urls[defaultDefinition]!!
-                        videoView?.setUrl(urls[defaultDefinition]) //设置视频地址
-                    } else {
-                        for (item in definitionArray) {
-                            if (urls.containsKey(item)) {
-                                mDefinitionControlView?.setData(urls, item)
-                                playerUrl = urls[item]!!
-                                videoView?.setUrl(urls[item]) //设置视频地址
-                                break
-                            }
-                        }
-                    }
-                } else {
-                    val defaultDefinition =
-                        sharedPreferences.getString("default_definition_wifi", "原画")
-
-                    if (urls.containsKey(defaultDefinition)) {
-                        mDefinitionControlView?.setData(urls, defaultDefinition)
-                        playerUrl = urls[defaultDefinition]!!
-                        videoView?.setUrl(urls[defaultDefinition]) //设置视频地址
-                    } else {
-                        for (item in definitionArray) {
-                            if (urls.containsKey(item)) {
-                                mDefinitionControlView?.setData(urls, item)
-                                playerUrl = urls[item]!!
-                                videoView?.setUrl(urls[item]) //设置视频地址
-                                break
-                            }
-                        }
-                    }
-                }
+                handelRatesAndWifi(urls)
                 videoView?.start() //开始播放，不调用则不自动播放
             }
         }
@@ -507,13 +491,12 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
         this.countDownTimer?.start()
     }
 
-    override fun onRateChange(url: String?) {
-        if (url != null) {
-            Log.i("test", url)
-        }
+    override fun onRateChange(url: String?, isInit: Boolean) {
         playerUrl = url!!
         videoView?.setUrl(url)
-        videoView?.replay(true)
+        if (!isInit) {
+            videoView?.replay(true)
+        }
     }
 
     override fun onDanmuShowChange() {
@@ -531,6 +514,10 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
     }
 
     override fun onDanmuSettingShowChanged() {
+        controller!!.stopFadeOut()
+    }
+
+    override fun onMultiRateShowChanged() {
         controller!!.stopFadeOut()
     }
 
@@ -720,111 +707,57 @@ class LiveRoomActivity : AppCompatActivity(), Utils.OnAppStatusChangedListener, 
             Glide.with(context).load(result.getString("ownerHeadPic")).transition(
                 DrawableTransitionOptions.withCrossFade()
             ).into(ownerPic_roomInfo)
-            ownerName_roomInfo.text = SunnyWeatherApplication.platformName(result.getString("platForm"))
+            ownerName_roomInfo.text =
+                SunnyWeatherApplication.platformName(result.getString("platForm"))
             roomName_roomInfo.text = result.getString("ownerName")
             liveRoom_bar_txt.text = result.getString("roomName")
             isFollowed = (result.getInteger("isFollowed") == 1)
             if (isFollowed) follow_roomInfo.text = "已关注"
 
-            var realUrlResult: JSONObject = JSONObject.parseObject(realUrlData.await()).getJSONObject("data")
-            val urls: LinkedTreeMap<String, String> = getRealUrls(realUrlResult)
-            if (urls != null && urls.size > 0) {
-                val isMobileData = NetworkUtils.isMobileData()
-                if (isMobileData) {
-                    val defaultDefinition = sharedPreferences.getString("default_definition_4G", "原画")
-                    if (urls.containsKey(defaultDefinition)) {
-                        mDefinitionControlView?.setData(urls, defaultDefinition)
-                        onRateChange(urls[defaultDefinition]) //设置视频地址
-                    } else {
-                        for (item in definitionArray) {
-                            if (urls.containsKey(item)) {
-                                mDefinitionControlView?.setData(urls, item)
-                                onRateChange(urls[item]) //设置视频地址
-                                break
-                            }
-                        }
-                    }
-                } else {
-                    val defaultDefinition = sharedPreferences.getString("default_definition_wifi", "原画")
-                    if (urls.containsKey(defaultDefinition)) {
-                        mDefinitionControlView?.setData(urls, defaultDefinition)
-                        onRateChange(urls[defaultDefinition]) //设置视频地址
-                    } else {
-                        for (item in definitionArray) {
-                            if (urls.containsKey(item)) {
-                                mDefinitionControlView?.setData(urls, item)
-                                onRateChange(urls[item])
-                                break
-                            }
-                        }
-                    }
-                }
-            }
+            var realUrlResult: JSONObject =
+                JSONObject.parseObject(realUrlData.await()).getJSONObject("data")
+            val urls: TreeMap<String, ArrayList<JSONObject>> = getRealUrls(realUrlResult)
+            handelRatesAndWifi(urls)
         }
     }
 
     fun refreshUrl() {
         scopeNetLife { // 创建作用域
-            val realUrl = ServiceCreator.getRequestUrl() + "/api/live/getRealUrl?platform=$platform&roomId=$roomId"
+            val realUrl =
+                ServiceCreator.getRequestUrl() + "/api/live/getRealUrl?platform=$platform&roomId=$roomId"
             val realUrlData = Get<String>(realUrl)
-            var realUrlResult: JSONObject = JSONObject.parseObject(realUrlData.await()).getJSONObject("data")
-            val urls: LinkedTreeMap<String, String> = getRealUrls(realUrlResult)
-            if (urls != null && urls.size > 0) {
-                val isMobileData = NetworkUtils.isMobileData()
-                if (isMobileData) {
-                    val defaultDefinition = sharedPreferences.getString("default_definition_4G", "原画")
-                    if (urls.containsKey(defaultDefinition)) {
-                        mDefinitionControlView?.setData(urls, defaultDefinition)
-                        onRateChange(urls[defaultDefinition]) //设置视频地址
-                    } else {
-                        for (item in definitionArray) {
-                            if (urls.containsKey(item)) {
-                                mDefinitionControlView?.setData(urls, item)
-                                onRateChange(urls[item]) //设置视频地址
-                                break
-                            }
-                        }
-                    }
-                } else {
-                    val defaultDefinition = sharedPreferences.getString("default_definition_wifi", "原画")
-                    if (urls.containsKey(defaultDefinition)) {
-                        mDefinitionControlView?.setData(urls, defaultDefinition)
-                        onRateChange(urls[defaultDefinition]) //设置视频地址
-                    } else {
-                        for (item in definitionArray) {
-                            if (urls.containsKey(item)) {
-                                mDefinitionControlView?.setData(urls, item)
-                                onRateChange(urls[item])
-                                break
-                            }
-                        }
-                    }
-                }
-
-            }
+            var realUrlResult: JSONObject =
+                JSONObject.parseObject(realUrlData.await()).getJSONObject("data")
+            val urls: TreeMap<String, ArrayList<JSONObject>> = getRealUrls(realUrlResult)
+            handelRatesAndWifi(urls)
         }
     }
 
-    fun getRealUrls(jsonObject: JSONObject): LinkedTreeMap<String, String>{
-        val rooms : Map<String, String> = JSONObject.parseObject(
+    fun getRealUrls(jsonObject: JSONObject): TreeMap<String, ArrayList<JSONObject>> {
+        return JSONObject.parseObject(
             jsonObject.toJSONString(),
-            object : TypeReference<Map<String, String>>() {})
-        val resultRooms = LinkedTreeMap<String, String>()
-        if (rooms.containsKey("OD")) {
-            resultRooms["原画"] = rooms["OD"]
+            object : TypeReference<TreeMap<String, ArrayList<JSONObject>>>() {})
+    }
+
+    private fun handelRatesAndWifi(urls: TreeMap<String, ArrayList<JSONObject>>?) {
+        if (urls.isNullOrEmpty()) {
+            Toast.makeText(context, "获取直播源为空", Toast.LENGTH_SHORT).show()
+            return
         }
-        if (rooms.containsKey("HD")) {
-            resultRooms["超清"] = rooms["HD"]
+        val defaultDefinition: String = if (NetworkUtils.isMobileData()) {
+            Toast.makeText(context, "正在使用流量", Toast.LENGTH_SHORT).show()
+            sharedPreferences.getString("default_definition_4G", "最高")!!
+        } else {
+            sharedPreferences.getString("default_definition_wifi", "最高")!!
         }
-        if (rooms.containsKey("SD")) {
-            resultRooms["高清"] = rooms["SD"]
+
+        val urlList = urls.firstEntry()!!.value
+        val urlFinalObj: JSONObject = when (defaultDefinition) {
+            "最低" -> urlList.last()
+            "中等" -> urlList[urlList.size / 2]
+            else -> urlList[0]
         }
-        if (rooms.containsKey("LD")) {
-            resultRooms["清晰"] = rooms["LD"]
-        }
-        if (rooms.containsKey("FD")) {
-            resultRooms["流畅"] = rooms["FD"]
-        }
-        return resultRooms
+        mDefinitionControlView?.updateRateSelection(urls, urlFinalObj.getString("qualityName"))
+        onRateChange(urlFinalObj.getString("playUrl"), true)
     }
 }

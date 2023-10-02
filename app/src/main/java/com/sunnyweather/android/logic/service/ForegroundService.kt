@@ -5,10 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.sunnyweather.android.R
 import com.sunnyweather.android.ui.liveRoom.LiveRoomActivity
+import com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext
+
 
 class ForegroundService : Service() {
     private var platform = ""
@@ -32,7 +33,18 @@ class ForegroundService : Service() {
         val intent = Intent(this, LiveRoomActivity::class.java)
         intent.putExtra("platform", platform)
         intent.putExtra("roomId", roomId)
-        val pi = PendingIntent.getActivity(this, 0, intent, 0)
+        val pi:PendingIntent
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pi = PendingIntent.getBroadcast(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            pi =
+                PendingIntent.getBroadcast(this, 0, intent, 0)
+        }
         val notification = NotificationCompat.Builder(this, "foreground")
             .setContentTitle("正在后台播放")
             .setContentText(roomInfo)

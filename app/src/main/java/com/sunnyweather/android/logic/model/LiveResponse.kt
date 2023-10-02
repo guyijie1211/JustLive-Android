@@ -1,9 +1,16 @@
 package com.sunnyweather.android.logic.model
 
 import android.graphics.Color
+import com.alibaba.fastjson.JSONObject
+import java.util.TreeMap
 
 data class LiveRoomResponse(val code: String, val message: String, val data: List<RoomInfo>)
-data class UrlsResponse(val code: String, val message: String, val data: Map<String, String>)
+data class UrlsResponse(
+    val code: String,
+    val message: String,
+    val data: TreeMap<String, ArrayList<JSONObject>>
+)
+
 data class RoomInfoResponse(val code: String, val message: String, val data: RoomInfo)
 data class SearchResponse(val code: String, val message: String, val data: List<Owner>)
 data class AreaAllResponse(val code: String, val message: String, val data: List<List<AreaInfo>>)
